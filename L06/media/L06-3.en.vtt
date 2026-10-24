@@ -1,0 +1,392 @@
+WEBVTT
+
+00:00:00.300 --> 00:00:06.180
+How many multiplications does it take to compute 2 to the power 13?
+
+00:00:06.730 --> 00:00:10.189
+The obvious answer is about 13, one for each 2.
+
+00:00:10.189 --> 00:00:12.617
+But you can do it with far fewer.
+
+00:00:12.617 --> 00:00:16.370
+The trick is to choose a different smaller problem.
+
+00:00:17.167 --> 00:00:20.127
+Welcome back to Lecture 6, Recursion.
+
+00:00:20.127 --> 00:00:23.887
+This is part 3: powers, and multiple recursion.
+
+00:00:24.237 --> 00:00:26.504
+We'll compute powers in two ways,
+
+00:00:26.504 --> 00:00:30.144
+draw a ruler with a function that calls itself twice,
+
+00:00:30.144 --> 00:00:34.197
+and then ask when to use recursion, and when to use a loop.
+
+00:00:34.967 --> 00:00:41.527
+Raising x to the power n means multiplying x by itself, n times.
+
+00:00:41.877 --> 00:00:45.686
+Recursively: x to the power 0 is 1.
+
+00:00:45.686 --> 00:00:51.997
+And x to the power n is x, times x to the power n minus 1.
+
+00:00:52.597 --> 00:00:56.015
+In Python: if n is 0, return 1.
+
+00:00:56.015 --> 00:01:01.637
+Otherwise, return x times power of x and n minus 1.
+
+00:01:01.987 --> 00:01:06.387
+Power of 2 and 10 gives 1024.
+
+00:01:06.737 --> 00:01:08.730
+But look at the calls.
+
+00:01:08.730 --> 00:01:13.985
+Power with exponent n makes n + 1 calls, all in one chain.
+
+00:01:13.985 --> 00:01:17.337
+So the stack grows n + 1 frames deep.
+
+00:01:17.687 --> 00:01:21.913
+Ask for 2 to the power 2000, and the stack gets too deep.
+
+00:01:21.913 --> 00:01:23.767
+We get a recursion error.
+
+00:01:24.567 --> 00:01:27.771
+So let's change the smaller problem.
+
+00:01:27.771 --> 00:01:34.447
+Instead of going from n to n minus 1, go from n to half of n, rounded down.
+
+00:01:34.797 --> 00:01:42.486
+If n is even, x to the power n is x to the power half of n, squared.
+
+00:01:42.486 --> 00:01:46.557
+If n is odd, multiply by one more x.
+
+00:01:47.157 --> 00:01:53.576
+For example, 2 to the 13 is 2, times 2 to the 6, squared.
+
+00:01:53.576 --> 00:01:57.517
+And 2 to the 6 is 2 cubed, squared.
+
+00:01:57.867 --> 00:02:03.452
+In the code, the smaller answer is computed once, and stored in `partial`.
+
+00:02:03.452 --> 00:02:06.698
+Then `result` is `partial` times `partial`.
+
+00:02:06.698 --> 00:02:10.547
+If n is odd, `result` is multiplied by x once more.
+
+00:02:10.897 --> 00:02:14.676
+Fast power of 2 and 13 gives 8192.
+
+00:02:14.676 --> 00:02:19.122
+And fast power of 2 and 2000 works fine.
+
+00:02:19.122 --> 00:02:22.457
+It equals 2 to the power 2000.
+
+00:02:23.234 --> 00:02:25.740
+Pause the video and predict.
+
+00:02:25.740 --> 00:02:30.035
+How many calls does fast power of 2 and 13 make?
+
+00:02:30.035 --> 00:02:31.914
+List the values of n.
+
+00:02:32.464 --> 00:02:39.264
+13, 6, 3, 1, 0. Five calls.
+
+00:02:39.614 --> 00:02:46.454
+And for 2000, the chain is just 12 calls long, instead of 2001.
+
+00:02:47.234 --> 00:02:48.141
+One warning.
+
+00:02:48.141 --> 00:02:54.714
+You might be tempted to skip the variable, and call fast power twice, on the same half.
+
+00:02:55.064 --> 00:02:56.682
+It gives the right answer.
+
+00:02:56.682 --> 00:03:00.664
+But now each call makes two recursive calls on the same problem,
+
+00:03:00.664 --> 00:03:04.024
+and the total work is back to about n multiplications.
+
+00:03:04.374 --> 00:03:10.214
+Compute the smaller answer once, store it in a variable, and reuse it.
+
+00:03:11.001 --> 00:03:14.950
+So far, each call has made at most one recursive call.
+
+00:03:14.950 --> 00:03:18.388
+Now let's meet functions that make two or more.
+
+00:03:18.388 --> 00:03:20.801
+That's called multiple recursion.
+
+00:03:21.151 --> 00:03:23.313
+Our example is an English ruler.
+
+00:03:23.313 --> 00:03:28.111
+It has a long tick at each whole inch, with the inch number next to it.
+
+00:03:28.461 --> 00:03:31.581
+Between 2 inches is a tick at the half inch.
+
+00:03:31.581 --> 00:03:35.623
+Between those are ticks at the quarter inches, and so on.
+
+00:03:35.623 --> 00:03:37.821
+Each level is one dash shorter.
+
+00:03:38.171 --> 00:03:40.987
+Look at the part between two whole inches.
+
+00:03:40.987 --> 00:03:42.931
+Its center tick has length 3.
+
+00:03:43.281 --> 00:03:49.753
+Above the center is a smaller copy of the same pattern, with a center tick of length 2.
+
+00:03:49.753 --> 00:03:51.761
+And below it, another copy.
+
+00:03:52.111 --> 00:03:55.704
+So an interval is made of three pieces.
+
+00:03:55.704 --> 00:04:01.231
+First, a smaller interval, whose center is one dash shorter.
+
+00:04:01.231 --> 00:04:03.258
+Next, the center tick.
+
+00:04:03.258 --> 00:04:06.113
+Last, another smaller interval.
+
+00:04:06.113 --> 00:04:10.351
+And an interval with center length 0 is empty.
+
+00:04:11.134 --> 00:04:12.198
+Here's the code.
+
+00:04:12.198 --> 00:04:16.254
+`draw_line` prints one tick, with an optional label after it.
+
+00:04:16.604 --> 00:04:18.983
+`draw_interval` is the recursive part.
+
+00:04:18.983 --> 00:04:22.990
+If the center length is greater than 0, it draws the upper half.
+
+00:04:22.990 --> 00:04:24.869
+Then it draws the center tick.
+
+00:04:24.869 --> 00:04:26.684
+Then it draws the lower half.
+
+00:04:27.034 --> 00:04:30.375
+That's two recursive calls in one function.
+
+00:04:30.375 --> 00:04:37.754
+And the base case is quiet: when the length is 0, the `if` test is false, and nothing is drawn.
+
+00:04:38.354 --> 00:04:43.874
+`draw_interval` of 2 prints one dash, two dashes, and one dash.
+
+00:04:44.224 --> 00:04:49.144
+And `draw_ruler` puts one interval between each pair of inch ticks.
+
+00:04:49.934 --> 00:04:53.854
+Let's draw the recursion tree of `draw_interval` of 3.
+
+00:04:54.204 --> 00:04:57.110
+It calls `draw_interval` of 2, twice.
+
+00:04:57.110 --> 00:05:00.880
+Each of those calls `draw_interval` of 1, twice.
+
+00:05:00.880 --> 00:05:04.964
+And each of those calls `draw_interval` of 0, twice.
+
+00:05:05.314 --> 00:05:10.964
+One call at the top, then 2, then 4, then 8 at the bottom.
+
+00:05:10.964 --> 00:05:13.594
+15 calls, to print 7 ticks.
+
+00:05:13.944 --> 00:05:19.264
+Every call has two calls below it, so this tree is a binary tree.
+
+00:05:19.614 --> 00:05:27.004
+Add one more dash, and `draw_interval` of 4 prints 15 ticks, with 31 calls.
+
+00:05:27.004 --> 00:05:30.255
+Each extra dash doubles the work.
+
+00:05:30.255 --> 00:05:34.294
+Multiple recursion can grow very quickly.
+
+00:05:35.068 --> 00:05:38.199
+Multiple recursion can also add up a list.
+
+00:05:38.199 --> 00:05:44.388
+Split the list into two halves, sum each half recursively, and add the two results.
+
+00:05:44.738 --> 00:05:51.287
+The function works on the part of the list from index `start`, up to but not including `stop`.
+
+00:05:51.287 --> 00:05:55.538
+Passing two indices means no part of the list is ever copied.
+
+00:05:55.888 --> 00:05:57.833
+No elements: return 0.
+
+00:05:57.833 --> 00:05:59.867
+One element: return it.
+
+00:05:59.867 --> 00:06:05.528
+Two or more: split at `mid`, and add the sums of the two halves.
+
+00:06:05.878 --> 00:06:09.798
+For the numbers 1 to 7, `binary_sum` returns 28.
+
+00:06:10.148 --> 00:06:11.463
+Here's the tree.
+
+00:06:11.463 --> 00:06:14.587
+1 to 7 splits into 1 to 3, and 4 to 7.
+
+00:06:14.587 --> 00:06:19.108
+Those split again, until each call has a single number.
+
+00:06:19.458 --> 00:06:23.349
+On the way back up, the sums combine.
+
+00:06:23.349 --> 00:06:25.138
+6 and 22 make 28.
+
+00:06:25.935 --> 00:06:30.615
+How does `binary_sum` compare with `linear_sum`, from part 2?
+
+00:06:30.965 --> 00:06:35.174
+For a list of n numbers, `linear_sum` makes n + 1 calls,
+
+00:06:35.174 --> 00:06:37.429
+and `binary_sum` makes 2n - 1.
+
+00:06:37.429 --> 00:06:39.685
+About the same amount of work.
+
+00:06:40.035 --> 00:06:42.485
+But the shape is different.
+
+00:06:42.485 --> 00:06:46.025
+`linear_sum` is a chain, n frames deep.
+
+00:06:46.025 --> 00:06:50.835
+`binary_sum` is a tree, only about log n levels deep.
+
+00:06:51.435 --> 00:06:56.215
+On a list of a million numbers, `linear_sum` raises a recursion error.
+
+00:06:56.215 --> 00:06:59.835
+`binary_sum` needs a stack only about 21 frames deep.
+
+00:07:00.185 --> 00:07:06.441
+So: linear recursion makes at most one call per call, and the calls form a chain.
+
+00:07:06.441 --> 00:07:11.385
+Multiple recursion makes two or more, and the calls form a tree.
+
+00:07:12.168 --> 00:07:15.568
+Last question: recursion, or a loop?
+
+00:07:15.918 --> 00:07:20.614
+Every linear recursion in this lecture could also be written with a loop.
+
+00:07:20.614 --> 00:07:22.866
+Here's factorial with a `for` loop.
+
+00:07:22.866 --> 00:07:25.118
+It gives the same answer as `fact`.
+
+00:07:25.468 --> 00:07:31.548
+In Python, a loop is usually the better choice for a simple chain like this.
+
+00:07:31.548 --> 00:07:35.548
+It uses no extra frames, so it has no depth limit.
+
+00:07:36.148 --> 00:07:40.985
+Some languages turn certain recursive calls into loops automatically.
+
+00:07:40.985 --> 00:07:42.948
+Python deliberately doesn't.
+
+00:07:43.298 --> 00:07:48.593
+Recursion is the better choice when the problem branches, like the ruler.
+
+00:07:48.593 --> 00:07:54.178
+Writing `draw_interval` with loops is possible, but much harder to get right.
+
+00:07:54.778 --> 00:07:57.773
+You'll meet many branching problems later:
+
+00:07:57.773 --> 00:08:02.409
+folders inside folders, sorting by splitting a list in Lecture 9,
+
+00:08:02.409 --> 00:08:05.618
+trees in Lecture 10, and the moves of a game.
+
+00:08:06.401 --> 00:08:08.361
+Let's review what we've learned.
+
+00:08:08.711 --> 00:08:12.108
+The choice of smaller problem matters.
+
+00:08:12.108 --> 00:08:17.471
+When we cut the exponent in half, 2001 calls become just 12.
+
+00:08:17.821 --> 00:08:22.907
+Multiple recursion makes two or more calls, so its calls form a tree,
+
+00:08:22.907 --> 00:08:25.781
+and the work can double at every level.
+
+00:08:26.131 --> 00:08:28.377
+Use a loop for a simple chain.
+
+00:08:28.377 --> 00:08:31.371
+Use recursion when the problem branches.
+
+00:08:31.721 --> 00:08:34.914
+Here's one to try: the Towers of Hanoi.
+
+00:08:34.914 --> 00:08:40.317
+Move a stack of discs from one peg to another, one disc at a time,
+
+00:08:40.317 --> 00:08:44.000
+never putting a larger disc on a smaller one.
+
+00:08:44.000 --> 00:08:49.321
+Hint: first move all the discs except the largest out of the way.
+
+00:08:49.871 --> 00:08:51.694
+That's the end of Lecture 6.
+
+00:08:51.694 --> 00:08:56.511
+Next time, we start object-oriented programming, with objects and classes.
+
