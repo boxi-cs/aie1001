@@ -1,0 +1,353 @@
+WEBVTT
+
+00:00:00.300 --> 00:00:04.058
+So far, our programs have only talked to themselves.
+
+00:00:04.058 --> 00:00:06.660
+Every value was typed into the code.
+
+00:00:07.010 --> 00:00:09.412
+Here's a program that asks you a question.
+
+00:00:09.412 --> 00:00:11.871
+It wants your weight, and then your height.
+
+00:00:11.871 --> 00:00:14.330
+And then it tells you your body mass index.
+
+00:00:14.680 --> 00:00:19.360
+By the end of this video, you'll be able to write it, in four lines.
+
+00:00:20.133 --> 00:00:23.693
+This is the last part of Lecture 2: input and output.
+
+00:00:24.043 --> 00:00:28.071
+We'll add comments to a program, see how a program flows,
+
+00:00:28.071 --> 00:00:32.523
+read input from the user, and control exactly what print shows.
+
+00:00:33.300 --> 00:00:37.065
+Anything after a hash sign on a line is a comment.
+
+00:00:37.065 --> 00:00:38.420
+Python ignores it.
+
+00:00:38.770 --> 00:00:42.331
+Use comments to say what a block of code does, or why.
+
+00:00:42.331 --> 00:00:44.376
+To note who wrote it, and when.
+
+00:00:44.376 --> 00:00:48.530
+Or to switch a line off for a while, like the debug print here.
+
+00:00:48.880 --> 00:00:51.220
+This program prints 4, 17.
+
+00:00:51.220 --> 00:00:54.280
+The commented-out line never runs.
+
+00:00:54.630 --> 00:00:57.732
+But don't repeat what the code already says.
+
+00:00:57.732 --> 00:01:03.230
+A comment that says set x to 5, next to a line that sets x to 5, helps nobody.
+
+00:01:04.000 --> 00:01:09.280
+A program is like a recipe: a list of steps, done in a fixed order.
+
+00:01:09.630 --> 00:01:12.888
+In this lecture, every program is sequential.
+
+00:01:12.888 --> 00:01:16.870
+Python runs line 1, then line 2, and so on, to the end.
+
+00:01:17.220 --> 00:01:20.030
+x is bound to 2, and we print 2.
+
+00:01:20.030 --> 00:01:23.806
+Then x becomes x times 10, and we print 20.
+
+00:01:23.806 --> 00:01:28.460
+Each line sees the bindings the lines before it made.
+
+00:01:28.810 --> 00:01:31.560
+Next week adds two other kinds of flow.
+
+00:01:31.560 --> 00:01:33.887
+Conditional steps may be skipped.
+
+00:01:33.887 --> 00:01:37.553
+Here, 5 is smaller than 10, so the first print runs.
+
+00:01:37.553 --> 00:01:41.290
+But 5 isn't bigger than 20, so the second is skipped.
+
+00:01:41.640 --> 00:01:46.075
+And repeated steps, called a loop, run again and again,
+
+00:01:46.075 --> 00:01:49.220
+with a variable that changes each time.
+
+00:01:49.220 --> 00:01:51.800
+Here, n counts down from 5 to 1.
+
+00:01:52.150 --> 00:01:56.746
+A fourth kind, storing steps to reuse later, is a function.
+
+00:01:56.746 --> 00:01:58.070
+That's Lecture 4.
+
+00:01:58.867 --> 00:01:59.688
+Now, input.
+
+00:01:59.688 --> 00:02:06.257
+The input function stops the program, waits for the user to type a line and press Enter,
+
+00:02:06.257 --> 00:02:08.347
+and returns what they typed.
+
+00:02:08.697 --> 00:02:12.377
+If you give it a string, it prints that string first, as a prompt.
+
+00:02:12.727 --> 00:02:15.768
+Here, the program asks, what is your name?
+
+00:02:15.768 --> 00:02:18.592
+The user types Alice and presses Enter.
+
+00:02:18.592 --> 00:02:22.647
+Input returns the string Alice, and name is bound to it.
+
+00:02:22.997 --> 00:02:25.997
+Then print says, hello, Alice.
+
+00:02:26.767 --> 00:02:31.149
+Here's a program that reads two numbers and adds them.
+
+00:02:31.149 --> 00:02:33.178
+The user types 3, then 4.
+
+00:02:33.178 --> 00:02:35.450
+Pause the video and predict.
+
+00:02:35.450 --> 00:02:38.127
+What do the last two lines print?
+
+00:02:38.677 --> 00:02:40.251
+It prints 34.
+
+00:02:40.251 --> 00:02:43.277
+And the type of a is str.
+
+00:02:43.627 --> 00:02:49.155
+Input always returns a string, even when the user types digits.
+
+00:02:49.155 --> 00:02:54.156
+So a is bound to the string '3', and b to the string '4'.
+
+00:02:54.156 --> 00:02:57.227
+And plus on two strings joins them.
+
+00:02:57.827 --> 00:03:00.966
+To read a number, convert straight away.
+
+00:03:00.966 --> 00:03:03.555
+Int of input, for a whole number.
+
+00:03:03.555 --> 00:03:05.987
+Float of input, for any number.
+
+00:03:06.337 --> 00:03:12.233
+And if the user types something that isn't a number, the conversion raises a ValueError.
+
+00:03:12.233 --> 00:03:14.577
+Lecture 3 shows how to handle that.
+
+00:03:15.367 --> 00:03:18.421
+Now we can write the program from the start.
+
+00:03:18.421 --> 00:03:24.807
+Body mass index is your weight in kilograms, divided by the square of your height in metres.
+
+00:03:25.157 --> 00:03:27.338
+Line 1 reads the weight.
+
+00:03:27.338 --> 00:03:29.883
+Float of input is two calls.
+
+00:03:29.883 --> 00:03:35.517
+Input runs first and returns a string, then float converts it.
+
+00:03:35.867 --> 00:03:38.267
+Line 2 reads the height the same way.
+
+00:03:38.617 --> 00:03:39.671
+Line 3 computes.
+
+00:03:39.671 --> 00:03:44.937
+Height squared is done before the division, because power has higher precedence.
+
+00:03:45.287 --> 00:03:49.207
+Line 4 prints the result, rounded to one decimal place.
+
+00:03:49.557 --> 00:03:55.837
+For 70 kilograms and 1.75 metres, your BMI is 22.9.
+
+00:03:56.187 --> 00:04:01.645
+This program follows a pattern called input, process, output.
+
+00:04:01.645 --> 00:04:04.687
+Read all the input and convert it.
+
+00:04:04.687 --> 00:04:07.281
+Compute with named variables.
+
+00:04:07.281 --> 00:04:08.892
+Print the results.
+
+00:04:08.892 --> 00:04:11.307
+Keep the three parts apart.
+
+00:04:12.100 --> 00:04:15.700
+Two arithmetic operators also work on strings.
+
+00:04:16.050 --> 00:04:17.845
+Plus joins two strings.
+
+00:04:17.845 --> 00:04:24.010
+Hello plus world gives 'hello world', with no space, because we didn't add one.
+
+00:04:24.360 --> 00:04:28.102
+Times repeats a string a whole number of times.
+
+00:04:28.102 --> 00:04:30.093
+Ha times 3 is 'ha ha ha'.
+
+00:04:30.093 --> 00:04:32.720
+And a dash times 20 draws a line.
+
+00:04:33.070 --> 00:04:36.768
+Mixing a string and a number with plus is an error.
+
+00:04:36.768 --> 00:04:40.030
+Turn the number into a string with str first.
+
+00:04:40.800 --> 00:04:41.679
+Last, print.
+
+00:04:41.679 --> 00:04:46.802
+Print takes any number of values, of any types, converts each to text,
+
+00:04:46.802 --> 00:04:49.510
+and prints them separated by a space.
+
+00:04:49.510 --> 00:04:51.120
+Then it ends the line.
+
+00:04:51.470 --> 00:04:55.253
+Notice that the printed text doesn't show the type.
+
+00:04:55.253 --> 00:04:58.590
+42 and the string '42' look exactly the same.
+
+00:04:58.940 --> 00:05:02.036
+Print has two optional keyword arguments.
+
+00:05:02.036 --> 00:05:05.132
+Sep is the string put between the values.
+
+00:05:05.132 --> 00:05:07.020
+By default, it's a space.
+
+00:05:07.370 --> 00:05:11.376
+With sep set to an empty string, the words run together.
+
+00:05:11.376 --> 00:05:13.450
+With a comma, you get commas.
+
+00:05:13.800 --> 00:05:18.400
+That's how you print a time like 4:17 without spaces.
+
+00:05:18.750 --> 00:05:22.385
+And end is the string put after the last value.
+
+00:05:22.385 --> 00:05:24.550
+By default, it's a new line.
+
+00:05:24.900 --> 00:05:29.634
+With end set to a space, the next print continues on the same line.
+
+00:05:29.634 --> 00:05:33.660
+With 3 dashes, you get 3 dashes, and then the next print.
+
+00:05:34.434 --> 00:05:39.156
+An AI assistant can write a program like the BMI calculator in a second.
+
+00:05:39.156 --> 00:05:41.714
+Your job is to check what it gives you.
+
+00:05:42.064 --> 00:05:45.504
+For short programs like this week's, check 4 things.
+
+00:05:45.854 --> 00:05:48.018
+1, the types of the input.
+
+00:05:48.018 --> 00:05:52.014
+Is every input converted, before any arithmetic?
+
+00:05:52.364 --> 00:05:53.342
+2, precedence.
+
+00:05:53.342 --> 00:05:59.284
+For each expression with more than one operator, say in which order Python does them.
+
+00:05:59.634 --> 00:06:00.705
+3, division.
+
+00:06:00.705 --> 00:06:07.314
+Is it a single slash, a double slash, or percent, and is it the right one?
+
+00:06:07.664 --> 00:06:11.747
+4, run it on test inputs you worked out by hand.
+
+00:06:11.747 --> 00:06:16.426
+For example, ask for a Celsius to Fahrenheit converter,
+
+00:06:16.426 --> 00:06:19.064
+and test it on 0, 100, and -40.
+
+00:06:19.834 --> 00:06:21.514
+Let's sum up.
+
+00:06:21.864 --> 00:06:24.403
+A program runs its steps in order.
+
+00:06:24.403 --> 00:06:28.064
+Comments are for people, and Python ignores them.
+
+00:06:28.414 --> 00:06:30.814
+Input always returns a string.
+
+00:06:30.814 --> 00:06:35.134
+Convert it with int or float before you do arithmetic.
+
+00:06:35.484 --> 00:06:40.044
+Print separates values with sep, and finishes with end.
+
+00:06:40.394 --> 00:06:41.710
+Here's one to try.
+
+00:06:41.710 --> 00:06:44.780
+Ask the user for the names of two friends,
+
+00:06:44.780 --> 00:06:50.994
+and print, 'I am the friend of', and their names, with no space before the full stop.
+
+00:06:51.544 --> 00:06:53.603
+That's the end of Lecture 2.
+
+00:06:53.603 --> 00:07:00.224
+In Lecture 3, our programs start making decisions, and repeating steps, with if and while.
+

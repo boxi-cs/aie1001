@@ -1,0 +1,359 @@
+WEBVTT
+
+00:00:00.300 --> 00:00:01.853
+Here are eight numbers.
+
+00:00:01.853 --> 00:00:03.609
+Quick: how many are there?
+
+00:00:03.609 --> 00:00:04.892
+What's their total?
+
+00:00:04.892 --> 00:00:06.580
+Which one is the largest?
+
+00:00:06.930 --> 00:00:08.781
+You can answer at a glance.
+
+00:00:08.781 --> 00:00:12.347
+But a program can only look at one number at a time.
+
+00:00:12.347 --> 00:00:14.130
+So how does it keep track?
+
+00:00:14.480 --> 00:00:17.128
+The answer is a handful of loop patterns.
+
+00:00:17.128 --> 00:00:22.360
+They're short, but you'll reuse them in nearly every program that processes data.
+
+00:00:23.133 --> 00:00:28.813
+This is Lecture Three, part four: loop patterns, and how Python compares values.
+
+00:00:29.163 --> 00:00:34.839
+We'll count, sum, filter, search, and find the largest and the smallest.
+
+00:00:34.839 --> 00:00:39.963
+Then we'll look closely at double equals, is, strings and floats.
+
+00:00:40.733 --> 00:00:43.493
+Every pattern has the same three parts.
+
+00:00:43.843 --> 00:00:46.586
+Before the loop, set up a variable.
+
+00:00:46.586 --> 00:00:51.679
+In the loop, look at one item at a time, and update the variable.
+
+00:00:51.679 --> 00:00:55.283
+After the loop, the variable holds the answer.
+
+00:00:56.067 --> 00:01:01.147
+To count, start a counter at zero, and add one in every iteration.
+
+00:01:01.497 --> 00:01:03.304
+Three: count is one.
+
+00:01:03.304 --> 00:01:05.021
+Four: count is two.
+
+00:01:05.021 --> 00:01:06.828
+Ninety-eight: three.
+
+00:01:06.828 --> 00:01:11.617
+And so on, until after the last item, count is eight.
+
+00:01:11.967 --> 00:01:15.803
+To sum, replace add one with add the item.
+
+00:01:15.803 --> 00:01:18.087
+The total starts at zero.
+
+00:01:18.437 --> 00:01:26.317
+Three, then seven, then one hundred and five, and so on, up to four hundred and thirty-nine.
+
+00:01:26.667 --> 00:01:32.854
+A variable that collects a result across the iterations is called an accumulator.
+
+00:01:32.854 --> 00:01:38.507
+Start it at the value that means nothing yet, and update it once per item.
+
+00:01:39.107 --> 00:01:45.225
+For the average, keep both accumulators, and divide the total by the count after the loop.
+
+00:01:45.225 --> 00:01:50.867
+Four hundred and thirty-nine divided by eight is fifty-four point eight seven five.
+
+00:01:51.667 --> 00:01:56.020
+An if inside the loop picks out the items you want.
+
+00:01:56.020 --> 00:01:58.068
+That's called filtering.
+
+00:01:58.068 --> 00:02:03.787
+Here, only values greater than 50 are printed: 80, 111, 99, and 65.
+
+00:02:04.137 --> 00:02:05.789
+Is 74 in this list?
+
+00:02:05.789 --> 00:02:10.138
+Start a Boolean variable, called a flag, at False.
+
+00:02:10.138 --> 00:02:13.617
+Set it to True when you find the number.
+
+00:02:13.967 --> 00:02:17.886
+False, False, False, False, then True at 74.
+
+00:02:17.886 --> 00:02:22.607
+And it stays True, because nothing ever sets it back.
+
+00:02:22.957 --> 00:02:28.757
+If you want to stop looking once it's found, add a break right after found equals True.
+
+00:02:29.533 --> 00:02:33.286
+To find the largest, keep the largest number seen so far.
+
+00:02:33.286 --> 00:02:36.973
+Each time an item is larger, it becomes the new largest.
+
+00:02:37.323 --> 00:02:39.290
+Start at -1.
+
+00:02:39.290 --> 00:02:41.093
+9 beats it.
+
+00:02:41.093 --> 00:02:42.896
+39 beats 9.
+
+00:02:42.896 --> 00:02:44.699
+21 doesn't.
+
+00:02:44.699 --> 00:02:46.010
+98 does.
+
+00:02:46.010 --> 00:02:48.305
+4 and 5 don't.
+
+00:02:48.305 --> 00:02:52.403
+100 does, and 65 doesn't.
+
+00:02:52.753 --> 00:02:55.673
+After the loop, the answer is 100.
+
+00:02:56.466 --> 00:03:00.680
+To find the smallest, flip greater than to less than.
+
+00:03:00.680 --> 00:03:02.906
+And let's start at -1 again.
+
+00:03:03.256 --> 00:03:05.314
+Pause the video and predict.
+
+00:03:05.314 --> 00:03:08.696
+What does this program print as its last line?
+
+00:03:09.246 --> 00:03:10.167
+After, -1.
+
+00:03:10.167 --> 00:03:17.080
+No number in the list is smaller than -1, so the smallest is never updated.
+
+00:03:17.080 --> 00:03:19.846
+And -1 isn't even in the list.
+
+00:03:20.196 --> 00:03:23.318
+The same bug hides in the largest program.
+
+00:03:23.318 --> 00:03:27.036
+On a list of negative numbers, it would answer -1.
+
+00:03:27.833 --> 00:03:31.846
+The fix is to start with no value at all.
+
+00:03:31.846 --> 00:03:35.273
+Python's value for nothing is None.
+
+00:03:35.873 --> 00:03:42.589
+In the first iteration, smallest so far is None, so the first number, 9, becomes the smallest.
+
+00:03:42.589 --> 00:03:47.233
+After that, the usual comparison takes over, and the answer is 4.
+
+00:03:47.583 --> 00:03:49.118
+So here's the pattern.
+
+00:03:49.118 --> 00:03:51.909
+Start at None, meaning nothing seen yet.
+
+00:03:51.909 --> 00:03:57.143
+Take the item if nothing has been seen yet, or if it beats the best so far.
+
+00:03:57.933 --> 00:04:02.394
+That program tests smallest so far is None.
+
+00:04:02.394 --> 00:04:04.573
+So what does is mean?
+
+00:04:04.923 --> 00:04:10.099
+A variable is a name that refers to an object in memory.
+
+00:04:10.099 --> 00:04:14.998
+Double equals asks: do these two have the same value?
+
+00:04:14.998 --> 00:04:18.603
+Is asks: are they the very same object?
+
+00:04:19.203 --> 00:04:26.055
+Here, a and b are built separately: two list objects with the same contents.
+
+00:04:26.055 --> 00:04:30.563
+So a double equals b is True, but a is b is False.
+
+00:04:30.913 --> 00:04:34.058
+c equals a doesn't copy anything.
+
+00:04:34.058 --> 00:04:38.157
+It makes c a second name for the same list.
+
+00:04:38.157 --> 00:04:39.873
+So c is a is True.
+
+00:04:40.223 --> 00:04:47.019
+Change the list through c, and the name a shows the change, because it's the same list.
+
+00:04:47.019 --> 00:04:48.503
+And b is untouched.
+
+00:04:48.853 --> 00:04:52.882
+So compare values with double equals.
+
+00:04:52.882 --> 00:04:59.853
+Use is only to test for None, True or False, like: if x is None.
+
+00:05:00.633 --> 00:05:06.480
+Strings are compared letter by letter, from the left, until two letters differ.
+
+00:05:06.480 --> 00:05:09.293
+Each character has a number, its code.
+
+00:05:09.293 --> 00:05:13.513
+Capital A is 65, capital B is 66, and lower-case a is 97.
+
+00:05:13.863 --> 00:05:21.505
+So hello is greater than Bye, because lower-case h is 104, and capital B is only 66.
+
+00:05:21.505 --> 00:05:26.783
+Every capital letter comes before every lower-case letter.
+
+00:05:27.133 --> 00:05:34.322
+And the string "10" is less than the string "9", because the character '1' comes before the character '9'.
+
+00:05:34.322 --> 00:05:38.053
+Convert typed numbers with int before you compare them.
+
+00:05:38.403 --> 00:05:43.166
+And when one string runs out first, the shorter one is smaller.
+
+00:05:43.166 --> 00:05:45.283
+So cat is less than catalog.
+
+00:05:46.066 --> 00:05:48.963
+What about values of different types?
+
+00:05:48.963 --> 00:05:53.113
+An integer and a float with the same value are equal.
+
+00:05:53.113 --> 00:05:55.306
+7 double equals 7.0 is True.
+
+00:05:55.656 --> 00:05:59.057
+But a number and a string are never equal.
+
+00:05:59.057 --> 00:06:01.730
+7 is not equal to the string "7".
+
+00:06:01.730 --> 00:06:06.912
+And asking whether the string "7" is less than 8 is a TypeError.
+
+00:06:06.912 --> 00:06:08.856
+Python refuses to guess.
+
+00:06:09.633 --> 00:06:12.724
+Last, floating-point numbers are approximate.
+
+00:06:12.724 --> 00:06:19.113
+0.1 can't be stored exactly in binary, just as one third can't be written exactly in decimal.
+
+00:06:19.463 --> 00:06:26.859
+Add 0.1 to itself ten times, and you get 0.999, and so on.
+
+00:06:26.859 --> 00:06:27.625
+Not 1.
+
+00:06:27.625 --> 00:06:32.343
+And 0.1 plus 0.2 is not equal to 0.3.
+
+00:06:32.693 --> 00:06:36.186
+So don't compare floats with double equals.
+
+00:06:36.186 --> 00:06:43.333
+Ask whether they're close enough: is the absolute difference smaller than a tiny number?
+
+00:06:43.933 --> 00:06:46.013
+This matters in loops too.
+
+00:06:46.013 --> 00:06:52.253
+A while loop that waits for x to equal 1.0, adding 0.1 each time, never stops.
+
+00:06:52.253 --> 00:06:55.773
+x jumps from just under one to just over it.
+
+00:06:56.566 --> 00:07:02.504
+When an AI assistant writes a loop like these for you, check its starting values.
+
+00:07:02.504 --> 00:07:11.886
+For every accumulator or so-far variable, ask what happens on an empty list, a list of one item, and a list of negative numbers.
+
+00:07:12.236 --> 00:07:12.715
+Try it.
+
+00:07:12.715 --> 00:07:20.787
+Ask an assistant for a program that reads numbers until the user types done, then prints the largest and the smallest.
+
+00:07:20.787 --> 00:07:23.865
+Does it work if the first number is negative?
+
+00:07:23.865 --> 00:07:26.396
+If the user types done straight away?
+
+00:07:27.166 --> 00:07:28.366
+Let's sum up.
+
+00:07:28.716 --> 00:07:38.956
+The loop patterns are count, sum, average, filter, search with a flag, and largest or smallest so far.
+
+00:07:39.306 --> 00:07:46.346
+Start a so-far variable at None, not at a made-up number, and test it with is None.
+
+00:07:46.696 --> 00:07:51.445
+Double equals compares values, and is compares identity.
+
+00:07:51.445 --> 00:07:55.176
+And never compare floats with double equals.
+
+00:07:55.526 --> 00:07:57.613
+Here's one to try.
+
+00:07:57.613 --> 00:08:09.668
+Given the list [12, 7, 3, 20, 15, 8], write one loop that counts the even numbers and sums the odd ones.
+
+00:08:09.668 --> 00:08:12.566
+It should print 3 and 25.
+
+00:08:13.116 --> 00:08:15.047
+That's the end of Lecture Three.
+
+00:08:15.047 --> 00:08:20.116
+In Lecture Four, we'll package code into functions, and work with strings and files.
+

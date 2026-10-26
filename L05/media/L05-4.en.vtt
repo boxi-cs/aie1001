@@ -1,0 +1,326 @@
+WEBVTT
+
+00:00:00.300 --> 00:00:03.638
+In part 3, we counted the words in a line of text.
+
+00:00:03.638 --> 00:00:09.380
+But a dictionary of counts doesn't tell you, at a glance, which words are most common.
+
+00:00:09.730 --> 00:00:13.410
+So how do you sort a dictionary by its values?
+
+00:00:13.960 --> 00:00:17.560
+The answer uses our third collection, called a tuple.
+
+00:00:18.333 --> 00:00:23.213
+This is part 4 of Lecture 5: tuples, and sorting a dictionary.
+
+00:00:24.000 --> 00:00:28.029
+A tuple is another kind of sequence, written with round brackets.
+
+00:00:28.029 --> 00:00:29.640
+It works much like a list.
+
+00:00:29.990 --> 00:00:34.207
+The elements are indexed from 0, so X of 2 is Joseph.
+
+00:00:34.207 --> 00:00:37.470
+Max works, and you can loop over a tuple.
+
+00:00:37.820 --> 00:00:41.236
+But tuples are immutable, like strings.
+
+00:00:41.236 --> 00:00:44.213
+A list lets you change an element.
+
+00:00:44.213 --> 00:00:45.702
+A string doesn't.
+
+00:00:45.702 --> 00:00:51.220
+And neither does a tuple: assigning to Z of 2 is a `TypeError`.
+
+00:00:51.820 --> 00:00:56.729
+So none of the list methods that change a list exist for a tuple.
+
+00:00:56.729 --> 00:00:59.524
+No `sort`, no `append`, no `reverse`.
+
+00:00:59.524 --> 00:01:03.300
+A tuple has only two methods: `count` and `index`.
+
+00:01:03.650 --> 00:01:07.511
+That makes tuples simpler, and a little more efficient.
+
+00:01:07.511 --> 00:01:12.987
+More importantly, a tuple tells the reader: this group of values won't change.
+
+00:01:12.987 --> 00:01:17.690
+We use tuples for coordinates, small records, and key, value pairs.
+
+00:01:18.040 --> 00:01:22.168
+One detail: it's the comma that makes a tuple.
+
+00:01:22.168 --> 00:01:25.309
+5 in brackets is just the number 5.
+
+00:01:25.309 --> 00:01:28.360
+5, comma, in brackets, is a tuple.
+
+00:01:29.133 --> 00:01:32.256
+A tuple can stand on the left of an assignment.
+
+00:01:32.256 --> 00:01:37.173
+Python assigns each element on the right to the name in the same position.
+
+00:01:37.523 --> 00:01:45.403
+So X, Y equals 4, fred makes X 4, and Y fred.
+
+00:01:45.753 --> 00:01:47.789
+This gives a neat swap.
+
+00:01:47.789 --> 00:01:49.294
+A, B equals B, A.
+
+00:01:49.294 --> 00:01:55.313
+The right side is built first, and then unpacked into the two names.
+
+00:01:55.663 --> 00:02:01.424
+And it's exactly what happens in `for key, value in counts.items()`.
+
+00:02:01.424 --> 00:02:09.303
+Each item is a key, value tuple, and tuple assignment unpacks it into the two loop variables.
+
+00:02:09.653 --> 00:02:12.252
+`items` gives a view of these tuples.
+
+00:02:12.252 --> 00:02:15.973
+Wrap it in `list`, and you get a real list of tuples.
+
+00:02:16.767 --> 00:02:19.200
+Being immutable has one more use.
+
+00:02:19.200 --> 00:02:22.887
+A tuple can be a dictionary key, but a list can't.
+
+00:02:23.237 --> 00:02:27.412
+A dictionary finds a key by its value at the moment it was stored.
+
+00:02:27.412 --> 00:02:32.157
+If the key could change afterwards, the dictionary could no longer find it.
+
+00:02:32.507 --> 00:02:38.034
+So keys must be immutable: numbers, strings, and tuples of those.
+
+00:02:38.034 --> 00:02:44.667
+Try a list as a key, and Python raises a `TypeError`: unhashable type, `list`.
+
+00:02:45.434 --> 00:02:47.026
+Tuples can be compared.
+
+00:02:47.026 --> 00:02:49.449
+Python compares the first elements.
+
+00:02:49.449 --> 00:02:55.057
+If they're equal, it goes on to the second, and so on, until two elements differ.
+
+00:02:55.057 --> 00:02:56.234
+Those two decide.
+
+00:02:56.584 --> 00:03:02.464
+(0, 1, 2) is less than (5, 1, 2), because 0 is less than 5.
+
+00:03:02.814 --> 00:03:08.761
+Here, the first elements are equal, so the second ones decide: 1 is less than 3.
+
+00:03:08.761 --> 00:03:11.214
+The 2 million is never looked at.
+
+00:03:11.564 --> 00:03:13.500
+Strings work the same way.
+
+00:03:13.500 --> 00:03:20.204
+('Jones', 'Sally') is not less than ('Jones', 'Fred'), because 'Sally' comes after 'Fred'.
+
+00:03:21.001 --> 00:03:22.942
+Pause the video and predict.
+
+00:03:22.942 --> 00:03:26.339
+Is ('Jones', 'Sally') less than ('Jones', 'Sam')?
+
+00:03:26.339 --> 00:03:28.281
+And which characters decide?
+
+00:03:28.831 --> 00:03:29.211
+True.
+
+00:03:29.211 --> 00:03:36.210
+The first elements are equal, so Python compares 'Sally' with 'Sam', character by character.
+
+00:03:36.210 --> 00:03:40.471
+The S's match, the A's match, and then L comes before M.
+
+00:03:41.268 --> 00:03:45.872
+Because tuples can be compared, a list of tuples can be sorted.
+
+00:03:45.872 --> 00:03:49.308
+That gives us a sorted version of a dictionary.
+
+00:03:49.658 --> 00:03:51.722
+Get the items as a list.
+
+00:03:51.722 --> 00:03:56.538
+They come out in the order the keys were added: C, A, B.
+
+00:03:56.888 --> 00:04:02.888
+Sort the list, and the tuples are ordered by their first element, the key: A, B, C.
+
+00:04:03.238 --> 00:04:06.464
+The built-in function `sorted` does the same job,
+
+00:04:06.464 --> 00:04:10.678
+but it returns a new sorted list, and leaves the original alone.
+
+00:04:11.028 --> 00:04:14.535
+Both `sort` and `sorted` take `reverse=True`,
+
+00:04:14.535 --> 00:04:17.108
+to sort from largest to smallest.
+
+00:04:17.458 --> 00:04:21.834
+So don't count on a dictionary's order being the order you want.
+
+00:04:21.834 --> 00:04:24.228
+It's the order the keys were added.
+
+00:04:24.228 --> 00:04:25.938
+When order matters, sort.
+
+00:04:26.735 --> 00:04:31.415
+Now, the practice from the slides: sort a dictionary by its values.
+
+00:04:31.765 --> 00:04:35.286
+Tuples are sorted by their first element.
+
+00:04:35.286 --> 00:04:39.925
+So build tuples with the value first: value, then key.
+
+00:04:40.525 --> 00:04:45.525
+Go through the items in a loop, and append each pair the other way round.
+
+00:04:45.875 --> 00:04:48.100
+Sort with `reverse=True`,
+
+00:04:48.100 --> 00:04:52.995
+and the largest value comes first: 22, then 10, then 1.
+
+00:04:53.345 --> 00:04:56.845
+This pattern is called decorate, sort, undecorate.
+
+00:04:56.845 --> 00:05:02.305
+Put what you want to sort by first, sort, and then take out the part you need.
+
+00:05:03.102 --> 00:05:05.622
+Now let's put the whole lecture together,
+
+00:05:05.622 --> 00:05:08.142
+and find the most common words in a text.
+
+00:05:08.492 --> 00:05:12.092
+First, count the words with a dictionary and `get`.
+
+00:05:12.442 --> 00:05:15.922
+Then turn each item into a (count, word) tuple.
+
+00:05:16.272 --> 00:05:21.232
+Sort them, largest first, and return the first N with a slice.
+
+00:05:21.582 --> 00:05:26.560
+On these 3 lines, the most common word is 'the', 7 times.
+
+00:05:26.560 --> 00:05:30.142
+Next come 'car', and 'and', 3 times each.
+
+00:05:30.492 --> 00:05:34.367
+('car', 'and') tie on the count, so the words decide.
+
+00:05:34.367 --> 00:05:39.852
+With `reverse=True`, the word that comes later in the alphabet comes first.
+
+00:05:40.202 --> 00:05:44.813
+Notice that `top_words` returns its result, and the caller prints it.
+
+00:05:44.813 --> 00:05:50.562
+So you can test it on a 3-line list, like this one, before you point it at a big file.
+
+00:05:50.912 --> 00:05:54.039
+And because a file is also a sequence of lines,
+
+00:05:54.039 --> 00:05:57.432
+the same function counts the words in a whole file.
+
+00:05:58.202 --> 00:06:02.202
+Before we finish, let's put the 3 collections side by side.
+
+00:06:02.552 --> 00:06:05.535
+A list is ordered, and you can change it.
+
+00:06:05.535 --> 00:06:07.792
+You look values up by position.
+
+00:06:08.142 --> 00:06:10.759
+A dictionary maps keys to values.
+
+00:06:10.759 --> 00:06:15.202
+You can change it, it keeps its keys in insertion order,
+
+00:06:15.202 --> 00:06:17.582
+and you look values up by key.
+
+00:06:17.932 --> 00:06:22.093
+A tuple is ordered, like a list, but you can't change it.
+
+00:06:22.093 --> 00:06:24.867
+That's why it can be a dictionary key,
+
+00:06:24.867 --> 00:06:28.372
+and why it suits a small, fixed group of values.
+
+00:06:28.722 --> 00:06:31.473
+Whichever you use, test the empty case:
+
+00:06:31.473 --> 00:06:35.002
+an empty list, an empty dictionary, an empty line.
+
+00:06:35.769 --> 00:06:36.969
+Let's sum up.
+
+00:06:37.319 --> 00:06:41.317
+A tuple is an ordered sequence you can't change.
+
+00:06:41.317 --> 00:06:46.399
+Tuple assignment unpacks it, as in `for key, value in items`.
+
+00:06:46.749 --> 00:06:49.200
+Tuples compare element by element,
+
+00:06:49.200 --> 00:06:52.589
+so a list of tuples sorts by its first element.
+
+00:06:52.939 --> 00:06:57.659
+To sort a dictionary by value, put the value first, then sort.
+
+00:06:58.009 --> 00:06:59.517
+Here's one to try.
+
+00:06:59.517 --> 00:07:04.966
+Change `top_words` so that ties are broken in alphabetical order.
+
+00:07:04.966 --> 00:07:11.169
+Hint: sort tuples of (minus the count, and the word), in the normal order.
+
+00:07:11.719 --> 00:07:13.845
+That's the end of Lecture 5.
+
+00:07:13.845 --> 00:07:17.719
+Next time: recursion, a function that calls itself.
+

@@ -1,0 +1,347 @@
+WEBVTT
+
+00:00:00.300 --> 00:00:03.965
+Here are three lines of Python.
+
+00:00:03.965 --> 00:00:06.567
+A is the list 1, 2, 3.
+
+00:00:06.567 --> 00:00:08.459
+Then B equals A.
+
+00:00:08.459 --> 00:00:11.060
+Then we append 4 to A.
+
+00:00:11.410 --> 00:00:13.210
+Now, what is B?
+
+00:00:13.760 --> 00:00:16.560
+Most people say B is still 1, 2, 3.
+
+00:00:16.560 --> 00:00:18.880
+After all, we only changed A.
+
+00:00:19.230 --> 00:00:22.093
+But Python prints 1, 2, 3, 4.
+
+00:00:22.093 --> 00:00:30.190
+To see why, we need the most important picture in this lecture: names and objects.
+
+00:00:30.967 --> 00:00:35.607
+This is part two of Lecture Five: two names, one list.
+
+00:00:35.957 --> 00:00:43.557
+We'll see what assignment really does, how to make a real copy, and what happens when you pass a list to a function.
+
+00:00:44.334 --> 00:00:48.134
+A Python variable is a name that refers to an object.
+
+00:00:48.484 --> 00:00:51.060
+The object lives somewhere in memory.
+
+00:00:51.060 --> 00:00:54.610
+The name is like a label, tied to it with a string.
+
+00:00:54.610 --> 00:01:01.084
+We'll draw the names on the left, the objects on the right, and an arrow for every refers to.
+
+00:01:01.434 --> 00:01:07.434
+A equals 1, 2, 3 makes a list object, and ties the name A to it.
+
+00:01:07.784 --> 00:01:10.937
+Assignment does exactly one thing.
+
+00:01:10.937 --> 00:01:13.533
+It ties a name to an object.
+
+00:01:13.533 --> 00:01:15.944
+It never copies an object.
+
+00:01:16.544 --> 00:01:20.264
+Keep that in mind, and the rest of this video follows from it.
+
+00:01:21.034 --> 00:01:23.877
+So what does B equals A do?
+
+00:01:23.877 --> 00:01:28.194
+It ties B to the object that A refers to.
+
+00:01:28.544 --> 00:01:30.501
+Not a second list.
+
+00:01:30.501 --> 00:01:34.089
+A second arrow, to the same list.
+
+00:01:34.089 --> 00:01:36.264
+Two names, one list.
+
+00:01:36.864 --> 00:01:38.434
+Now A.append(4).
+
+00:01:38.434 --> 00:01:42.064
+It changes the list that A refers to.
+
+00:01:42.414 --> 00:01:48.254
+Ask for B, and you get 1, 2, 3, 4, because there is only one list to see.
+
+00:01:48.604 --> 00:01:51.219
+It works the other way too.
+
+00:01:51.219 --> 00:01:56.644
+B[0] equals 99 changes the same list, and A sees the 99.
+
+00:01:56.994 --> 00:02:01.211
+Two names for the same object are called aliases.
+
+00:02:01.211 --> 00:02:02.674
+This is aliasing.
+
+00:02:03.467 --> 00:02:07.554
+How can you tell whether two names are aliases?
+
+00:02:07.554 --> 00:02:09.467
+Use the operator `is`.
+
+00:02:09.817 --> 00:02:14.617
+A is B is True: both arrows reach the same object.
+
+00:02:14.967 --> 00:02:20.204
+Now C is made by its own list display, with the same values.
+
+00:02:20.204 --> 00:02:23.607
+C == A is True: the contents are equal.
+
+00:02:23.957 --> 00:02:25.796
+But C is A is False.
+
+00:02:25.796 --> 00:02:31.219
+It's a different list that happens to hold the same values.
+
+00:02:31.219 --> 00:02:33.333
+`==` compares contents.
+
+00:02:33.333 --> 00:02:36.917
+`is` asks whether it's the same object.
+
+00:02:37.701 --> 00:02:40.237
+Pause the video and predict.
+
+00:02:40.237 --> 00:02:43.861
+P is a list of two strings, 'x' and 'y'.
+
+00:02:43.861 --> 00:02:44.857
+Q equals P.
+
+00:02:44.857 --> 00:02:46.578
+Then Q.append('z').
+
+00:02:46.578 --> 00:02:48.662
+What does len(P) print?
+
+00:02:48.662 --> 00:02:53.101
+Draw the names and the objects before you answer.
+
+00:02:53.651 --> 00:02:53.856
+3.
+
+00:02:53.856 --> 00:02:59.811
+There's one list with two names, and Q.append added to it.
+
+00:03:00.601 --> 00:03:03.454
+So how do you get an independent list?
+
+00:03:03.454 --> 00:03:04.881
+You make a new one.
+
+00:03:05.231 --> 00:03:07.530
+B equals A[:], with a full slice.
+
+00:03:07.530 --> 00:03:11.431
+The full slice builds a new list with the same elements.
+
+00:03:11.781 --> 00:03:18.053
+Now A.append(4) changes only the list that A refers to.
+
+00:03:18.053 --> 00:03:20.220
+B is still 1, 2, 3.
+
+00:03:20.220 --> 00:03:22.501
+And A is B is False.
+
+00:03:22.851 --> 00:03:27.771
+list(A), and A.copy(), make a new list in the same way.
+
+00:03:28.568 --> 00:03:32.888
+There are two ways to add 4 to A, and they're not the same.
+
+00:03:33.238 --> 00:03:37.280
+A.append(4) changes the list that A refers to.
+
+00:03:37.280 --> 00:03:39.038
+Every alias sees it.
+
+00:03:39.388 --> 00:03:46.068
+A = A + [4] builds a new list, and moves the name A to it.
+
+00:03:46.418 --> 00:03:49.673
+B still refers to the old list, 1, 2, 3.
+
+00:03:49.673 --> 00:03:53.498
+After this line, A and B are no longer aliases.
+
+00:03:53.848 --> 00:03:59.161
+This is why aliasing never surprised you with strings and numbers.
+
+00:03:59.161 --> 00:04:00.610
+They're immutable.
+
+00:04:00.610 --> 00:04:06.488
+Every change, like S = S.lower(), builds a new string and moves the name.
+
+00:04:07.268 --> 00:04:10.408
+The same thing happens when you call a function.
+
+00:04:10.408 --> 00:04:13.548
+Here's `add_bonus`, which adds 5 to every score.
+
+00:04:13.898 --> 00:04:15.505
+We call it with `marks`.
+
+00:04:15.505 --> 00:04:22.538
+The call gets a new frame, and its parameter, `scores`, is bound to the same list that `marks` refers to.
+
+00:04:22.888 --> 00:04:27.890
+Inside the call, `scores` and `marks` are two names for one list.
+
+00:04:27.890 --> 00:04:29.968
+The loop changes that list.
+
+00:04:30.318 --> 00:04:33.005
+The function returns nothing.
+
+00:04:33.005 --> 00:04:37.638
+But back in the caller, `marks` is now 65, 77, 90.
+
+00:04:37.988 --> 00:04:40.129
+Sometimes that's what you want.
+
+00:04:40.129 --> 00:04:41.648
+Often it's a surprise.
+
+00:04:41.648 --> 00:04:48.348
+A function that should leave its input alone builds a new list and returns it, like `with_bonus`.
+
+00:04:48.698 --> 00:04:53.338
+Now `marks` is unchanged, and `new_marks` holds the new scores.
+
+00:04:54.135 --> 00:04:57.041
+So here's the misconception to drop.
+
+00:04:57.041 --> 00:04:59.625
+B equals A does not make a copy.
+
+00:04:59.625 --> 00:05:02.935
+It makes a second name for the same list.
+
+00:05:03.285 --> 00:05:05.669
+Draw an arrow for every name.
+
+00:05:05.669 --> 00:05:12.165
+If two arrows reach the same box, a change through either name changes the box.
+
+00:05:12.765 --> 00:05:17.685
+This gives us a pattern: mutate or return, not both.
+
+00:05:18.035 --> 00:05:24.555
+A function that changes a list in place, like `sort`, or `add_bonus`, usually returns None.
+
+00:05:24.905 --> 00:05:32.265
+A function that builds a new list, like `sorted`, or `with_bonus`, returns it, and leaves its input alone.
+
+00:05:32.615 --> 00:05:38.135
+Decide which kind you're writing, and say so in the function's name or docstring.
+
+00:05:38.485 --> 00:05:41.825
+Remember `X = X.sort()`, from part one?
+
+00:05:41.825 --> 00:05:45.165
+Now you can see why it loses your list.
+
+00:05:45.515 --> 00:05:49.862
+`sort` changes the list in place and returns None.
+
+00:05:49.862 --> 00:05:53.775
+Then the assignment moves the name X to None.
+
+00:05:53.775 --> 00:05:59.515
+The sorted list is still there, but no name refers to it any more.
+
+00:06:00.302 --> 00:06:06.064
+These are exactly the bugs that AI assistants leave in code that uses lists.
+
+00:06:06.064 --> 00:06:10.462
+So when you check code, yours or an AI's, draw the arrows.
+
+00:06:10.812 --> 00:06:15.739
+Where does the code write B equals A, or pass a list into a function?
+
+00:06:15.739 --> 00:06:20.524
+Is a change through one name supposed to show up through the other?
+
+00:06:20.524 --> 00:06:23.452
+Ask: does this function change its input?
+
+00:06:23.802 --> 00:06:26.721
+And check what methods return.
+
+00:06:26.721 --> 00:06:30.904
+`sort`, `append` and `reverse` return None.
+
+00:06:30.904 --> 00:06:34.602
+Any line like `X = X.sort()` is a bug.
+
+00:06:34.952 --> 00:06:35.549
+Try this.
+
+00:06:35.549 --> 00:06:40.060
+Ask an assistant for a function that removes duplicates from a list.
+
+00:06:40.060 --> 00:06:43.841
+Does it change the list you pass in, or return a new one?
+
+00:06:43.841 --> 00:06:45.964
+Does it keep the original order?
+
+00:06:45.964 --> 00:06:48.552
+And what does it do with an empty list?
+
+00:06:49.335 --> 00:06:50.535
+Let's sum up.
+
+00:06:50.885 --> 00:06:52.925
+Assignment never copies.
+
+00:06:52.925 --> 00:06:56.325
+B equals A makes two names for one list.
+
+00:06:56.675 --> 00:07:02.875
+To get a copy, use a full slice (A[:]), list(A), or A.copy().
+
+00:07:03.225 --> 00:07:08.253
+The `append` method changes the list, and every alias sees it.
+
+00:07:08.253 --> 00:07:11.092
+A = A + a list moves just one name.
+
+00:07:11.092 --> 00:07:14.985
+And a function can change a list you pass to it.
+
+00:07:15.335 --> 00:07:16.647
+Here's one to try.
+
+00:07:16.647 --> 00:07:22.335
+Draw the names and objects after each of these lines, then say what's printed.
+
+00:07:22.885 --> 00:07:31.365
+In part three, we'll turn strings into lists with `split`, and meet Python's most powerful collection: the dictionary.
+
