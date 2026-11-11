@@ -1,0 +1,347 @@
+WEBVTT
+
+00:00:00.300 --> 00:00:04.288
+Read the instructions on a bottle of shampoo.
+
+00:00:04.288 --> 00:00:04.908
+Lather.
+
+00:00:04.908 --> 00:00:05.440
+Rinse.
+
+00:00:05.440 --> 00:00:06.060
+Repeat.
+
+00:00:06.410 --> 00:00:08.000
+Repeat how many times?
+
+00:00:08.000 --> 00:00:12.410
+A computer that followed those instructions would never stop.
+
+00:00:12.960 --> 00:00:16.344
+In this part, we'll learn to repeat lines safely.
+
+00:00:16.344 --> 00:00:19.798
+A while loop runs until a condition becomes false.
+
+00:00:19.798 --> 00:00:23.320
+A for loop runs once for each item in a collection.
+
+00:00:24.100 --> 00:00:29.420
+This is Lecture 3, part 3: repeating, with while and for.
+
+00:00:29.770 --> 00:00:33.886
+We'll trace loops with a table, meet the infinite loop,
+
+00:00:33.886 --> 00:00:39.050
+leave loops early with break and continue, and then loop over a list.
+
+00:00:39.833 --> 00:00:43.993
+A while loop repeats its block as long as its condition is true.
+
+00:00:44.343 --> 00:00:48.171
+Each time round, Python tests the condition first.
+
+00:00:48.171 --> 00:00:52.995
+If it's true, the block runs, and Python goes back to the test.
+
+00:00:52.995 --> 00:00:58.583
+If it's false, the loop ends, and the program carries on after the block.
+
+00:00:59.183 --> 00:01:02.330
+One run of the block is called an iteration.
+
+00:01:02.330 --> 00:01:08.623
+And the variable that changes each time round, here n, is called the iteration variable.
+
+00:01:09.400 --> 00:01:14.160
+Let's trace it with a table, one row each time the condition is tested.
+
+00:01:14.510 --> 00:01:15.234
+n is 5.
+
+00:01:15.234 --> 00:01:21.230
+5 greater than 0 is true, so it prints 5, and n becomes 4.
+
+00:01:21.580 --> 00:01:23.948
+4: true, so print 4.
+
+00:01:23.948 --> 00:01:27.500
+Then 3, 2 and 1, the same way.
+
+00:01:27.850 --> 00:01:28.992
+Now n is 0.
+
+00:01:28.992 --> 00:01:31.690
+0 greater than 0 is false.
+
+00:01:31.690 --> 00:01:35.530
+The loop ends, and Finish is printed.
+
+00:01:35.880 --> 00:01:39.184
+This table is the best tool you have for loops.
+
+00:01:39.184 --> 00:01:45.440
+When a loop surprises you, write one row for each test, and the bug usually shows itself.
+
+00:01:46.233 --> 00:01:48.313
+Pause the video and predict.
+
+00:01:48.313 --> 00:01:50.765
+How many times did the block run?
+
+00:01:50.765 --> 00:01:54.033
+And how many times was the condition tested?
+
+00:01:54.583 --> 00:01:56.625
+The block ran 5 times.
+
+00:01:56.625 --> 00:02:00.059
+But the condition was tested 6 times.
+
+00:02:00.059 --> 00:02:04.143
+The last test is the one that ends the loop.
+
+00:02:04.743 --> 00:02:10.935
+By the way, n = n - 1 can also be written n -= 1.
+
+00:02:10.935 --> 00:02:15.863
+And total += x means total = total + x.
+
+00:02:16.633 --> 00:02:18.920
+What's wrong with this program?
+
+00:02:18.920 --> 00:02:23.273
+It should print Lather and Rinse 5 times, and then Dry off.
+
+00:02:23.623 --> 00:02:26.215
+Look at the line n = n - 1.
+
+00:02:26.215 --> 00:02:30.823
+It isn't indented, so it isn't part of the loop.
+
+00:02:31.173 --> 00:02:34.829
+Inside the loop, nothing changes the value of n.
+
+00:02:34.829 --> 00:02:41.836
+So n greater than 0 stays true forever, and the program prints Lather, Rinse, Lather, Rinse,
+
+00:02:41.836 --> 00:02:46.253
+until you stop it with Control C. That's an infinite loop.
+
+00:02:46.603 --> 00:02:48.760
+A while loop must make progress.
+
+00:02:48.760 --> 00:02:54.624
+Something in the body has to change the condition, so that it eventually becomes false.
+
+00:02:54.624 --> 00:02:58.803
+Before you run a while loop, point to the line that does that.
+
+00:02:59.600 --> 00:03:02.793
+Sometimes you want to leave a loop from the middle.
+
+00:03:02.793 --> 00:03:07.800
+The break statement ends the loop at once, and jumps to the first line after it.
+
+00:03:08.150 --> 00:03:15.510
+A common shape is while True: a loop whose condition is always true, with a break inside to stop it.
+
+00:03:15.860 --> 00:03:17.487
+The user types hello.
+
+00:03:17.487 --> 00:03:20.276
+It isn't done, so it's printed back.
+
+00:03:20.276 --> 00:03:23.220
+Then there, which is printed back too.
+
+00:03:23.570 --> 00:03:25.404
+Then the user types done.
+
+00:03:25.404 --> 00:03:30.390
+The if is true, so break runs, and we jump straight out of the loop.
+
+00:03:30.390 --> 00:03:32.664
+The word done is never printed.
+
+00:03:32.664 --> 00:03:34.130
+Finished comes next.
+
+00:03:34.900 --> 00:03:37.060
+The continue statement is different.
+
+00:03:37.060 --> 00:03:41.980
+It ends only the current iteration, and goes straight back to the top of the loop.
+
+00:03:42.330 --> 00:03:46.226
+Here it skips every line that starts with a hash sign.
+
+00:03:46.226 --> 00:03:47.452
+Hello is printed.
+
+00:03:47.452 --> 00:03:54.810
+The next line starts with a hash, so continue sends us back to the next input, and nothing is printed.
+
+00:03:55.160 --> 00:03:57.191
+Print this is printed back.
+
+00:03:57.191 --> 00:04:00.800
+And typing the word done breaks out of the loop.
+
+00:04:01.150 --> 00:04:03.943
+So break leaves the loop altogether.
+
+00:04:03.943 --> 00:04:10.070
+Continue leaves only this iteration, and the loop carries on with the next one.
+
+00:04:10.670 --> 00:04:11.424
+One detail.
+
+00:04:11.424 --> 00:04:15.397
+The slides test whether character 0 of the line is a hash.
+
+00:04:15.397 --> 00:04:23.342
+That crashes with an IndexError if the user just presses Enter, because an empty string has no character at index 0.
+
+00:04:23.342 --> 00:04:26.630
+Starts with is simply False for an empty string.
+
+00:04:27.400 --> 00:04:29.907
+While loops are called indefinite loops.
+
+00:04:29.907 --> 00:04:36.360
+They run until a condition becomes false, and you don't know in advance how many iterations that takes.
+
+00:04:36.710 --> 00:04:42.282
+For some loops, it's very hard to know whether they stop at all.
+
+00:04:42.282 --> 00:04:43.240
+Here's one.
+
+00:04:43.240 --> 00:04:45.242
+If n is even, halve it.
+
+00:04:45.242 --> 00:04:48.115
+If it's odd, triple it and add 1.
+
+00:04:48.115 --> 00:04:50.030
+Stop when n reaches 1.
+
+00:04:50.380 --> 00:04:59.116
+Starting from 6: 3, 10, 5, 16, 8, 4, 2, 1.
+
+00:04:59.116 --> 00:05:00.780
+8 steps.
+
+00:05:01.130 --> 00:05:03.245
+This is the Collatz problem.
+
+00:05:03.245 --> 00:05:07.625
+It has stopped for every starting number anyone has tried.
+
+00:05:07.625 --> 00:05:11.250
+But nobody has ever proved that it always stops.
+
+00:05:12.034 --> 00:05:17.329
+Often you already have a collection of items, and you want to do something with each one.
+
+00:05:17.329 --> 00:05:19.114
+That's what a for loop is for.
+
+00:05:19.464 --> 00:05:22.888
+For i in the list 5, 4, 3, 2, 1.
+
+00:05:22.888 --> 00:05:32.304
+The block runs once for each item, and the iteration variable i takes each item in turn.
+
+00:05:32.654 --> 00:05:34.824
+You don't change i yourself.
+
+00:05:34.824 --> 00:05:37.770
+The loop moves it on to the next item.
+
+00:05:37.770 --> 00:05:43.894
+That's why for loops are called definite loops: they run exactly once per item.
+
+00:05:44.494 --> 00:05:48.624
+The items can be anything, strings for example.
+
+00:05:48.624 --> 00:05:53.897
+For friend in friends, print Happy new year, and the friend.
+
+00:05:53.897 --> 00:05:55.655
+Tom, Jerry, and Bat.
+
+00:05:55.655 --> 00:05:56.534
+Then Done.
+
+00:05:56.884 --> 00:06:02.684
+Choose a name that says what one item is: friend, for one item of friends.
+
+00:06:03.034 --> 00:06:05.385
+And if friends is an empty list?
+
+00:06:05.385 --> 00:06:09.354
+Then the block runs 0 times, and only Done is printed.
+
+00:06:10.134 --> 00:06:15.241
+Loops are where people, and AI assistants, make the most mistakes.
+
+00:06:15.241 --> 00:06:19.574
+So whenever you read a loop, yours or an AI's, check it.
+
+00:06:19.924 --> 00:06:21.060
+First, progress.
+
+00:06:21.060 --> 00:06:26.884
+For every while loop, point to the line that brings the condition closer to false.
+
+00:06:27.234 --> 00:06:28.972
+Second, the boundaries.
+
+00:06:28.972 --> 00:06:33.280
+What happens when the loop runs 0 times, or exactly once?
+
+00:06:33.280 --> 00:06:39.554
+And for every comparison, test the value right on the boundary, and 1 on each side.
+
+00:06:39.904 --> 00:06:42.824
+And when you're not sure, trace it with a table.
+
+00:06:43.601 --> 00:06:44.681
+Let's sum up.
+
+00:06:45.031 --> 00:06:52.351
+A while loop tests its condition before every iteration, and something in its body must make progress towards false.
+
+00:06:52.701 --> 00:06:54.356
+Break leaves the loop.
+
+00:06:54.356 --> 00:06:57.141
+Continue skips to the next iteration.
+
+00:06:57.491 --> 00:07:01.571
+A for loop runs its block once for each item of a sequence.
+
+00:07:01.921 --> 00:07:03.716
+Here's one to try.
+
+00:07:03.716 --> 00:07:05.112
+k starts at 1.
+
+00:07:05.112 --> 00:07:09.600
+While k is less than 10, k becomes k times 3.
+
+00:07:09.600 --> 00:07:10.897
+Then print k.
+
+00:07:10.897 --> 00:07:16.881
+How many times is the condition tested, and what is printed?
+
+00:07:17.431 --> 00:07:21.704
+In part 4, we'll use for loops to count, sum, filter and search.
+
+00:07:21.704 --> 00:07:25.911
+These are the loop patterns you'll use in almost every program.
+

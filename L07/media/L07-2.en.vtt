@@ -1,0 +1,476 @@
+WEBVTT
+
+00:00:00.300 --> 00:00:03.327
+In part one, we said that a class is a blueprint,
+
+00:00:03.327 --> 00:00:06.540
+and that every object made from it has its own data.
+
+00:00:06.890 --> 00:00:11.855
+But when you write a class in Python, where does that data actually go?
+
+00:00:11.855 --> 00:00:16.050
+And what is this word `self`, which appears in every method?
+
+00:00:16.833 --> 00:00:21.273
+Welcome to Lecture 7, part 2: defining a class.
+
+00:00:21.623 --> 00:00:23.586
+We'll write the `Circle` class,
+
+00:00:23.586 --> 00:00:27.258
+watch what Python does in memory when it builds an object,
+
+00:00:27.258 --> 00:00:29.663
+and see exactly what `self` refers to.
+
+00:00:30.433 --> 00:00:33.887
+A class definition starts with the keyword `class`,
+
+00:00:33.887 --> 00:00:37.273
+and the class name, followed by an indented block.
+
+00:00:37.623 --> 00:00:42.474
+Class names are written in capitalized words, like `Circle`, or `BankAccount`.
+
+00:00:42.474 --> 00:00:45.583
+That's different from function and variable names.
+
+00:00:45.933 --> 00:00:50.168
+Inside the block goes a special method called the initializer.
+
+00:00:50.168 --> 00:00:51.739
+Its name is `__init__`,
+
+00:00:51.739 --> 00:00:54.812
+with two underscores before it and two after.
+
+00:00:54.812 --> 00:00:58.773
+Python calls it automatically, to set up every new object.
+
+00:00:59.123 --> 00:01:00.242
+One small note.
+
+00:01:00.242 --> 00:01:04.718
+The slides write method names like `getArea`, in camel case.
+
+00:01:04.718 --> 00:01:10.163
+We follow Python's standard style, so we write `get_area`, in lower case.
+
+00:01:10.933 --> 00:01:13.013
+Here's the `Circle` class.
+
+00:01:13.363 --> 00:01:16.454
+The `__init__` method takes a `radius`,
+
+00:01:16.454 --> 00:01:18.515
+with a default value of 1,
+
+00:01:18.515 --> 00:01:21.843
+and runs one line: `self.radius = radius`.
+
+00:01:22.193 --> 00:01:27.925
+Then come three methods: `get_perimeter`, `get_area`, and `set_radius`.
+
+00:01:27.925 --> 00:01:31.153
+Each one reads or changes `self.radius`.
+
+00:01:31.503 --> 00:01:35.241
+Notice that every method, including `__init__`,
+
+00:01:35.241 --> 00:01:38.103
+has a first parameter called `self`.
+
+00:01:38.900 --> 00:01:42.538
+To create an object, you call the class like a function.
+
+00:01:42.538 --> 00:01:45.980
+This call is the constructor, and it does two things.
+
+00:01:46.330 --> 00:01:51.268
+First, it creates a new, empty object of the class in memory.
+
+00:01:51.268 --> 00:01:56.610
+Second, it calls the `__init__` method, to set up that new object.
+
+00:01:57.210 --> 00:02:03.580
+The constructor's arguments match the parameters of the `__init__` method, leaving out `self`.
+
+00:02:03.580 --> 00:02:05.884
+Since `radius` has a default of 1,
+
+00:02:05.884 --> 00:02:09.610
+`Circle()` with no argument makes a circle of radius 1.
+
+00:02:09.960 --> 00:02:14.160
+Its perimeter is 2π, and its area is π.
+
+00:02:14.510 --> 00:02:17.942
+`Circle(2)` makes a circle of radius 2.
+
+00:02:17.942 --> 00:02:24.102
+And we can also set the data field directly: `circle_one.radius = 10`.
+
+00:02:24.102 --> 00:02:25.950
+Now the area is 100π.
+
+00:02:26.734 --> 00:02:28.876
+Now let's slow right down,
+
+00:02:28.876 --> 00:02:33.574
+and follow `c = Circle(5)` in memory, one step at a time.
+
+00:02:33.924 --> 00:02:37.971
+Step 1. Python creates an empty `Circle` object.
+
+00:02:37.971 --> 00:02:40.164
+It has no data fields yet.
+
+00:02:40.514 --> 00:02:43.064
+Step 2. Python calls `__init__`,
+
+00:02:43.064 --> 00:02:46.651
+and a new frame appears, with two parameters.
+
+00:02:46.651 --> 00:02:49.201
+`self` refers to the new object.
+
+00:02:49.201 --> 00:02:51.194
+And `radius` refers to 5.
+
+00:02:51.544 --> 00:02:55.417
+Step 3. The line `self.radius = radius` runs.
+
+00:02:55.417 --> 00:02:59.205
+`self.radius` means the data field `radius`,
+
+00:02:59.205 --> 00:03:02.304
+of the object that `self` refers to.
+
+00:03:02.654 --> 00:03:08.054
+So the object now has a data field, `radius`, equal to 5.
+
+00:03:08.654 --> 00:03:09.647
+Look closely.
+
+00:03:09.647 --> 00:03:12.856
+There are two things called `radius` here.
+
+00:03:12.856 --> 00:03:15.378
+The parameter lives in the frame.
+
+00:03:15.378 --> 00:03:18.052
+The data field lives in the object.
+
+00:03:18.052 --> 00:03:20.574
+They just happen to share a name.
+
+00:03:21.174 --> 00:03:23.208
+Step 4. `__init__` returns,
+
+00:03:23.208 --> 00:03:28.785
+and its frame is thrown away, together with the names `self` and `radius`.
+
+00:03:28.785 --> 00:03:31.574
+But the object stays, with its field.
+
+00:03:31.924 --> 00:03:36.364
+Step 5. The value of `Circle(5)` is the new object,
+
+00:03:36.364 --> 00:03:39.324
+and the name `c` now refers to it.
+
+00:03:40.101 --> 00:03:42.791
+So `self` is the object being worked on.
+
+00:03:42.791 --> 00:03:46.355
+In `__init__`, it's the object that was just created.
+
+00:03:46.355 --> 00:03:50.861
+In any other method, it's the object that the method was called on.
+
+00:03:51.461 --> 00:03:53.673
+When you write `c.get_area()`
+
+00:03:53.673 --> 00:03:57.639
+Python looks up `get_area` in `c`'s class, `Circle`.
+
+00:03:57.639 --> 00:04:01.301
+Then it calls it with `c` as the first argument.
+
+00:04:01.651 --> 00:04:03.496
+A new frame appears,
+
+00:04:03.496 --> 00:04:09.216
+and the `self` in that frame points at the same object as `c`.
+
+00:04:09.216 --> 00:04:11.245
+So `self.radius` is 5,
+
+00:04:11.245 --> 00:04:13.091
+and the area is 25π.
+
+00:04:13.441 --> 00:04:18.252
+So `c.get_area()` is short for `Circle.get_area(c)`.
+
+00:04:18.252 --> 00:04:23.803
+That's why every method needs `self` as its first parameter,
+
+00:04:23.803 --> 00:04:27.041
+and why you never pass it yourself.
+
+00:04:27.641 --> 00:04:29.380
+You can even check it.
+
+00:04:29.380 --> 00:04:32.937
+This little class has one method, `who_am_I`,
+
+00:04:32.937 --> 00:04:34.993
+which just returns `self`.
+
+00:04:34.993 --> 00:04:37.681
+And `p.who_am_I() is p` is `True`.
+
+00:04:38.031 --> 00:04:40.242
+By the way, `self` isn't a keyword.
+
+00:04:40.242 --> 00:04:45.106
+It's only the name that every Python programmer uses for the first parameter.
+
+00:04:45.106 --> 00:04:45.991
+So use it too.
+
+00:04:46.768 --> 00:04:48.172
+Time to predict.
+
+00:04:48.172 --> 00:04:53.789
+We make two circles: `c1` with radius 3, and `c2` with radius 4.
+
+00:04:53.789 --> 00:04:56.685
+Then we call `c2.set_radius(10)`.
+
+00:04:56.685 --> 00:04:58.089
+Pause the video.
+
+00:04:58.089 --> 00:05:01.073
+Which object does `self` refer to?
+
+00:05:01.073 --> 00:05:04.408
+And what are the two radii afterwards?
+
+00:05:04.958 --> 00:05:08.379
+`self` refers to the object before the dot,
+
+00:05:08.379 --> 00:05:10.210
+the one `c2` refers to.
+
+00:05:10.210 --> 00:05:12.438
+So only that object changes.
+
+00:05:12.788 --> 00:05:15.259
+`c1`'s radius is still 3,
+
+00:05:15.259 --> 00:05:18.028
+and `c2`'s radius is now 10.
+
+00:05:18.801 --> 00:05:21.801
+Here's the mistake almost everyone makes once.
+
+00:05:22.151 --> 00:05:25.773
+In `__init__`, you write `radius = radius`,
+
+00:05:25.773 --> 00:05:27.711
+and forget the `self.`.
+
+00:05:28.061 --> 00:05:33.112
+That line just assigns the parameter to itself, inside the frame.
+
+00:05:33.112 --> 00:05:35.676
+Nothing is created in the object.
+
+00:05:35.676 --> 00:05:39.872
+And when `__init__` returns, the frame is thrown away,
+
+00:05:39.872 --> 00:05:41.581
+and the value is lost.
+
+00:05:42.181 --> 00:05:46.901
+Data fields are always created, and read, through `self.`.
+
+00:05:47.668 --> 00:05:50.845
+A data field is also called an instance variable,
+
+00:05:50.845 --> 00:05:53.503
+because every instance has its own value.
+
+00:05:53.503 --> 00:05:56.226
+And a method is called an instance method,
+
+00:05:56.226 --> 00:05:59.468
+because it works on the instance it was called on.
+
+00:05:59.818 --> 00:06:02.262
+Once an instance variable is created,
+
+00:06:02.262 --> 00:06:05.698
+every method of the class can use it through `self`.
+
+00:06:06.048 --> 00:06:10.459
+But a plain variable assigned inside a method is a local variable,
+
+00:06:10.459 --> 00:06:12.197
+just like in any function.
+
+00:06:12.197 --> 00:06:14.268
+It lives in the method's frame,
+
+00:06:14.268 --> 00:06:16.808
+and it's gone when the method returns.
+
+00:06:17.158 --> 00:06:21.477
+In this `Scope` class, `x` and `y` are instance variables,
+
+00:06:21.477 --> 00:06:24.158
+but `z` is local to the method `m1`.
+
+00:06:24.508 --> 00:06:28.133
+Notice that `m2` calls `m1` with `self.m1`.
+
+00:06:28.133 --> 00:06:33.782
+Inside a class, one method calls another method of the same object,
+
+00:06:33.782 --> 00:06:35.468
+also through `self`.
+
+00:06:35.818 --> 00:06:37.657
+So after `s.m2()`
+
+00:06:37.657 --> 00:06:38.847
+`s.y` is 2.
+
+00:06:38.847 --> 00:06:42.417
+But `s.z` is an `AttributeError`.
+
+00:06:42.417 --> 00:06:45.338
+The object never had a `z`.
+
+00:06:46.135 --> 00:06:48.100
+Let's put it together.
+
+00:06:48.100 --> 00:06:51.048
+This program makes three circles,
+
+00:06:51.048 --> 00:06:53.459
+with radius 1, 25, and 125,
+
+00:06:53.459 --> 00:06:55.335
+and prints each area.
+
+00:06:55.685 --> 00:06:59.119
+Then it changes `circle2`'s radius to 100,
+
+00:06:59.119 --> 00:07:01.245
+and prints its area again.
+
+00:07:01.595 --> 00:07:06.355
+Why doesn't that change the areas of `circle1` and `circle3`?
+
+00:07:06.905 --> 00:07:10.377
+Because each object has its own `radius`.
+
+00:07:10.377 --> 00:07:13.002
+`get_area` reads `self.radius`,
+
+00:07:13.002 --> 00:07:17.745
+and `self` is whichever object the method was called on.
+
+00:07:18.535 --> 00:07:22.535
+Finally, three broken programs, from the slides.
+
+00:07:22.885 --> 00:07:23.626
+Program 1.
+
+00:07:23.626 --> 00:07:26.146
+`__init__` needs an argument, `i`,
+
+00:07:26.146 --> 00:07:28.815
+but we call `A()` with no arguments.
+
+00:07:28.815 --> 00:07:30.371
+That's a `TypeError`.
+
+00:07:30.371 --> 00:07:36.005
+The constructor's arguments must match `__init__`'s parameters after `self`.
+
+00:07:36.355 --> 00:07:37.217
+Program 2.
+
+00:07:37.217 --> 00:07:42.647
+A method named after the class is not an initializer in Python,
+
+00:07:42.647 --> 00:07:45.318
+although it is in Java and C++.
+
+00:07:45.318 --> 00:07:46.956
+Only `__init__` is.
+
+00:07:46.956 --> 00:07:51.955
+And `radius = 3` makes a local variable, not a data field.
+
+00:07:52.305 --> 00:07:53.265
+Program 3.
+
+00:07:53.265 --> 00:07:55.857
+`set_radius` has no `self`.
+
+00:07:55.857 --> 00:08:00.945
+So `a.set_radius(5)` passes two arguments, `a` and 5,
+
+00:08:00.945 --> 00:08:03.825
+but the method only takes one.
+
+00:08:04.602 --> 00:08:05.722
+Let's sum up.
+
+00:08:06.072 --> 00:08:09.153
+Calling a class creates an empty object,
+
+00:08:09.153 --> 00:08:11.232
+then runs `__init__` on it.
+
+00:08:11.582 --> 00:08:15.479
+`self` is the object being worked on.
+
+00:08:15.479 --> 00:08:19.902
+`c.get_area()` means `Circle.get_area(c)`.
+
+00:08:20.252 --> 00:08:23.062
+Instance variables live in the object.
+
+00:08:23.062 --> 00:08:25.576
+Local variables live in the frame,
+
+00:08:25.576 --> 00:08:27.572
+and vanish when it returns.
+
+00:08:27.922 --> 00:08:29.416
+Here's one to try.
+
+00:08:29.416 --> 00:08:34.229
+A `Square` class should give an area of 9 for a side of 3,
+
+00:08:34.229 --> 00:08:37.051
+but it raises an `AttributeError`.
+
+00:08:37.051 --> 00:08:39.872
+Its `__init__` says `side = side`.
+
+00:08:39.872 --> 00:08:42.362
+Explain the error, and fix it.
+
+00:08:42.912 --> 00:08:45.902
+In part 3, we'll build a bigger class, a TV,
+
+00:08:45.902 --> 00:08:49.912
+and see what happens when you pass an object to a function.
+

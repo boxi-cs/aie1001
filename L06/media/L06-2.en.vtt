@@ -1,0 +1,398 @@
+WEBVTT
+
+00:00:00.300 --> 00:00:09.140
+In part 1, we saw that a recursive function has 3 parts: a base case, a smaller problem, and a combine step.
+
+00:00:09.490 --> 00:00:14.890
+And we saw what Python does: every call gets its own frame on the call stack.
+
+00:00:15.240 --> 00:00:18.440
+Now let's put recursion to work on lists.
+
+00:00:19.233 --> 00:00:21.852
+Welcome back to Lecture 6, Recursion.
+
+00:00:21.852 --> 00:00:25.673
+This is part 2: recursion on lists, and binary search.
+
+00:00:26.023 --> 00:00:30.259
+We'll add up a list and find its smallest number with recursion.
+
+00:00:30.259 --> 00:00:35.223
+Then we'll search a sorted list, and see why cutting it in half is so fast.
+
+00:00:36.000 --> 00:00:39.440
+Here's a simple task: add up the numbers in a list.
+
+00:00:39.790 --> 00:00:42.512
+Think of it the recursive way.
+
+00:00:42.512 --> 00:00:45.959
+What's the sum of the first 0 numbers?
+
+00:00:45.959 --> 00:00:48.590
+It's 0. That's our base case.
+
+00:00:49.190 --> 00:00:56.550
+And the sum of the first n numbers is the sum of the first n minus 1 numbers, plus the last of them.
+
+00:00:57.150 --> 00:01:01.270
+Its index is n minus 1, because Python counts from 0.
+
+00:01:01.620 --> 00:01:03.007
+Here it is in Python.
+
+00:01:03.007 --> 00:01:05.649
+The slides spell the name in camel case.
+
+00:01:05.649 --> 00:01:11.460
+We follow the usual Python style, and join the 2 words with an underscore: `linear_sum`.
+
+00:01:11.810 --> 00:01:13.845
+If n is 0, return 0.
+
+00:01:13.845 --> 00:01:22.290
+Otherwise, return `linear_sum` of data and n minus 1, plus data at index n minus 1.
+
+00:01:22.640 --> 00:01:27.059
+Run it on this list of 9 numbers, and it prints:
+
+00:01:27.059 --> 00:01:28.440
+The sum is 177.
+
+00:01:28.790 --> 00:01:36.594
+Each call of `linear_sum` makes at most 1 recursive call, so the calls form a single chain.
+
+00:01:36.594 --> 00:01:39.252
+That's called linear recursion.
+
+00:01:39.252 --> 00:01:41.310
+Factorial is linear too.
+
+00:01:42.100 --> 00:01:44.727
+Pause the video and predict.
+
+00:01:44.727 --> 00:01:51.952
+For the list 4, 3, 6, 2, 8, which calls does `linear_sum` of data and 5 make?
+
+00:01:51.952 --> 00:01:57.300
+Which call returns first, and what does each call return?
+
+00:01:57.850 --> 00:02:00.933
+The calls go down from 5 to 0.
+
+00:02:00.933 --> 00:02:05.969
+The call with n equal to 0 returns first, with 0.
+
+00:02:05.969 --> 00:02:11.210
+Then the calls return 4, 7, 13, 15, and finally 23.
+
+00:02:12.000 --> 00:02:15.040
+Now let's watch these calls on the call stack.
+
+00:02:15.390 --> 00:02:21.485
+`linear_sum` with n equal to 5 needs the sum of the first 4 numbers, so it waits.
+
+00:02:21.485 --> 00:02:26.150
+That call needs the first 3, and so on, all the way down to 0.
+
+00:02:26.500 --> 00:02:33.740
+Now 6 frames are on the stack, and each frame has its own n, from 5 down to 0.
+
+00:02:34.090 --> 00:02:35.782
+The base case returns 0.
+
+00:02:35.782 --> 00:02:39.730
+Then each call adds its own element, on the way back up.
+
+00:02:40.080 --> 00:02:42.327
+0 plus 4 is 4.
+
+00:02:42.327 --> 00:02:44.574
+4 plus 3 is 7.
+
+00:02:44.574 --> 00:02:46.982
+7 plus 6 is 13.
+
+00:02:46.982 --> 00:02:49.550
+13 plus 2 is 15.
+
+00:02:49.550 --> 00:02:52.760
+And 15 plus 8 is 23.
+
+00:02:53.110 --> 00:02:58.504
+Notice that the adding happens after the smaller call returns.
+
+00:02:58.504 --> 00:03:02.070
+On the way down, nothing is added at all.
+
+00:03:02.867 --> 00:03:06.507
+There's another way to write the same idea, with slicing.
+
+00:03:06.857 --> 00:03:08.738
+An empty list sums to 0.
+
+00:03:08.738 --> 00:03:14.848
+Otherwise, the sum is the first element, plus the sum of the rest of the list.
+
+00:03:14.848 --> 00:03:18.217
+The slice from index 1 onwards is the rest.
+
+00:03:18.567 --> 00:03:20.403
+This reads more naturally.
+
+00:03:20.403 --> 00:03:25.767
+But every slice makes a copy of the rest of the list, so it does extra work.
+
+00:03:26.117 --> 00:03:29.659
+This shape is worth a name: first and rest.
+
+00:03:29.659 --> 00:03:33.201
+Handle the empty sequence as the base case.
+
+00:03:33.201 --> 00:03:38.637
+Otherwise, combine the first element with the answer for the rest.
+
+00:03:39.237 --> 00:03:46.797
+Sum, count, maximum, does it contain this value, reverse: they all fit this pattern.
+
+00:03:47.567 --> 00:03:50.967
+Let's use the pattern to find the smallest number in a list.
+
+00:03:51.317 --> 00:03:54.592
+This time the base case is a list with 1 element.
+
+00:03:54.592 --> 00:03:56.997
+Its smallest number is that element.
+
+00:03:57.347 --> 00:04:03.507
+Otherwise, find the minimum of the rest with a recursive call, and store it in `rest_min`.
+
+00:04:03.857 --> 00:04:08.857
+Then return whichever is smaller: the first element, or `rest_min`.
+
+00:04:09.207 --> 00:04:15.907
+For 8, 3, 9, 1, 7, the calls go down to the list that holds just 7.
+
+00:04:15.907 --> 00:04:21.007
+Coming back up, they return 7, then 1, 1, 1, and 1.
+
+00:04:21.007 --> 00:04:22.607
+The answer is 1.
+
+00:04:23.400 --> 00:04:25.185
+Now a new problem.
+
+00:04:25.185 --> 00:04:27.960
+Is a target value in a list?
+
+00:04:28.310 --> 00:04:32.642
+If the list is in no particular order, there's only 1 way.
+
+00:04:32.642 --> 00:04:37.123
+Look at every element in turn, until you find it or run out.
+
+00:04:37.123 --> 00:04:38.990
+That's sequential search.
+
+00:04:39.340 --> 00:04:44.020
+In the worst case, when the target isn't there, it looks at every element.
+
+00:04:44.370 --> 00:04:47.577
+But if the list is sorted, we can do much better.
+
+00:04:47.577 --> 00:04:49.409
+Think of a paper dictionary.
+
+00:04:49.409 --> 00:04:54.840
+You open it near the middle, see whether your word comes before or after that page,
+
+00:04:54.840 --> 00:04:57.850
+and throw away the half that can't contain it.
+
+00:04:58.634 --> 00:05:00.299
+That's binary search.
+
+00:05:00.299 --> 00:05:03.234
+It keeps 2 indices, `low` and `high`.
+
+00:05:03.584 --> 00:05:09.250
+Every element that could still be the target has an index between `low` and `high`.
+
+00:05:09.250 --> 00:05:11.229
+We call these the candidates.
+
+00:05:11.229 --> 00:05:14.984
+At the start, `low` is 0, and `high` is the last index.
+
+00:05:15.334 --> 00:05:19.208
+If `low` is greater than `high`, no candidates are left.
+
+00:05:19.208 --> 00:05:21.214
+The target isn't in the list.
+
+00:05:21.564 --> 00:05:24.793
+Otherwise, look at the middle candidate.
+
+00:05:24.793 --> 00:05:30.444
+Its index, `mid`, is `low` plus `high`, divided by 2 and rounded down.
+
+00:05:30.794 --> 00:05:34.902
+If the target equals the middle element, we've found it.
+
+00:05:34.902 --> 00:05:41.652
+If the target is smaller, it can only be on the left, so search from `low` to `mid` minus 1.
+
+00:05:41.652 --> 00:05:45.394
+If it's bigger, search from `mid` plus 1 to `high`.
+
+00:05:45.994 --> 00:05:50.415
+Searching 1 half is the same problem, on a smaller range.
+
+00:05:50.415 --> 00:05:52.354
+So the code is recursive.
+
+00:05:52.704 --> 00:05:56.439
+Notice that it returns `True` or `False`, and doesn't print.
+
+00:05:56.439 --> 00:06:00.984
+The caller decides what to print, so the function can be reused anywhere.
+
+00:06:01.767 --> 00:06:05.607
+Let's search for 6 in this sorted list of 9 numbers.
+
+00:06:05.957 --> 00:06:10.211
+`low` is 0 and `high` is 8, so `mid` is 4.
+
+00:06:10.211 --> 00:06:12.743
+The middle element is 16.
+
+00:06:12.743 --> 00:06:16.694
+6 is smaller, so we keep the left part:
+
+00:06:16.694 --> 00:06:18.517
+`low` 0, `high` 3.
+
+00:06:18.867 --> 00:06:22.152
+`mid` is 1, and the element is 3.
+
+00:06:22.152 --> 00:06:26.035
+6 is bigger, so we keep the right part:
+
+00:06:26.035 --> 00:06:27.827
+`low` 2, `high` 3.
+
+00:06:28.177 --> 00:06:31.499
+`mid` is 2, and 5 is smaller than 6.
+
+00:06:31.499 --> 00:06:35.097
+So `low` becomes 3, and `high` stays 3.
+
+00:06:35.447 --> 00:06:38.898
+`mid` is 3, and the element is 6.
+
+00:06:38.898 --> 00:06:41.407
+We found it, in 4 steps.
+
+00:06:41.757 --> 00:06:43.092
+Now search for 7.
+
+00:06:43.092 --> 00:06:47.648
+The steps are the same, until `low` and `high` are both 3.
+
+00:06:47.648 --> 00:06:52.597
+6 is smaller than 7, so `low` becomes 4, and `high` is still 3.
+
+00:06:52.947 --> 00:06:55.654
+`low` is greater than `high`.
+
+00:06:55.654 --> 00:07:00.227
+No candidates are left, so the answer is `False`.
+
+00:07:00.227 --> 00:07:04.987
+7 would sit between 6 and 16, but nothing is there.
+
+00:07:05.767 --> 00:07:07.946
+Why is binary search so fast?
+
+00:07:07.946 --> 00:07:13.207
+Each call either finds the target, or throws away half the candidates.
+
+00:07:13.557 --> 00:07:16.017
+Start with 1,000,000 elements.
+
+00:07:16.017 --> 00:07:18.559
+After 1 step, 500,000 are left.
+
+00:07:18.559 --> 00:07:19.625
+Then 250,000.
+
+00:07:19.625 --> 00:07:26.677
+After about 20 halvings, just 1 is left, because 2 to the power 20 is about 1,000,000.
+
+00:07:27.027 --> 00:07:31.030
+Sequential search might need 1,000,000 comparisons.
+
+00:07:31.030 --> 00:07:33.307
+Binary search needs about 20.
+
+00:07:33.907 --> 00:07:40.587
+In Lecture 9, you'll learn to write this as big O of log n, versus big O of n.
+
+00:07:41.367 --> 00:07:42.846
+But there's a catch.
+
+00:07:42.846 --> 00:07:48.687
+Binary search on unsorted data gives wrong answers, and it gives them silently.
+
+00:07:49.037 --> 00:07:52.964
+Search for 1 in the list 5, 1, 9, 3, 7.
+
+00:07:52.964 --> 00:07:55.381
+The middle element is 9.
+
+00:07:55.381 --> 00:08:00.517
+1 is smaller, so binary search keeps the left part.
+
+00:08:00.867 --> 00:08:02.354
+Now the middle is 5.
+
+00:08:02.354 --> 00:08:07.707
+1 is smaller again, so it looks to the left of 5, where there's nothing.
+
+00:08:08.057 --> 00:08:13.568
+It returns `False`, even though 1 is right there, next to 5.
+
+00:08:13.568 --> 00:08:16.324
+No error, just a wrong answer.
+
+00:08:16.324 --> 00:08:20.457
+Binary search is only correct on sorted data.
+
+00:08:21.234 --> 00:08:22.474
+Let's sum up.
+
+00:08:22.824 --> 00:08:27.254
+Linear recursion makes at most 1 recursive call per call.
+
+00:08:27.254 --> 00:08:30.984
+On lists, it follows the pattern first and rest.
+
+00:08:31.334 --> 00:08:36.694
+Binary search keeps `low` and `high`, and halves the candidates at every call.
+
+00:08:37.044 --> 00:08:40.844
+It's very fast, but only correct on a sorted list.
+
+00:08:41.194 --> 00:08:42.540
+Here's one to try.
+
+00:08:42.540 --> 00:08:50.314
+Change binary search so that it returns the index of the target, or minus one if the target isn't there.
+
+00:08:50.864 --> 00:08:53.673
+In part 3, we'll compute powers much faster,
+
+00:08:53.673 --> 00:08:57.184
+and meet functions that call themselves more than once.
+

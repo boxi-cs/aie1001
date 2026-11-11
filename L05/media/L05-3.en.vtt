@@ -1,0 +1,338 @@
+WEBVTT
+
+00:00:00.300 --> 00:00:02.077
+Here are 13 names.
+
+00:00:02.077 --> 00:00:04.940
+Which one appears most often?
+
+00:00:05.290 --> 00:00:06.922
+You could count by hand.
+
+00:00:06.922 --> 00:00:08.690
+Or you could keep a tally:
+
+00:00:08.690 --> 00:00:12.090
+one counter for each name, labelled with the name.
+
+00:00:12.440 --> 00:00:13.762
+That's a dictionary.
+
+00:00:13.762 --> 00:00:18.920
+And to get the names out of a line of text in the first place, we use 'split'.
+
+00:00:19.700 --> 00:00:25.100
+This is part 3 of Lecture 5: splitting strings, and counting with a dictionary.
+
+00:00:25.867 --> 00:00:29.970
+The string method 'split' breaks a string into a list of strings.
+
+00:00:29.970 --> 00:00:35.147
+With no argument, it splits on whitespace, so we can think of the pieces as words.
+
+00:00:35.497 --> 00:00:38.977
+'Catch me if you can' becomes a list of 5 words.
+
+00:00:39.327 --> 00:00:41.087
+It's an ordinary list.
+
+00:00:41.087 --> 00:00:46.287
+Its length is 5, 'words[0]' is 'Catch', and you can loop over it.
+
+00:00:47.067 --> 00:00:52.517
+With no argument, any run of spaces counts as one separator.
+
+00:00:52.517 --> 00:00:55.787
+So, 'A lot of spaces' gives 4 words.
+
+00:00:56.137 --> 00:01:03.289
+But this line, 'first;second;third', with semicolons in between, has no spaces at all.
+
+00:01:03.289 --> 00:01:05.617
+'split' finds only one word.
+
+00:01:05.967 --> 00:01:09.836
+To split on another character, pass it as the delimiter.
+
+00:01:09.836 --> 00:01:12.807
+Split on a semicolon, and you get 3 pieces.
+
+00:01:13.600 --> 00:01:15.702
+Here's a practice from the slides.
+
+00:01:15.702 --> 00:01:17.680
+An email header looks like this.
+
+00:01:18.030 --> 00:01:25.070
+We want the domain of the address, UCT.EDU, and the month the email was sent, January.
+
+00:01:25.420 --> 00:01:28.077
+First, split the line into words.
+
+00:01:28.077 --> 00:01:31.860
+The address is word 1, and the month is word 3.
+
+00:01:32.210 --> 00:01:38.770
+Then split the address again, at the '@' sign, and take the part after it.
+
+00:01:39.370 --> 00:01:44.559
+This is the double split pattern: split a line one way to get its fields,
+
+00:01:44.559 --> 00:01:46.905
+then split one field another way.
+
+00:01:46.905 --> 00:01:51.170
+Dates, times and addresses are full of fields inside fields.
+
+00:01:51.967 --> 00:01:53.423
+Now, dictionaries.
+
+00:01:53.423 --> 00:01:59.247
+A list is a linear collection: values in order, found by their position.
+
+00:01:59.597 --> 00:02:05.379
+A dictionary is a bag of values, each with its own label, called its key.
+
+00:02:05.379 --> 00:02:07.597
+You find a value by its key.
+
+00:02:07.947 --> 00:02:12.592
+We make an empty dictionary, 'purse', and put values in by key:
+
+00:02:12.592 --> 00:02:16.867
+12 under 'money', 3 under 'candy', and 75 under 'tissues'.
+
+00:02:17.217 --> 00:02:22.057
+Looking up the key 'candy' in 'purse' gives its value: 3.
+
+00:02:22.407 --> 00:02:26.982
+Assigning to a key that's already there replaces its value.
+
+00:02:26.982 --> 00:02:28.921
+'Candy' goes from 3 to 5.
+
+00:02:28.921 --> 00:02:31.247
+Each key appears at most once.
+
+00:02:31.597 --> 00:02:33.819
+One correction to the slides.
+
+00:02:33.819 --> 00:02:36.500
+They say a dictionary has no order.
+
+00:02:36.500 --> 00:02:42.704
+Since Python 3.7, a dictionary keeps its keys in the order they were first added.
+
+00:02:42.704 --> 00:02:46.917
+But you still look values up by key, never by position.
+
+00:02:47.701 --> 00:02:52.501
+A dictionary works like a list, except that it uses keys instead of positions.
+
+00:02:52.851 --> 00:02:56.622
+With a list, we append 21 and 183.
+
+00:02:56.622 --> 00:03:00.171
+Then we change position 0 to 23.
+
+00:03:00.521 --> 00:03:06.295
+With a dictionary, we store 21 under 'age', and 182 under 'course'.
+
+00:03:06.295 --> 00:03:10.001
+Then we change the value under 'age' to 23.
+
+00:03:10.351 --> 00:03:14.889
+So a list looks values up by position: 0, 1, 2, in order.
+
+00:03:14.889 --> 00:03:18.791
+A dictionary looks them up by any key you choose.
+
+00:03:19.141 --> 00:03:24.985
+You can also write a dictionary directly, with curly braces around key:value pairs.
+
+00:03:24.985 --> 00:03:27.661
+Empty braces make an empty dictionary.
+
+00:03:28.434 --> 00:03:31.554
+The most common use of a dictionary is counting.
+
+00:03:31.904 --> 00:03:36.316
+The first time we see a name, we store it with a count of 1.
+
+00:03:36.316 --> 00:03:39.184
+Each later time, we add 1 to its count.
+
+00:03:39.534 --> 00:03:40.701
+But be careful.
+
+00:03:40.701 --> 00:03:45.214
+Looking up a key that isn't there is an error: a KeyError.
+
+00:03:45.564 --> 00:03:49.893
+The 'in' operator tells us whether a key is in the dictionary.
+
+00:03:49.893 --> 00:03:53.804
+So, for each name, the loop asks: have I seen it before?
+
+00:03:54.154 --> 00:03:56.719
+Let's run it on 5 names.
+
+00:03:56.719 --> 00:03:59.284
+'C sev' is new: count 1.
+
+00:03:59.284 --> 00:04:01.848
+'C wen' is new: count 1.
+
+00:04:01.848 --> 00:04:03.665
+'C sev' again: 2.
+
+00:04:03.665 --> 00:04:06.230
+The next name is new: 1.
+
+00:04:06.230 --> 00:04:08.474
+And 'C wen' again: 2.
+
+00:04:09.267 --> 00:04:11.304
+Pause the video and predict.
+
+00:04:11.304 --> 00:04:14.870
+Run the same loop on the 13 names from the start.
+
+00:04:14.870 --> 00:04:18.507
+What's in 'counts', and which name is most common?
+
+00:04:19.057 --> 00:04:20.484
+'Zhen' wins, with 5.
+
+00:04:20.484 --> 00:04:24.337
+'C sev' and 'Marquard' have 3 each, and 'C wen' has 2.
+
+00:04:24.337 --> 00:04:28.617
+And the keys come out in the order each name was first seen.
+
+00:04:29.401 --> 00:04:30.261
+One trap.
+
+00:04:30.261 --> 00:04:35.521
+'in', on a dictionary, checks the keys, not the values.
+
+00:04:35.871 --> 00:04:38.149
+'Zhen' in 'counts' is True.
+
+00:04:38.149 --> 00:04:43.212
+But 5 in 'counts' is False, because 5 is a value, not a key.
+
+00:04:43.212 --> 00:04:48.191
+To check the values, ask whether 5 is in 'counts.values()'.
+
+00:04:48.968 --> 00:04:51.530
+Here's another practice from the slides.
+
+00:04:51.530 --> 00:04:54.989
+Keep asking the user for words until they type 'done'.
+
+00:04:54.989 --> 00:04:58.448
+For each word, say how many times it was typed before.
+
+00:04:58.798 --> 00:05:03.340
+If the word is already a key, print its count, then add 1 to it.
+
+00:05:03.340 --> 00:05:07.598
+If it isn't, the word is new, so store it with a count of 1.
+
+00:05:07.948 --> 00:05:10.884
+Type 'hi', 'bye', 'hi', 'hi'.
+
+00:05:10.884 --> 00:05:13.111
+The first 'hi' is new.
+
+00:05:13.111 --> 00:05:19.388
+The second was typed once before, and the third, twice before.
+
+00:05:20.168 --> 00:05:24.974
+Checking for a key, and using a default when it's missing, is so common
+
+00:05:24.974 --> 00:05:28.088
+that dictionaries have a method for it: 'get'.
+
+00:05:28.438 --> 00:05:33.417
+'get', with a key and a default, returns the value if the key is there,
+
+00:05:33.417 --> 00:05:35.380
+and the default if it isn't.
+
+00:05:35.380 --> 00:05:39.238
+It never raises a KeyError, and it doesn't add the key.
+
+00:05:39.588 --> 00:05:45.588
+With 'get', the four-line if/else of our counting loop becomes one line.
+
+00:05:45.938 --> 00:05:50.197
+'counts[name] = counts.get(name, 0) + 1'.
+
+00:05:50.197 --> 00:05:57.365
+Read it as: the count so far, or 0 if this is the first time, plus 1.
+
+00:05:57.365 --> 00:06:00.378
+This is the counting pattern.
+
+00:06:00.978 --> 00:06:07.113
+Put it together with 'split', and you can count every word in a line of text.
+
+00:06:07.113 --> 00:06:08.866
+'The' appears 4 times.
+
+00:06:08.866 --> 00:06:11.018
+'Ran' and 'car' twice each.
+
+00:06:11.801 --> 00:06:15.908
+Finally, a 'for' loop over a dictionary goes through its keys.
+
+00:06:15.908 --> 00:06:18.161
+Use each key to look up its value.
+
+00:06:18.511 --> 00:06:25.140
+The methods 'keys()', 'values()', and 'items()' give you the keys, the values, or both.
+
+00:06:25.140 --> 00:06:28.111
+Each item is a pair, in round brackets.
+
+00:06:28.461 --> 00:06:33.947
+With two loop variables, the first gets the key, and the second gets the value.
+
+00:06:33.947 --> 00:06:37.141
+Those pairs are tuples, the subject of part 4.
+
+00:06:37.934 --> 00:06:40.014
+Let's sum up what we've seen.
+
+00:06:40.364 --> 00:06:43.597
+'split' turns a string into a list of words.
+
+00:06:43.597 --> 00:06:47.124
+The double split pattern splits one field again.
+
+00:06:47.474 --> 00:06:50.322
+A dictionary maps keys to values.
+
+00:06:50.322 --> 00:06:56.794
+A missing key is a KeyError, so check with 'in', or read safely with 'get'.
+
+00:06:57.144 --> 00:07:02.504
+To count anything, add 1 to 'counts.get(key, 0)'.
+
+00:07:02.854 --> 00:07:04.153
+Here's one to try.
+
+00:07:04.153 --> 00:07:09.061
+Write 'letter_counts', a function that counts each letter in a text,
+
+00:07:09.061 --> 00:07:13.174
+ignoring case, and skipping anything that isn't a letter.
+
+00:07:13.724 --> 00:07:18.377
+In part 4, we'll meet tuples, and use them to sort a dictionary
+
+00:07:18.377 --> 00:07:21.404
+and find the most common words in a text.
+

@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inheritance and Polymorphism — AIE1001 Lecture 8 Interactive Notes</title>
+  <meta name="description" content="AIE1001 Introduction to AI Programming (CUHK-Shenzhen), Lecture 8: interactive notes on inheritance, overriding and polymorphism. Step through super().__init__, method lookup up the class chain, and isinstance.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230F6E73'/%3E%3Ctext x='16' y='22' font-family='monospace' font-size='15' font-weight='700' text-anchor='middle' fill='%23F6F5F1'%3E%E2%96%B2%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../assets/style.css">
+  <style>
+    /* Lecture 8 widgets: objects, class chains, the lookup walker. Colours come from style.css. */
+    .ob { border: 1.5px solid var(--amber); background: var(--card); border-radius: 9px; padding: 8px 10px; font: 13px/1.45 var(--mono); min-width: 0; }
+    .ob.cur { box-shadow: 0 0 0 3px var(--mark); }
+    .ob.ghost { border-style: dashed; color: var(--stone); text-align: center; font-size: 12px; }
+    .ob-head { display: flex; gap: 8px; align-items: baseline; margin-bottom: 4px; flex-wrap: wrap; }
+    .ob-head span { font-size: 11px; color: var(--stone); }
+    .ob-row { display: flex; justify-content: space-between; gap: 10px; padding: 1px 4px; border-radius: 4px; overflow-wrap: anywhere; }
+    .ob-row span { color: var(--ink-2); min-width: 0; }
+    .ob-row.fresh { background: var(--mark); }
+    .ob-row.empty { color: var(--stone); font-style: italic; }
+    .ob-row.miss { color: var(--red); background: var(--red-soft); }
+    .ob-wrap { display: flex; justify-content: center; margin-bottom: 12px; }
+    .ob-wrap .ob { max-width: 100%; }
+    .lk { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 16px; align-items: center; }
+    .lk.mini { gap: 10px; }
+    .lk-cap { display: block; font: 500 11px var(--mono); color: var(--stone); margin-bottom: 6px; }
+    .lk-q { margin-top: 10px; font-size: 13px; color: var(--ink-2); }
+    .lk-cls { border: 1.5px solid var(--line); border-radius: 9px; padding: 6px 9px; background: var(--card); transition: all 0.2s; }
+    .lk-cls > b { font: 600 13px var(--mono); }
+    .lk-cls.cur { border-color: var(--amber); background: var(--mark); }
+    .lk-cls.hit { border-color: var(--green); background: var(--green-soft); }
+    .lk-cls.miss:not(.cur) > b { text-decoration: line-through; color: var(--stone); }
+    .lk-cls.miss:not(.cur) { opacity: 0.75; }
+    .lk-cls.err { border-color: var(--red); }
+    .lk-up { text-align: center; font: 11px var(--mono); color: var(--stone); padding: 2px 0; }
+    .chips { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+    .chip { font: 11px var(--mono); padding: 1px 6px; border-radius: 5px; background: var(--paper-2); color: var(--ink-2); overflow-wrap: anywhere; }
+    .chip.on { background: var(--green); color: var(--paper); font-weight: 600; }
+    .lk.mini .lk-cls { padding: 4px 7px; }
+    .lk.mini .chip { font-size: 10px; }
+    .lk-code { margin-top: 12px; }
+    .pm-list { display: flex; flex-wrap: wrap; gap: 8px; align-items: stretch; }
+    .pm-list .lk-cap { flex-basis: 100%; margin: 0; }
+    .pm-shape { flex: 1 1 150px; border: 1.5px solid var(--line); border-radius: 9px; padding: 8px 10px; background: var(--card); font-size: 13px; display: flex; flex-direction: column; gap: 3px; }
+    .pm-shape b { font-family: var(--mono); }
+    .pm-shape small { color: var(--stone); font: 10.5px var(--mono); }
+    .pm-shape.cur { border-color: var(--amber); background: var(--mark); }
+    .pm-bind { font: 600 11px var(--mono); color: var(--green); }
+    .pm-ico { width: 18px; height: 18px; border: 2px solid var(--teal); }
+    .pm-ico.c { border-radius: 50%; }
+    .pm-ico.r { width: 24px; height: 14px; border-radius: 2px; }
+    .pm-total { flex-basis: 100%; font: 13px var(--mono); }
+    .eq-row { display: flex; gap: 12px; align-items: center; margin: 12px 0 0; }
+    .eq-names { display: none; }
+    .eq-objs { display: flex; gap: 12px; flex-wrap: wrap; flex: 1; }
+    .eq-objs .ob { flex: 1 1 150px; }
+    .mi-top { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .mi-top .ob-wrap { margin: 0; }
+    .mro-row { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+    .mro { font: 600 13px var(--mono); padding: 4px 10px; border: 1.5px solid var(--line); border-radius: 7px; background: var(--card); }
+    .mro.on { border-color: var(--amber); background: var(--mark); }
+    .mro-arr { color: var(--stone); }
+    .uml { margin: 16px 0 6px; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .uml-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; }
+    .uml-cls { border: 1.5px solid var(--teal); background: var(--teal-soft); border-radius: 9px; padding: 8px 12px; font: 12px/1.5 var(--mono); min-width: 0; overflow-wrap: anywhere; }
+    .uml-cls.top { max-width: 420px; width: 100%; }
+    .uml-cls b { display: block; font-family: var(--display); font-size: 15px; }
+    .uml-cls div { color: var(--ink-2); }
+    .uml-cls div + div { border-top: 1px solid color-mix(in srgb, var(--teal) 30%, transparent); margin-top: 4px; padding-top: 4px; }
+    .uml-arrows { display: grid; grid-template-columns: 1fr 1fr; width: 100%; text-align: center; font: 12px var(--mono); color: var(--teal); }
+    @media (max-width: 600px) {
+      .lk:not(.mini) { grid-template-columns: minmax(0, 1fr); }
+      .uml-row { grid-template-columns: minmax(0, 1fr); }
+      .uml-arrows { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#/"><span class="brand-mark">▲</span><span class="brand-text"></span></a>
+    <nav class="chapnav" id="chapnav" aria-label="Chapters"></nav>
+    <button class="iconbtn" id="theme" title="Light / dark">☾</button>
+    <div class="progress" id="progress"></div>
+  </header>
+  <main id="main"></main>
+  <footer><div class="wrap"><p>AIE1001 Introduction to AI Programming · CUHK-Shenzhen · Lecture 8 interactive notes, built from the checked lecture notes. For students of the course; not for redistribution.</p><p class="credit"><img class="logo-light" src="../assets/peiyu-logo.svg" alt="" width="18" height="18"><img class="logo-dark" src="../assets/peiyu-logo-white.svg" alt="" width="18" height="18"><span>Interactive notes and videos powered by <b><a href="https://www.peiyuzhineng.com/">培玉智能</a></b> · Co-designed with <a href="https://boxiyu.github.io/">Boxi Yu</a></span></p></div></footer>
+  <script src="../assets/lib.js"></script>
+  <script src="demos.js"></script>
+  <script src="chapters.js"></script>
+  <script src="../assets/app.js"></script>
+</body>
+</html>

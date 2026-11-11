@@ -1,0 +1,368 @@
+WEBVTT
+
+00:00:00.300 --> 00:00:05.380
+Suppose you're writing a drawing program, with circles and rectangles.
+
+00:00:05.730 --> 00:00:09.762
+Every shape has a colour, and it's either filled or not.
+
+00:00:09.762 --> 00:00:11.706
+A circle also has a radius.
+
+00:00:11.706 --> 00:00:14.370
+A rectangle has a width and a height.
+
+00:00:14.720 --> 00:00:16.527
+So you write two classes.
+
+00:00:16.527 --> 00:00:22.960
+Each one stores a colour and a filled flag, and each one has methods to get and set them.
+
+00:00:23.310 --> 00:00:24.750
+Do you see the problem?
+
+00:00:25.300 --> 00:00:28.391
+That's the same code, written twice.
+
+00:00:28.391 --> 00:00:31.567
+Add a triangle, and it's three times.
+
+00:00:31.567 --> 00:00:35.860
+And a bug you fix in one copy stays in the others.
+
+00:00:36.633 --> 00:00:40.095
+Object-oriented programming has a better answer.
+
+00:00:40.095 --> 00:00:41.826
+It's called inheritance.
+
+00:00:41.826 --> 00:00:45.793
+Welcome to Lecture 8 of Introduction to AI Programming.
+
+00:00:46.143 --> 00:00:50.178
+In this first part, we'll build a new class from an existing one,
+
+00:00:50.178 --> 00:00:53.406
+see what the new object really looks like in memory,
+
+00:00:53.406 --> 00:00:55.703
+and learn when not to inherit at all.
+
+00:00:56.500 --> 00:00:57.631
+Here's the plan.
+
+00:00:57.631 --> 00:01:02.580
+Write the shared part once, in a general class called GeometricObject.
+
+00:01:02.930 --> 00:01:10.682
+It keeps the colour and the filled flag in private fields, with two leading underscores, just like in Lecture 7.
+
+00:01:10.682 --> 00:01:13.450
+And it has getters and setters for them.
+
+00:01:13.800 --> 00:01:17.118
+The slides write these method names in camel case.
+
+00:01:17.118 --> 00:01:22.360
+We'll use Python's standard style, with lower case words joined by underscores.
+
+00:01:22.710 --> 00:01:25.990
+Its `__str__` method describes the shape.
+
+00:01:25.990 --> 00:01:29.910
+Make a red shape that isn't filled, and print it.
+
+00:01:29.910 --> 00:01:32.950
+You get: colour red, and filled false.
+
+00:01:33.734 --> 00:01:34.886
+Now the circle.
+
+00:01:34.886 --> 00:01:43.414
+To make Circle a special kind of GeometricObject, put the general class in brackets after the new class's name.
+
+00:01:43.764 --> 00:01:50.160
+GeometricObject is now the superclass, also called the parent class.
+
+00:01:50.160 --> 00:01:53.829
+Circle is the subclass, or child class.
+
+00:01:53.829 --> 00:01:57.404
+We say Circle extends GeometricObject.
+
+00:01:58.004 --> 00:02:06.164
+Inside, Circle only writes what's new: the radius, and the methods that use it, like get area and get diameter.
+
+00:02:06.514 --> 00:02:13.234
+But a circle object can use every method of GeometricObject too, as if it were written in Circle.
+
+00:02:13.584 --> 00:02:16.059
+Make a circle with radius 1.5.
+
+00:02:16.059 --> 00:02:20.101
+Get colour gives green: that method is inherited.
+
+00:02:20.101 --> 00:02:22.906
+Set colour to blue: inherited too.
+
+00:02:22.906 --> 00:02:26.784
+Get radius gives 1.5: that one is Circle's own.
+
+00:02:27.134 --> 00:02:32.566
+So a subclass is usually bigger than its superclass, not smaller.
+
+00:02:32.566 --> 00:02:36.494
+It has everything the superclass has, and more.
+
+00:02:37.267 --> 00:02:40.925
+Let's look at the first line of Circle's `__init__`.
+
+00:02:40.925 --> 00:02:45.427
+It says `super().__init__`, with the colour and the filled flag.
+
+00:02:45.777 --> 00:02:51.234
+`super` means: the superclass of the class I'm written in.
+
+00:02:51.234 --> 00:02:57.537
+So this line runs GeometricObject's `__init__`, on the same object.
+
+00:02:58.137 --> 00:02:59.546
+Watch it happen.
+
+00:02:59.546 --> 00:03:01.483
+We call Circle of 1.5.
+
+00:03:01.483 --> 00:03:10.817
+Python makes one new, empty object, and runs Circle's `__init__` on it, with self pointing to that object.
+
+00:03:11.167 --> 00:03:15.985
+The first line calls GeometricObject's `__init__`, with the same self.
+
+00:03:15.985 --> 00:03:20.527
+It puts the colour and the filled flag on the object, and returns.
+
+00:03:20.877 --> 00:03:24.757
+Then Circle's `__init__` carries on, and adds the radius.
+
+00:03:25.107 --> 00:03:29.312
+Two initializers ran, but there is only one object.
+
+00:03:29.312 --> 00:03:34.507
+The superclass sets up its part, and the subclass adds its own.
+
+00:03:35.300 --> 00:03:37.191
+You can check this yourself.
+
+00:03:37.191 --> 00:03:40.500
+The function `vars` shows an object's attributes.
+
+00:03:40.850 --> 00:03:43.350
+Three fields, all on one object.
+
+00:03:43.350 --> 00:03:47.490
+There's no separate GeometricObject hidden inside it.
+
+00:03:47.840 --> 00:03:51.334
+The names look odd because of the two underscores.
+
+00:03:51.334 --> 00:03:56.156
+Inside a class, Python adds the class name to a private field's name.
+
+00:03:56.156 --> 00:03:59.440
+This is the name mangling you met in Lecture 7.
+
+00:03:59.790 --> 00:04:02.411
+And notice what's missing: the methods.
+
+00:04:02.411 --> 00:04:04.630
+They're not stored on the object.
+
+00:04:04.630 --> 00:04:06.310
+They live in the classes.
+
+00:04:06.660 --> 00:04:09.090
+The object only knows its class.
+
+00:04:09.090 --> 00:04:11.824
+And each class knows its superclass.
+
+00:04:11.824 --> 00:04:17.140
+In part three, we'll see how Python uses these links to find a method.
+
+00:04:17.933 --> 00:04:19.337
+Time to predict.
+
+00:04:19.337 --> 00:04:23.284
+Here's class A, which sets a field named `i`.
+
+00:04:23.284 --> 00:04:29.950
+Class B extends A, and has its own `__init__`, which sets a field named `j`.
+
+00:04:29.950 --> 00:04:32.493
+We make an object of class B.
+
+00:04:33.043 --> 00:04:34.846
+Pause the video.
+
+00:04:34.846 --> 00:04:38.563
+What is `b.j`? And what is `b.i`?
+
+00:04:39.113 --> 00:04:40.261
+`b.j` is 0.
+
+00:04:40.261 --> 00:04:46.833
+But `b.i` is an error: the B object has no attribute named `i`.
+
+00:04:47.183 --> 00:04:47.542
+Why?
+
+00:04:47.542 --> 00:04:52.833
+B has its own `__init__`, so making a B runs only that one.
+
+00:04:52.833 --> 00:04:58.303
+A's `__init__` never runs, so the field `i` is never created.
+
+00:04:58.653 --> 00:05:06.013
+The fix is one line, at the start of B's `__init__`: `super().__init__`.
+
+00:05:06.800 --> 00:05:13.000
+This mistake is common, and it's sneaky, because the error shows up far away from the cause.
+
+00:05:13.350 --> 00:05:16.343
+Here, a subclass forgets `super().__init__`.
+
+00:05:16.343 --> 00:05:18.452
+Creating the object works fine.
+
+00:05:18.452 --> 00:05:25.390
+The error comes later, when an inherited method like get colour looks for a field that was never made.
+
+00:05:25.740 --> 00:05:31.820
+So make `super().__init__` the first line of every subclass `__init__`.
+
+00:05:32.420 --> 00:05:34.100
+Here's a second trap.
+
+00:05:34.100 --> 00:05:41.620
+A subclass method tries to read the superclass's private field directly, with `self.__colour`.
+
+00:05:41.970 --> 00:05:48.810
+Inside this class, Python mangles that name with this class's name, so it looks for a field that doesn't exist.
+
+00:05:49.160 --> 00:05:53.719
+Private fields are private to the class, not to the family.
+
+00:05:53.719 --> 00:05:56.037
+Use the public getter instead.
+
+00:05:56.037 --> 00:05:58.200
+That's what getters are for.
+
+00:05:59.000 --> 00:06:03.098
+Rectangle extends GeometricObject in exactly the same way.
+
+00:06:03.098 --> 00:06:07.760
+It calls `super().__init__` first, then adds a width and a height.
+
+00:06:08.110 --> 00:06:14.967
+One note: on the slides, set height assigns the old height back to itself, and ignores its argument.
+
+00:06:14.967 --> 00:06:16.750
+Here it uses the argument.
+
+00:06:17.100 --> 00:06:19.262
+Now test both classes.
+
+00:06:19.262 --> 00:06:25.649
+The radius is 1.5, the area is about 7.07, and the diameter is 3.
+
+00:06:25.649 --> 00:06:30.660
+The rectangle's area is 8, and its perimeter is 12.
+
+00:06:31.010 --> 00:06:34.216
+But look at the first line for each shape.
+
+00:06:34.216 --> 00:06:39.025
+Printing the object says nothing about its radius, or its size.
+
+00:06:39.025 --> 00:06:39.330
+Why?
+
+00:06:39.880 --> 00:06:45.314
+Neither subclass has its own `__str__` yet, so both use the one they inherited.
+
+00:06:45.314 --> 00:06:47.240
+In part two, we'll fix that.
+
+00:06:48.034 --> 00:06:51.314
+One last question: when should you inherit?
+
+00:06:51.664 --> 00:06:55.602
+Inheritance models an is-a relationship.
+
+00:06:55.602 --> 00:06:58.654
+A circle is a geometric object.
+
+00:06:58.654 --> 00:07:05.744
+So before you write class X extends Y, say the sentence: every X is a Y.
+
+00:07:06.344 --> 00:07:11.321
+If it's false, don't inherit, even if the classes share some fields.
+
+00:07:11.321 --> 00:07:15.127
+A tree and a person both have a height and a weight.
+
+00:07:15.127 --> 00:07:17.104
+But a tree is not a person.
+
+00:07:17.454 --> 00:07:22.174
+If Tree extended Person, every tree would get a get name method,
+
+00:07:22.174 --> 00:07:26.894
+and you could pass a tree to any function that expects a person.
+
+00:07:27.244 --> 00:07:32.781
+When one class just uses another object, that's a has-a relationship.
+
+00:07:32.781 --> 00:07:34.386
+A car has an engine.
+
+00:07:34.386 --> 00:07:36.151
+A course has students.
+
+00:07:36.151 --> 00:07:40.244
+Model that with a data field, not with inheritance.
+
+00:07:41.034 --> 00:07:42.314
+Let's sum up.
+
+00:07:42.664 --> 00:07:45.326
+A subclass extends a superclass.
+
+00:07:45.326 --> 00:07:48.904
+It inherits every method, and adds its own.
+
+00:07:49.254 --> 00:07:52.983
+A subclass `__init__` calls `super().__init__` first.
+
+00:07:52.983 --> 00:07:57.134
+There's one object, and both initializers put fields on it.
+
+00:07:57.484 --> 00:08:01.324
+Inherit only when the is-a sentence is true.
+
+00:08:01.674 --> 00:08:03.165
+Here's one to try.
+
+00:08:03.165 --> 00:08:06.812
+Write a class Square that extends Rectangle.
+
+00:08:06.812 --> 00:08:13.607
+A square with side 3 should have area 9, and it needs no method except `__init__`.
+
+00:08:13.607 --> 00:08:16.674
+Is a square an instance of Rectangle?
+
+00:08:17.224 --> 00:08:23.904
+In part two, we'll override methods, and meet the class that every class inherits from.
+
