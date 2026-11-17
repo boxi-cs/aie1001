@@ -1,0 +1,281 @@
+WEBVTT
+
+00:00:00.300 --> 00:00:08.567
+In Lecture Six, we computed a power in two ways, and saw on the call stack that one of them is much faster.
+
+00:00:08.567 --> 00:00:11.580
+Now we can say exactly how much faster.
+
+00:00:11.930 --> 00:00:20.290
+We'll count recursive functions with one simple idea: the work per call, times the number of calls.
+
+00:00:21.067 --> 00:00:26.427
+This is Lecture Nine, part three: analysing recursion, and binary search.
+
+00:00:26.777 --> 00:00:33.737
+We'll count the calls of power, fast power and fib, and then prove that binary search takes logarithmic time.
+
+00:00:34.534 --> 00:00:37.285
+Power goes from n to n minus one.
+
+00:00:37.285 --> 00:00:39.702
+If n is zero, it returns one.
+
+00:00:39.702 --> 00:00:44.454
+Otherwise, it returns x times power of x and n minus one.
+
+00:00:44.804 --> 00:00:54.084
+Power of x and five calls power with four, three, two, one, and zero: n plus one calls in all.
+
+00:00:54.434 --> 00:01:01.723
+Each call does a constant amount of work: a comparison, a multiplication, a call and a return.
+
+00:01:01.723 --> 00:01:07.074
+So the total is a constant times n plus one, and power is big-O of n.
+
+00:01:07.867 --> 00:01:10.842
+Fast power goes from n to n halved.
+
+00:01:10.842 --> 00:01:19.427
+It computes partial, the power for half of n, squares it, and if n is odd, multiplies by x once more.
+
+00:01:19.777 --> 00:01:30.210
+The slide counts one call, line by line: one for the test, one for the return, two each for the three lines with arithmetic, and one for the final return.
+
+00:01:30.210 --> 00:01:36.577
+At most eight operations, plus the recursive call, which the slide marks with a question mark.
+
+00:01:36.927 --> 00:01:40.521
+The question mark is the same question on a smaller input.
+
+00:01:40.521 --> 00:01:47.647
+Every call does at most a constant amount of work itself, so the total is that constant, times the number of calls.
+
+00:01:47.997 --> 00:01:50.882
+And each call cuts n in half.
+
+00:01:50.882 --> 00:01:57.847
+A call with n equal to 13 calls itself with 6, then 3, then 1, then 0.
+
+00:01:57.847 --> 00:01:59.637
+Five calls in all.
+
+00:01:59.987 --> 00:02:03.991
+This function counts the calls for any n.
+
+00:02:03.991 --> 00:02:05.944
+For 1,000, 11 calls.
+
+00:02:05.944 --> 00:02:10.436
+For 1,000,000, 21 calls, instead of 1,000,000.
+
+00:02:10.436 --> 00:02:14.635
+That's the floor of log two of n, plus two.
+
+00:02:14.635 --> 00:02:17.467
+Fast power is big-O of log n.
+
+00:02:18.267 --> 00:02:26.630
+Now fib, written straight from the definition: fib of n is fib of n minus one, plus fib of n minus two.
+
+00:02:26.630 --> 00:02:29.147
+And fib calls counts its calls.
+
+00:02:29.497 --> 00:02:32.766
+Fib calls of 20 is 21,891.
+
+00:02:32.766 --> 00:02:40.937
+Pause the video and predict: what are fib calls of 21, and of 22?
+
+00:02:41.487 --> 00:02:45.005
+35,421, and 57,313.
+
+00:02:45.005 --> 00:02:54.447
+Each step of n multiplies the calls by about 1.618.
+
+00:02:54.797 --> 00:02:56.037
+We can bound it.
+
+00:02:56.037 --> 00:03:04.561
+Fib of n calls both fib of n minus one and fib of n minus two, so the count more than doubles every two steps.
+
+00:03:04.561 --> 00:03:11.303
+And each call makes at most two calls, so the count is less than two to the n plus one.
+
+00:03:11.303 --> 00:03:14.557
+Fib is exponential: big-O of two to the n.
+
+00:03:14.907 --> 00:03:18.322
+Fib of 50 would take about 40 billion calls.
+
+00:03:18.322 --> 00:03:23.056
+The fix is to stop computing the same values again and again.
+
+00:03:23.056 --> 00:03:27.479
+This loop keeps the last two numbers, and makes one pass.
+
+00:03:27.479 --> 00:03:31.747
+It's big-O of n, and fib loop of 50 comes back at once.
+
+00:03:32.097 --> 00:03:34.729
+So recursion itself isn't slow.
+
+00:03:34.729 --> 00:03:38.039
+Fast power is recursive, and very fast.
+
+00:03:38.039 --> 00:03:43.217
+Fib is slow because its two calls solve overlapping problems.
+
+00:03:44.001 --> 00:03:47.874
+Binary search, from Lecture Six, searches a sorted list.
+
+00:03:47.874 --> 00:03:52.093
+The candidates are the elements from index low to index high.
+
+00:03:52.093 --> 00:03:53.961
+It looks at the middle one.
+
+00:03:54.311 --> 00:03:57.665
+If the target equals the middle element, it's found.
+
+00:03:57.665 --> 00:04:00.696
+If the target is smaller, search the left half.
+
+00:04:00.696 --> 00:04:03.147
+If it's larger, search the right half.
+
+00:04:03.147 --> 00:04:06.631
+And if no candidates are left, the target isn't there.
+
+00:04:06.981 --> 00:04:10.697
+Let's search this list of 9 numbers for 7.
+
+00:04:10.697 --> 00:04:12.201
+The middle is 16.
+
+00:04:12.201 --> 00:04:15.741
+Seven is smaller, so keep the left half.
+
+00:04:16.091 --> 00:04:17.752
+The middle is now 3.
+
+00:04:17.752 --> 00:04:20.826
+Seven is larger: keep the right part.
+
+00:04:20.826 --> 00:04:22.571
+Then 5: larger again.
+
+00:04:22.571 --> 00:04:24.315
+Then 6: larger again.
+
+00:04:24.315 --> 00:04:27.971
+No candidates are left, so it returns False.
+
+00:04:27.971 --> 00:04:31.211
+It looked at four elements out of nine.
+
+00:04:32.001 --> 00:04:34.881
+Why is binary search big-O of log n?
+
+00:04:34.881 --> 00:04:42.641
+Each call does a constant amount of work besides its one recursive call, so again we count calls.
+
+00:04:42.991 --> 00:04:46.967
+The number of candidates is high minus low plus one.
+
+00:04:46.967 --> 00:04:53.544
+The next call keeps only the candidates left of the middle, or only those right of it.
+
+00:04:53.544 --> 00:04:55.991
+Either way, that's at most half.
+
+00:04:56.341 --> 00:05:03.744
+So there are n candidates in the first call, at most half of n in the second, at most a quarter in the third.
+
+00:05:03.744 --> 00:05:07.141
+Every call halves them again, until none are left.
+
+00:05:07.491 --> 00:05:18.817
+In the worst case the target isn't there, and the number of calls that look at an element is the floor of log two of n, plus one.
+
+00:05:18.817 --> 00:05:21.891
+So binary search is big-O of log n.
+
+00:05:22.668 --> 00:05:25.015
+Let's check the proof by counting.
+
+00:05:25.015 --> 00:05:29.572
+Linear search counts how many elements sequential search looks at.
+
+00:05:29.572 --> 00:05:32.748
+Binary search does the same for binary search.
+
+00:05:33.098 --> 00:05:39.266
+On the numbers 0 to 999, searching for 1,000, which isn't there,
+
+00:05:39.266 --> 00:05:42.832
+sequential search looks at all 1,000.
+
+00:05:42.832 --> 00:05:45.338
+Binary search looks at 10.
+
+00:05:45.688 --> 00:05:50.258
+Searching for 0, sequential search is lucky: one look.
+
+00:05:50.258 --> 00:05:55.928
+Binary search needs 9, because 0 is at the far end of its halvings.
+
+00:05:56.278 --> 00:05:59.222
+In the worst case, the target is missing.
+
+00:05:59.222 --> 00:06:01.519
+This table goes up to 1,000,000.
+
+00:06:01.519 --> 00:06:04.392
+Sequential search makes 1,000,000 looks.
+
+00:06:04.392 --> 00:06:10.998
+Binary search makes 20, and the last column, the formula from the proof, matches it exactly.
+
+00:06:11.348 --> 00:06:14.839
+One catch: binary search needs sorted data.
+
+00:06:14.839 --> 00:06:18.899
+On unsorted data, it silently gives wrong answers.
+
+00:06:18.899 --> 00:06:22.148
+So how do we sort? That's the next part.
+
+00:06:22.935 --> 00:06:24.135
+Let's sum up.
+
+00:06:24.485 --> 00:06:30.205
+To analyse a recursive function, multiply the work per call by the number of calls.
+
+00:06:30.555 --> 00:06:35.962
+Cutting the problem in half at each call gives about log n calls:
+
+00:06:35.962 --> 00:06:39.955
+fast power and binary search are big-O of log n.
+
+00:06:40.305 --> 00:06:44.403
+Fib's two calls overlap, so its calls grow exponentially.
+
+00:06:44.403 --> 00:06:46.345
+A loop makes it big-O of n.
+
+00:06:46.695 --> 00:06:48.144
+Here's one to try.
+
+00:06:48.144 --> 00:06:54.344
+Write fast power mults, which counts the multiplications fast power performs.
+
+00:06:54.344 --> 00:06:56.357
+For 13, you should get 7.
+
+00:06:56.357 --> 00:06:59.015
+How does that compare with power?
+
+00:06:59.565 --> 00:07:06.405
+In part four, we'll sort, with bubble sort and quick sort, and count how much work each one does.
+

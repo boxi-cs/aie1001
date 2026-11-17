@@ -1,0 +1,410 @@
+WEBVTT
+
+00:00:00.300 --> 00:00:04.540
+Here's the first line of an email, stored in a mailbox file.
+
+00:00:04.540 --> 00:00:06.660
+It says who sent it, and when.
+
+00:00:07.010 --> 00:00:14.090
+Say we want just the host name, the part after the at sign: uct.ac.za.
+
+00:00:14.440 --> 00:00:19.493
+To do that, we need to look inside a string: find a character, and cut out a piece.
+
+00:00:19.493 --> 00:00:22.720
+By the end of this part, you'll do it in three lines.
+
+00:00:23.500 --> 00:00:27.780
+This is Lecture 4, part 3: strings and string methods.
+
+00:00:28.130 --> 00:00:33.508
+We'll index, loop over, and slice strings, see why a string can't be changed,
+
+00:00:33.508 --> 00:00:36.930
+and use the methods that every string comes with.
+
+00:00:37.700 --> 00:00:42.540
+A string is a sequence of characters, written in single or double quotes.
+
+00:00:42.890 --> 00:00:46.127
+For strings, plus means concatenate, or join.
+
+00:00:46.127 --> 00:00:51.810
+'Hello' + 'there' gives 'Hellothere', with no space, because we didn't add one.
+
+00:00:52.160 --> 00:00:57.395
+A string that contains digits is still a string.
+
+00:00:57.395 --> 00:01:02.520
+The string '123' + the string '1' gives '1231'.
+
+00:01:03.120 --> 00:01:06.723
+To compute with it, convert it first.
+
+00:01:06.723 --> 00:01:08.865
+int('123') + 1 is 124.
+
+00:01:08.865 --> 00:01:12.760
+And a string + a number is a type error.
+
+00:01:13.110 --> 00:01:16.493
+Remember that input() always returns a string.
+
+00:01:16.493 --> 00:01:19.950
+That's why we read numbers with float(input()).
+
+00:01:20.733 --> 00:01:24.843
+Each character of a string has an index, its position.
+
+00:01:24.843 --> 00:01:26.973
+And indexes start from zero.
+
+00:01:27.323 --> 00:01:33.297
+In 'banana', 'b' is at index 0, 'a' at 1, 'n' at 2, and so on,
+
+00:01:33.297 --> 00:01:36.283
+up to the last 'a', at index 5.
+
+00:01:36.633 --> 00:01:40.223
+Square brackets get one character.
+
+00:01:40.223 --> 00:01:43.073
+fruit[1] is the letter 'a'.
+
+00:01:43.673 --> 00:01:47.595
+The index can be any integer expression.
+
+00:01:47.595 --> 00:01:51.223
+With n = 3, fruit[n - 1] is fruit[2].
+
+00:01:51.223 --> 00:01:54.753
+That's the third letter of 'banana'.
+
+00:01:55.103 --> 00:01:57.985
+A negative index counts from the end.
+
+00:01:57.985 --> 00:02:02.503
+-1 is the last character, -2 the one before it, and so on.
+
+00:02:03.300 --> 00:02:05.620
+Pause the video and predict.
+
+00:02:05.620 --> 00:02:09.266
+Why is fruit[1] the letter 'a', and not 'b'?
+
+00:02:09.266 --> 00:02:14.900
+And what's the index of the last character, in a string of length 6?
+
+00:02:15.450 --> 00:02:17.332
+Indexes start at zero.
+
+00:02:17.332 --> 00:02:20.327
+So index 1 is the second character.
+
+00:02:20.327 --> 00:02:25.290
+And the last one has index 5, which is the length minus 1.
+
+00:02:25.640 --> 00:02:29.685
+The length comes from the built-in function len().
+
+00:02:29.685 --> 00:02:32.760
+len('banana') is 6. len('apple') is 5.
+
+00:02:33.110 --> 00:02:36.657
+Go one step past the end, and Python stops you.
+
+00:02:36.657 --> 00:02:41.790
+In the string 'hi', index 2 doesn't exist, so you get an IndexError.
+
+00:02:42.567 --> 00:02:46.487
+A for loop visits each character of a string, in turn.
+
+00:02:46.837 --> 00:02:50.798
+Here, the loop variable takes each character of 'Morpheus'.
+
+00:02:50.798 --> 00:02:56.237
+We keep our own counter, n, starting at zero, and print it next to the character.
+
+00:02:56.587 --> 00:03:00.583
+The loop variable is called the iteration variable.
+
+00:03:00.583 --> 00:03:08.027
+It moves through all the values of the sequence, one per pass, and the body runs once for each.
+
+00:03:08.627 --> 00:03:11.819
+The same loop with while keeps the index itself.
+
+00:03:11.819 --> 00:03:16.341
+It starts at zero, and runs while the index is less than the length,
+
+00:03:16.341 --> 00:03:19.067
+getting each letter with square brackets.
+
+00:03:19.417 --> 00:03:24.184
+Loops like these make a pattern you'll use all the time: counting.
+
+00:03:24.184 --> 00:03:26.928
+Set a counter to zero before the loop.
+
+00:03:26.928 --> 00:03:30.178
+Inside, add one whenever the condition holds.
+
+00:03:30.178 --> 00:03:32.417
+Use the counter after the loop.
+
+00:03:32.767 --> 00:03:36.927
+Counting the letter 'a' in 'banana' gives 3.
+
+00:03:37.700 --> 00:03:41.392
+Now, can we change a character in a string?
+
+00:03:41.392 --> 00:03:44.740
+Let's try to turn 'Hello' into 'Jello'.
+
+00:03:45.090 --> 00:03:46.785
+greeting[0] = 'J'.
+
+00:03:46.785 --> 00:03:48.197
+Python refuses.
+
+00:03:48.197 --> 00:03:52.810
+A string object does not support item assignment.
+
+00:03:53.160 --> 00:03:55.109
+A string is immutable.
+
+00:03:55.109 --> 00:03:59.360
+Once it's made, its characters can't be changed.
+
+00:03:59.960 --> 00:04:02.831
+To get a different string, build a new one.
+
+00:04:02.831 --> 00:04:08.104
+Join the letter 'J' to a slice of 'greeting' from index 1, and you get 'Jello'.
+
+00:04:08.104 --> 00:04:10.240
+And 'greeting' is still 'Hello'.
+
+00:04:10.590 --> 00:04:14.361
+The slides say a string is essentially a list.
+
+00:04:14.361 --> 00:04:15.099
+It isn't.
+
+00:04:15.099 --> 00:04:21.002
+Both are sequences, so both have indexing, slicing, len() and for loops.
+
+00:04:21.002 --> 00:04:25.510
+But a list can be changed in place, and a string can't.
+
+00:04:26.300 --> 00:04:28.874
+That slice is the next tool.
+
+00:04:28.874 --> 00:04:36.780
+A slice, start:stop, is the part of a string from start, up to but not including stop.
+
+00:04:37.130 --> 00:04:39.318
+Take 'Monty Python'.
+
+00:04:39.318 --> 00:04:42.380
+0:4 is 'Mont', 4 characters.
+
+00:04:42.380 --> 00:04:44.130
+6:7 is just 'P'.
+
+00:04:44.480 --> 00:04:46.008
+6:20 goes past the end.
+
+00:04:46.008 --> 00:04:46.805
+That's fine.
+
+00:04:46.805 --> 00:04:51.320
+The slice simply stops at the end of the string, and gives 'Python'.
+
+00:04:51.670 --> 00:04:55.258
+Leave out the first number, and the slice starts at the beginning.
+
+00:04:55.258 --> 00:04:57.704
+Leave out the second, and it goes to the end.
+
+00:04:57.704 --> 00:05:00.150
+Leave out both, and you get the whole string.
+
+00:05:00.500 --> 00:05:03.658
+2:5 gives 'nty': 3 characters.
+
+00:05:03.658 --> 00:05:07.973
+A slice from a to b has b - a characters,
+
+00:05:07.973 --> 00:05:13.340
+which is why 'up to but not including' is so handy.
+
+00:05:13.940 --> 00:05:18.500
+And unlike indexing, slicing never raises an IndexError.
+
+00:05:19.300 --> 00:05:24.214
+The 'in' operator checks whether one string appears inside another.
+
+00:05:24.214 --> 00:05:25.900
+It gives True or False.
+
+00:05:26.250 --> 00:05:30.777
+'n' in 'banana' is True. 'm' in 'banana' is False.
+
+00:05:30.777 --> 00:05:38.290
+And 'nan' in 'banana' is True: it checks for whole pieces, not just single letters.
+
+00:05:38.640 --> 00:05:43.680
+Because it's a logical expression, you can use it straight in an if, or a while.
+
+00:05:44.467 --> 00:05:48.857
+Strings also come with many built-in functions, called methods.
+
+00:05:48.857 --> 00:05:53.107
+You call a method with a dot after the string, then its name.
+
+00:05:53.457 --> 00:05:57.107
+greet.lower() gives back a lower case copy.
+
+00:05:57.107 --> 00:05:59.738
+But look at 'greet' afterwards.
+
+00:05:59.738 --> 00:06:01.265
+It hasn't changed.
+
+00:06:01.265 --> 00:06:07.376
+String methods can't modify the original, because strings are immutable.
+
+00:06:07.376 --> 00:06:09.497
+They return a new string.
+
+00:06:10.097 --> 00:06:14.897
+find() returns the index of the first place a piece appears.
+
+00:06:14.897 --> 00:06:18.337
+In 'banana', 'na' first appears at index 2.
+
+00:06:18.337 --> 00:06:22.977
+And if it isn't there at all, like 'z', find() returns -1.
+
+00:06:23.327 --> 00:06:26.121
+upper() and lower() change the case.
+
+00:06:26.121 --> 00:06:28.139
+That helps with searching.
+
+00:06:28.139 --> 00:06:34.193
+find('matrix'), in lower case, gives -1, because the string has a capital 'M'.
+
+00:06:34.193 --> 00:06:37.607
+Lower the string first, and find() gives 26.
+
+00:06:38.401 --> 00:06:42.284
+replace() works like search and replace in a word processor.
+
+00:06:42.284 --> 00:06:44.161
+It replaces every occurrence.
+
+00:06:44.511 --> 00:06:48.751
+Replacing 'Bob' with 'Jane' gives 'Hello, Jane'.
+
+00:06:48.751 --> 00:06:53.874
+Replacing every 'o' with a capital 'X' gives 'HellX, BXb'.
+
+00:06:53.874 --> 00:06:59.351
+And if there's nothing to replace, you get the same text back.
+
+00:06:59.701 --> 00:07:04.774
+strip() removes whitespace from both ends: spaces, tabs and newlines.
+
+00:07:04.774 --> 00:07:10.141
+lstrip() removes it from the left only, and rstrip() from the right only.
+
+00:07:10.491 --> 00:07:14.023
+And startswith() checks the beginning of a string.
+
+00:07:14.023 --> 00:07:14.941
+Case matters.
+
+00:07:14.941 --> 00:07:19.251
+The line starts with 'Please', but not with a lower case 'p'.
+
+00:07:19.601 --> 00:07:21.118
+One more check.
+
+00:07:21.118 --> 00:07:24.862
+After greet.upper(), what is 'greet'?
+
+00:07:24.862 --> 00:07:26.784
+Still 'Hello, Bob'.
+
+00:07:26.784 --> 00:07:33.361
+To keep the upper case version, assign it: greet = greet.upper().
+
+00:07:34.134 --> 00:07:36.558
+Now, back to the email line.
+
+00:07:36.558 --> 00:07:41.494
+We want the host, between the at sign and the next space.
+
+00:07:41.844 --> 00:07:44.511
+Step 1. Find the at sign.
+
+00:07:44.511 --> 00:07:46.324
+It's at index 21.
+
+00:07:46.674 --> 00:07:52.431
+Step 2. Find the next space, but start searching from the at sign.
+
+00:07:52.431 --> 00:07:53.914
+It's at index 31.
+
+00:07:54.264 --> 00:08:00.948
+Step 3. Slice from one after the at sign, up to the space.
+
+00:08:00.948 --> 00:08:03.944
+And the host is uct.ac.za.
+
+00:08:04.294 --> 00:08:08.020
+This is a pattern worth naming: find, then slice.
+
+00:08:08.020 --> 00:08:13.494
+Find where the piece starts, find where it ends, and slice between them.
+
+00:08:14.267 --> 00:08:15.547
+Let's sum up.
+
+00:08:15.897 --> 00:08:20.897
+A string is an immutable sequence of characters, indexed from zero.
+
+00:08:21.247 --> 00:08:26.647
+A slice from a to b goes up to, but not including, b.
+
+00:08:26.997 --> 00:08:31.809
+Methods like lower(), find() and replace() never change a string.
+
+00:08:31.809 --> 00:08:33.437
+They return a new one.
+
+00:08:33.787 --> 00:08:35.318
+Here's one to try.
+
+00:08:35.318 --> 00:08:40.504
+Write a function called initials, which takes a two-word name
+
+00:08:40.504 --> 00:08:43.821
+and returns its initials in upper case.
+
+00:08:43.821 --> 00:08:47.307
+initials('ada lovelace') should be 'A L'.
+
+00:08:47.307 --> 00:08:49.347
+Use find() and indexing.
+
+00:08:49.897 --> 00:08:55.257
+In part 4, the last part, we'll read text from files, line by line,
+
+00:08:55.257 --> 00:08:57.417
+and write files of our own.
+

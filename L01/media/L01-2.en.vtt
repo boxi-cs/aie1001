@@ -1,0 +1,380 @@
+WEBVTT
+
+00:00:00.300 --> 00:00:03.213
+Here's a question that sounds too simple.
+
+00:00:03.213 --> 00:00:06.340
+How does a computer understand the number 8?
+
+00:00:06.690 --> 00:00:09.663
+Inside, there is no digit 8 at all.
+
+00:00:09.663 --> 00:00:17.477
+Deep down, everything in a computer, numbers, text, images, and the instructions themselves,
+
+00:00:17.477 --> 00:00:20.450
+is stored as patterns of 0s and 1s.
+
+00:00:20.800 --> 00:00:24.652
+The number 8 is stored as 1, 0, 0, 0.
+
+00:00:24.652 --> 00:00:28.920
+By the end of this part, you'll know why.
+
+00:00:29.700 --> 00:00:31.980
+This is Lecture 1, part 2.
+
+00:00:32.330 --> 00:00:36.703
+We'll climb the ladder of languages from machine code up to Python,
+
+00:00:36.703 --> 00:00:38.987
+see what the operating system does,
+
+00:00:38.987 --> 00:00:44.730
+and then meet the number systems computers use: binary, octal, decimal, and hexadecimal.
+
+00:00:45.500 --> 00:00:49.227
+The only language a CPU runs directly is machine code:
+
+00:00:49.227 --> 00:00:54.404
+instructions written as binary numbers, and different for each kind of CPU.
+
+00:00:54.404 --> 00:00:56.820
+Nobody wants to write that by hand.
+
+00:00:57.170 --> 00:01:00.209
+So the first step up is assembly language.
+
+00:01:00.209 --> 00:01:05.202
+It gives each machine instruction a short name, like 'add' or 'load'.
+
+00:01:05.202 --> 00:01:08.530
+Assembly and machine code match almost 1 to 1.
+
+00:01:08.880 --> 00:01:14.386
+A program called an assembler translates the assembly source into machine code.
+
+00:01:14.386 --> 00:01:18.149
+But each assembly language belongs to one kind of CPU.
+
+00:01:18.149 --> 00:01:22.400
+A program written for an Intel chip won't run on an ARM chip.
+
+00:01:22.750 --> 00:01:25.198
+High-level languages go further.
+
+00:01:25.198 --> 00:01:27.264
+You write 'result = 2 + 3',
+
+00:01:27.264 --> 00:01:30.630
+and never mention registers or memory cells.
+
+00:01:30.980 --> 00:01:35.881
+C came from Dennis Ritchie at Bell Labs, between 1969 and 1973.
+
+00:01:35.881 --> 00:01:38.993
+It's close to the machine and very fast,
+
+00:01:38.993 --> 00:01:42.260
+and it's still used for operating systems.
+
+00:01:42.610 --> 00:01:46.984
+C++, from Bjarne Stroustrup, started in 1979.
+
+00:01:46.984 --> 00:01:50.970
+It adds object-oriented programming to C.
+
+00:01:51.320 --> 00:01:57.258
+Java, from James Gosling at Sun Microsystems, came out in 1995.
+
+00:01:57.258 --> 00:02:00.840
+Its promise: write once, run anywhere.
+
+00:02:01.190 --> 00:02:05.786
+And Python, from Guido van Rossum, was released in 1991.
+
+00:02:05.786 --> 00:02:09.069
+It's open source, it has huge libraries,
+
+00:02:09.069 --> 00:02:13.830
+and it's the language of this course, and of most AI work.
+
+00:02:14.600 --> 00:02:17.438
+A high-level language can't run directly.
+
+00:02:17.438 --> 00:02:24.499
+It must be translated first: by a compiler, which translates the whole program ahead of time, as in C,
+
+00:02:24.499 --> 00:02:29.760
+or by an interpreter, which translates and runs it as it goes, as in Python.
+
+00:02:30.110 --> 00:02:36.245
+Here's the same computation at 4 levels: Python, C, assembly, and machine code.
+
+00:02:36.245 --> 00:02:42.070
+Each line down is closer to the machine, and further from how people think.
+
+00:02:42.420 --> 00:02:44.166
+That gives a trade-off.
+
+00:02:44.166 --> 00:02:50.164
+Lower-level languages have higher language efficiency: the programs run faster.
+
+00:02:50.164 --> 00:02:58.060
+Higher-level languages have higher development efficiency: programs are quicker to write, read, and fix.
+
+00:02:58.660 --> 00:03:02.764
+For most programs, your time costs more than the computer's.
+
+00:03:02.764 --> 00:03:07.347
+And when speed really matters, Python calls libraries written in C.
+
+00:03:07.347 --> 00:03:10.220
+That's how Python's AI libraries run fast.
+
+00:03:10.570 --> 00:03:13.707
+So Python isn't a bad language because it's slower.
+
+00:03:13.707 --> 00:03:15.922
+It just makes a different trade-off.
+
+00:03:15.922 --> 00:03:17.890
+Choose the language for the job.
+
+00:03:18.667 --> 00:03:24.404
+One more program sits between your code and the hardware: the operating system.
+
+00:03:24.404 --> 00:03:30.650
+It controls the computer's activities, shares out memory, CPU time, files and devices,
+
+00:03:30.650 --> 00:03:33.627
+and decides which program runs, and when.
+
+00:03:33.977 --> 00:03:36.818
+Applications are built on top of it.
+
+00:03:36.818 --> 00:03:42.028
+Windows, macOS, Linux, iOS, and Android are all operating systems.
+
+00:03:42.028 --> 00:03:48.737
+When your Python program prints to the screen, it asks the operating system to do it.
+
+00:03:49.087 --> 00:03:53.461
+Step back, and the lecture so far is 3 ladders of abstraction.
+
+00:03:53.461 --> 00:03:56.847
+Each level hides the details of the level below.
+
+00:03:57.197 --> 00:04:01.229
+Languages: machine code, assembly, C, Python.
+
+00:04:01.229 --> 00:04:06.068
+Systems: hardware, the operating system, applications.
+
+00:04:06.068 --> 00:04:13.237
+And data: binary digits, then numbers and text, then data structures like lists.
+
+00:04:13.587 --> 00:04:17.522
+When you write Python, you stand on top of all three.
+
+00:04:17.522 --> 00:04:22.867
+Now let's climb down the data ladder, to its bottom rung: binary digits.
+
+00:04:23.667 --> 00:04:26.724
+We write numbers in positional notation.
+
+00:04:26.724 --> 00:04:30.315
+A positional number system has 2 parts: a base,
+
+00:04:30.315 --> 00:04:34.747
+and 1 symbol for each value from 0 up to the base minus 1.
+
+00:04:35.097 --> 00:04:38.908
+Decimal has base 10, and the symbols 0 to 9.
+
+00:04:38.908 --> 00:04:43.499
+When counting passes 9, we don't invent a new symbol.
+
+00:04:43.499 --> 00:04:46.097
+We write 1, 0. On 10, carry 1.
+
+00:04:46.447 --> 00:04:52.154
+And every number is a sum: each digit times the weight of its position.
+
+00:04:52.154 --> 00:04:54.967
+The weights are powers of the base.
+
+00:04:55.567 --> 00:04:56.804
+Take 472.5.
+
+00:04:56.804 --> 00:05:05.687
+It's 4 times 10 squared, plus 7 times 10, plus 2 times 1, plus 5 times a tenth.
+
+00:05:06.037 --> 00:05:10.197
+To the left of the point, the weights go 1, 10, 100.
+
+00:05:10.197 --> 00:05:13.397
+To the right, a tenth, then a hundredth.
+
+00:05:14.167 --> 00:05:20.403
+In binary, the base is 2, and there are only 2 symbols: 0 and 1.
+
+00:05:20.403 --> 00:05:21.767
+On 2, carry 1.
+
+00:05:22.117 --> 00:05:27.621
+The weights are powers of 2: 1, 2, 4, 8, and so on.
+
+00:05:27.621 --> 00:05:32.586
+So 1, 0, 0, 1 in binary is 1 eight plus 1 one.
+
+00:05:32.586 --> 00:05:33.557
+That's 9.
+
+00:05:33.907 --> 00:05:46.747
+Counting in binary goes: 0, 1, 10, 11, 100, 101, 110, 111, 1000.
+
+00:05:46.997 --> 00:05:53.105
+Each time a position reaches 2, it resets to 0 and carries 1 to the left,
+
+00:05:53.105 --> 00:05:56.117
+just as 9 plus 1 carries in decimal.
+
+00:05:56.900 --> 00:05:59.733
+Pause the video and predict.
+
+00:05:59.733 --> 00:06:03.070
+In binary, what comes after 1011?
+
+00:06:03.070 --> 00:06:05.700
+And what comes after 1111?
+
+00:06:06.250 --> 00:06:08.463
+1011 plus 1 is 1100.
+
+00:06:08.463 --> 00:06:16.650
+The last digit carries, the next one carries too, and the third becomes 1.
+
+00:06:17.000 --> 00:06:21.000
+And 1111 plus 1 is 10000.
+
+00:06:21.000 --> 00:06:27.880
+Every digit carries, just like 9999 plus 1.
+
+00:06:28.667 --> 00:06:31.408
+Why do computers use binary?
+
+00:06:31.408 --> 00:06:32.387
+3 reasons.
+
+00:06:32.737 --> 00:06:34.048
+It's easy to build.
+
+00:06:34.048 --> 00:06:38.394
+A circuit only has to tell 2 states apart, high voltage or low,
+
+00:06:38.394 --> 00:06:42.257
+which is far more reliable than telling 10 levels apart.
+
+00:06:42.607 --> 00:06:44.560
+It's simple to calculate with.
+
+00:06:44.560 --> 00:06:48.727
+The addition and multiplication tables have only 4 entries each.
+
+00:06:49.077 --> 00:06:51.957
+And it combines easily with logic.
+
+00:06:51.957 --> 00:06:54.666
+1 and 0 can mean true and false,
+
+00:06:54.666 --> 00:06:58.477
+so the same circuits do arithmetic and logic.
+
+00:06:59.267 --> 00:07:01.276
+Binary numbers get long,
+
+00:07:01.276 --> 00:07:03.787
+so we also use 2 bigger bases.
+
+00:07:04.137 --> 00:07:08.044
+Hexadecimal, or hex for short, has base 16.
+
+00:07:08.044 --> 00:07:12.858
+It needs 16 symbols, so after 0 to 9 it uses letters.
+
+00:07:12.858 --> 00:07:19.217
+The letter A means 10, B means 11, and so on, up to F, which means 15.
+
+00:07:19.567 --> 00:07:23.127
+Octal has base 8, and the symbols 0 to 7.
+
+00:07:23.477 --> 00:07:26.187
+Here they are side by side.
+
+00:07:26.187 --> 00:07:30.301
+Look where each system first writes 1, 0:
+
+00:07:30.301 --> 00:07:35.117
+at 2 in binary, at 8 in octal, and at 16 in hex.
+
+00:07:35.467 --> 00:07:39.501
+Python can write whole numbers in these bases too.
+
+00:07:39.501 --> 00:07:45.390
+A number that starts with '0b' is binary, '0o' is octal, and '0x' is hex.
+
+00:07:45.390 --> 00:07:49.827
+The functions `bin`, `oct`, and `hex` go the other way.
+
+00:07:50.177 --> 00:07:52.126
+And here's the trap.
+
+00:07:52.126 --> 00:07:54.171
+1, 0 isn't always 10.
+
+00:07:54.171 --> 00:07:59.042
+In binary it's 2. In octal it's 8. In hex it's 16.
+
+00:07:59.042 --> 00:08:02.743
+In any base, 10 means the base itself.
+
+00:08:02.743 --> 00:08:06.737
+So always know which base you're reading.
+
+00:08:07.534 --> 00:08:08.974
+Let's sum up.
+
+00:08:09.324 --> 00:08:11.485
+The CPU runs only machine code.
+
+00:08:11.485 --> 00:08:16.503
+Higher-level languages are faster to write, lower-level ones run faster,
+
+00:08:16.503 --> 00:08:20.964
+and the operating system manages the hardware for every program.
+
+00:08:21.314 --> 00:08:26.794
+In positional notation, each digit is multiplied by a power of the base.
+
+00:08:27.144 --> 00:08:29.303
+Computers use binary, base 2.
+
+00:08:29.303 --> 00:08:32.504
+Octal and hex are compact ways to write it.
+
+00:08:32.854 --> 00:08:34.563
+Here's one to try.
+
+00:08:34.563 --> 00:08:37.316
+Count from 0 to 10 in base 3.
+
+00:08:37.316 --> 00:08:39.974
+Which numbers need 3 digits?
+
+00:08:40.524 --> 00:08:45.788
+In part 3, we'll convert numbers between bases by hand, fractions included,
+
+00:08:45.788 --> 00:08:48.244
+and check every answer with Python.
+

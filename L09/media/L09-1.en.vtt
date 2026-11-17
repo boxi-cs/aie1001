@@ -1,0 +1,386 @@
+WEBVTT
+
+00:00:00.300 --> 00:00:03.566
+Suppose you have a sorted list of 1,000,000 numbers,
+
+00:00:03.566 --> 00:00:07.020
+and you want to know whether a certain number is in it.
+
+00:00:07.370 --> 00:00:10.610
+One way is to look at the numbers one by one.
+
+00:00:10.610 --> 00:00:14.210
+If the number isn't there, that's 1,000,000 looks.
+
+00:00:14.560 --> 00:00:17.768
+Another way is binary search, from Lecture 6.
+
+00:00:17.768 --> 00:00:20.120
+It halves the list at every step.
+
+00:00:20.120 --> 00:00:24.040
+For the same 1,000,000 numbers, it needs just 20 looks.
+
+00:00:24.390 --> 00:00:29.504
+Now buy a computer 1,000 times faster, and keep the first method.
+
+00:00:29.504 --> 00:00:32.651
+It still looks at all 1,000,000 numbers.
+
+00:00:32.651 --> 00:00:37.135
+A faster computer makes a slow algorithm a bit less slow.
+
+00:00:37.135 --> 00:00:40.990
+A better algorithm can turn a year into a second.
+
+00:00:41.340 --> 00:00:46.370
+So how do we tell a good algorithm from a bad one, before we've even run it?
+
+00:00:46.370 --> 00:00:48.620
+That's what this lecture is about.
+
+00:00:49.400 --> 00:00:53.123
+Welcome to Lecture 9 of Introduction to AI Programming:
+
+00:00:53.123 --> 00:00:55.560
+running time, searching and sorting.
+
+00:00:55.910 --> 00:01:00.009
+In this first part, we'll see why a stopwatch isn't enough,
+
+00:01:00.009 --> 00:01:05.150
+how to count operations instead, and how fast seven common functions grow.
+
+00:01:05.933 --> 00:01:07.263
+First, two terms.
+
+00:01:07.263 --> 00:01:12.736
+A data structure is a systematic way of organising and accessing data.
+
+00:01:12.736 --> 00:01:16.333
+A Python list is one; a dictionary is another.
+
+00:01:16.683 --> 00:01:22.713
+An algorithm is a step-by-step procedure for performing a task in a finite amount of time.
+
+00:01:22.713 --> 00:01:24.723
+Binary search is an algorithm.
+
+00:01:25.073 --> 00:01:29.043
+Every branch of computer science uses them, and so does AI:
+
+00:01:29.043 --> 00:01:35.233
+training a model is an algorithm running over data structures that hold millions of numbers.
+
+00:01:35.583 --> 00:01:39.285
+What makes an algorithm good? Mainly two things:
+
+00:01:39.285 --> 00:01:45.685
+its running time, how long it takes, and its space usage, how much memory it needs.
+
+00:01:45.685 --> 00:01:48.383
+This lecture is about running time.
+
+00:01:49.167 --> 00:01:54.327
+The direct way to find out how fast a program is: run it, and time it.
+
+00:01:54.677 --> 00:01:57.708
+This program from the slides reads the clock,
+
+00:01:57.708 --> 00:02:01.480
+runs a loop that prints every tenth number up to 20,000,
+
+00:02:01.480 --> 00:02:03.231
+and reads the clock again.
+
+00:02:03.231 --> 00:02:06.397
+The difference is the time elapsed, in seconds.
+
+00:02:06.747 --> 00:02:09.693
+Run it twice, and you get two different numbers.
+
+00:02:09.693 --> 00:02:12.700
+Run it on a friend's laptop, and you get a third.
+
+00:02:12.700 --> 00:02:17.427
+Most of the time goes into print, which is slow compared with the arithmetic.
+
+00:02:17.777 --> 00:02:20.653
+To see how running time depends on the input,
+
+00:02:20.653 --> 00:02:23.401
+we run the program on inputs of many sizes,
+
+00:02:23.401 --> 00:02:27.555
+and plot each run as a point: input size across, running time up.
+
+00:02:27.555 --> 00:02:30.942
+The points rise with the size, roughly along a curve,
+
+00:02:30.942 --> 00:02:34.777
+with some scatter from whatever else the computer was doing.
+
+00:02:35.567 --> 00:02:39.607
+Experiments are useful, but they have three problems.
+
+00:02:39.957 --> 00:02:42.285
+First, they depend on the machine.
+
+00:02:42.285 --> 00:02:49.477
+Two algorithms can only be compared fairly if they were timed on the same hardware and the same software.
+
+00:02:49.827 --> 00:02:52.910
+Second, they only cover the inputs you tried.
+
+00:02:52.910 --> 00:02:58.667
+An input you didn't test might be much slower, and it might be the one that matters.
+
+00:02:59.017 --> 00:03:02.191
+Third, you need the whole program first.
+
+00:03:02.191 --> 00:03:04.017
+You can't time an idea.
+
+00:03:04.367 --> 00:03:06.484
+Now ask a different question.
+
+00:03:06.484 --> 00:03:11.011
+In that timing program, how many times does the loop body run,
+
+00:03:11.011 --> 00:03:13.567
+and how many times is print called?
+
+00:03:14.117 --> 00:03:18.731
+Range of 1 to 20,000 gives 19,999 numbers,
+
+00:03:18.731 --> 00:03:23.346
+and one in 10 of them is a multiple of 10:
+
+00:03:23.346 --> 00:03:24.774
+1,999 prints.
+
+00:03:24.774 --> 00:03:31.037
+Those counts are the same on every computer in the world.
+
+00:03:31.834 --> 00:03:34.439
+That's the idea behind algorithm analysis.
+
+00:03:34.439 --> 00:03:39.154
+Instead of timing a program, we count its steps, following three principles.
+
+00:03:39.504 --> 00:03:42.729
+Principle 1: count primitive operations.
+
+00:03:42.729 --> 00:03:49.504
+These are simple steps that each take a small, fixed amount of time on any computer.
+
+00:03:50.104 --> 00:03:52.370
+Assigning a name to an object.
+
+00:03:52.370 --> 00:03:55.315
+Looking up the object a name refers to.
+
+00:03:55.315 --> 00:03:57.128
+An arithmetic operation.
+
+00:03:57.128 --> 00:03:58.790
+Comparing two numbers.
+
+00:03:58.790 --> 00:04:01.736
+Reading one element of a list by index.
+
+00:04:01.736 --> 00:04:04.984
+Calling a function, and returning from one.
+
+00:04:05.334 --> 00:04:09.277
+If an algorithm performs a certain number of these operations,
+
+00:04:09.277 --> 00:04:14.682
+its running time is roughly that number times a constant that depends on the machine.
+
+00:04:14.682 --> 00:04:19.134
+Counting removes the machine, and keeps what belongs to the algorithm.
+
+00:04:19.484 --> 00:04:23.714
+Principle 2: count as a function of the input size.
+
+00:04:23.714 --> 00:04:28.193
+Bigger inputs take longer, so one number isn't enough.
+
+00:04:28.193 --> 00:04:33.336
+We write f(n): the number of operations on an input of size n,
+
+00:04:33.336 --> 00:04:39.724
+where n is the length of the list, or whatever measures how big the input is.
+
+00:04:40.500 --> 00:04:44.420
+Principle 3: focus on the worst case.
+
+00:04:45.020 --> 00:04:48.696
+Inputs of the same size can take different amounts of time.
+
+00:04:48.696 --> 00:04:54.180
+Sequential search looks at the elements of a list one by one, until it finds the target.
+
+00:04:54.530 --> 00:04:59.011
+If the target is the first element, it makes one comparison.
+
+00:04:59.011 --> 00:05:00.579
+That's the best case.
+
+00:05:00.579 --> 00:05:06.927
+If the target is last, or not there at all, it looks at every element: n comparisons.
+
+00:05:06.927 --> 00:05:08.570
+That's the worst case.
+
+00:05:08.920 --> 00:05:11.704
+The average case sounds the most useful.
+
+00:05:11.704 --> 00:05:15.603
+But average over which inputs, with which probabilities?
+
+00:05:15.603 --> 00:05:17.343
+So we use the worst case.
+
+00:05:17.343 --> 00:05:23.400
+It's easier to work out, and it's a guarantee: the algorithm is never slower than that.
+
+00:05:23.750 --> 00:05:24.916
+And one warning.
+
+00:05:24.916 --> 00:05:27.906
+Fewer lines of code does not mean faster.
+
+00:05:27.906 --> 00:05:33.740
+We count how many times each operation runs, not how many lines the program has.
+
+00:05:33.740 --> 00:05:38.990
+A one-line loop that runs 1,000,000 times does 1,000,000 times the work.
+
+00:05:39.767 --> 00:05:44.127
+Almost every running time in this course is one of seven functions.
+
+00:05:44.477 --> 00:05:47.516
+Constant, logarithm, and linear.
+
+00:05:47.516 --> 00:05:54.639
+Then n log n, quadratic (which is n squared), and cubic (which is n cubed).
+
+00:05:54.639 --> 00:06:00.717
+And finally exponential: 2 to the n, which grows fastest of all.
+
+00:06:01.317 --> 00:06:04.738
+In computer science, log n means log base 2:
+
+00:06:04.738 --> 00:06:09.637
+the number of times you can cut n in half before you reach one.
+
+00:06:09.987 --> 00:06:14.501
+This short program prints how fast each one grows,
+
+00:06:14.501 --> 00:06:16.307
+for n from 8 to 512.
+
+00:06:16.657 --> 00:06:18.903
+Read it column by column.
+
+00:06:18.903 --> 00:06:23.127
+Each time n doubles, log n goes up by just one.
+
+00:06:23.127 --> 00:06:26.273
+N log n a little more than doubles.
+
+00:06:26.273 --> 00:06:30.497
+N squared is multiplied by 4, and n cubed by 8.
+
+00:06:30.847 --> 00:06:33.934
+And 2 to the n is squared.
+
+00:06:33.934 --> 00:06:37.258
+2 to the 512 has 155 digits.
+
+00:06:37.258 --> 00:06:42.127
+No computer will ever do that many steps.
+
+00:06:42.900 --> 00:06:48.126
+Here are three algorithms that solve the same problem.
+
+00:06:48.126 --> 00:06:55.287
+On an input of size n, algorithm A performs 10 n log n plus 50 operations.
+
+00:06:55.287 --> 00:06:58.577
+B performs 2 n squared plus 100 n.
+
+00:06:58.577 --> 00:07:00.900
+And C performs 10,000 n.
+
+00:07:01.250 --> 00:07:03.665
+Pause the video and predict.
+
+00:07:03.665 --> 00:07:06.252
+Which is fastest when n is 10?
+
+00:07:06.252 --> 00:07:09.530
+And which is fastest when n is 10,000?
+
+00:07:10.080 --> 00:07:12.927
+Here's the program, and its output.
+
+00:07:12.927 --> 00:07:15.529
+For n equal to 10, A is fastest,
+
+00:07:15.529 --> 00:07:19.840
+and C, with its huge constant, is by far the slowest.
+
+00:07:20.190 --> 00:07:25.123
+But for n equal to 10,000, C has overtaken B.
+
+00:07:25.123 --> 00:07:30.384
+And for 1,000,000, B is 200 times slower than C.
+
+00:07:30.384 --> 00:07:34.550
+B grows like n squared; C only like n.
+
+00:07:34.900 --> 00:07:38.190
+This loop finds the crossover.
+
+00:07:38.190 --> 00:07:44.660
+From n equal to 4,951 on, B does more work than C, forever.
+
+00:07:45.010 --> 00:07:50.879
+How fast a function grows decides which algorithm wins on large inputs.
+
+00:07:50.879 --> 00:07:54.930
+The constants only decide where the crossover is.
+
+00:07:55.700 --> 00:07:57.060
+Let's sum it up.
+
+00:07:57.410 --> 00:08:02.130
+Timing a program depends on the machine, and on the inputs you tried.
+
+00:08:02.480 --> 00:08:09.200
+So we count primitive operations, as a function of the input size, in the worst case.
+
+00:08:09.550 --> 00:08:14.190
+And for large inputs, the growth rate decides, not the constants.
+
+00:08:14.540 --> 00:08:15.999
+Here's one to try.
+
+00:08:15.999 --> 00:08:19.322
+This function has a loop over range of n,
+
+00:08:19.322 --> 00:08:22.807
+and inside it another loop over range of n.
+
+00:08:22.807 --> 00:08:26.940
+How many times does the line inside both loops run?
+
+00:08:27.490 --> 00:08:32.083
+In part 2, we'll make growth rates precise with big-O notation,
+
+00:08:32.083 --> 00:08:35.290
+and count every operation of a real program.
+

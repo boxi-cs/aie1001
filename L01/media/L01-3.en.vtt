@@ -1,0 +1,341 @@
+WEBVTT
+
+00:00:00.300 --> 00:00:02.118
+Here's a puzzle.
+
+00:00:02.118 --> 00:00:05.300
+Ask Python for 0.1 plus 0.2.
+
+00:00:05.650 --> 00:00:07.255
+You don't get 0.3.
+
+00:00:07.255 --> 00:00:11.890
+You get 0.3, then a long row of zeros, and then a 4.
+
+00:00:12.240 --> 00:00:14.360
+Is Python broken?
+
+00:00:14.910 --> 00:00:15.141
+No.
+
+00:00:15.141 --> 00:00:18.984
+It comes from how fractions are written in binary.
+
+00:00:18.984 --> 00:00:23.750
+To see why, we need to convert numbers between bases, by hand.
+
+00:00:24.533 --> 00:00:26.893
+This is Lecture 1, part 3.
+
+00:00:27.243 --> 00:00:34.626
+We'll convert numbers from any base to decimal, and then from decimal to binary, whole numbers and fractions.
+
+00:00:34.626 --> 00:00:37.403
+And we'll check every answer with Python.
+
+00:00:38.200 --> 00:00:42.221
+Going to decimal is just the definition of positional notation.
+
+00:00:42.221 --> 00:00:46.880
+Write each digit times the weight of its position, then add up the terms.
+
+00:00:47.230 --> 00:00:50.003
+Take 1101.01, in binary.
+
+00:00:50.003 --> 00:00:55.781
+Left of the point, the weights are 8, 4, 2, and 1.
+
+00:00:55.781 --> 00:01:00.750
+Right of the point, a half, then a quarter.
+
+00:01:01.100 --> 00:01:06.843
+So it's 8, plus 4, plus 1, plus a quarter.
+
+00:01:06.843 --> 00:01:08.620
+That's 13.25.
+
+00:01:08.970 --> 00:01:12.968
+Pause the video and try one yourself.
+
+00:01:12.968 --> 00:01:17.290
+Convert 10110.11 from binary to decimal.
+
+00:01:17.840 --> 00:01:23.897
+The weights are 16, 8, 4, 2, 1, then a half and a quarter.
+
+00:01:23.897 --> 00:01:29.640
+16 plus 4 plus 2, plus a half plus a quarter, is 22.75.
+
+00:01:30.433 --> 00:01:34.316
+Octal works the same way, with powers of 8.
+
+00:01:34.316 --> 00:01:42.353
+24.67 in octal is 2 times 8, plus 4, plus 6 times an eighth, plus 7 times a sixty-fourth.
+
+00:01:42.703 --> 00:01:52.090
+That's 16, plus 4, plus 0.75, plus 0.109375.
+
+00:01:52.090 --> 00:01:54.223
+20.859375.
+
+00:01:54.573 --> 00:02:00.295
+In hex, remember that the letters are digits 10 to 15.
+
+00:02:00.295 --> 00:02:01.460
+Take 2AB.C.
+
+00:02:01.460 --> 00:02:08.453
+That's 2 times 256, plus 10 times 16, plus 11, plus 12 sixteenths.
+
+00:02:08.803 --> 00:02:16.948
+512, plus 160, plus 11, plus three quarters.
+
+00:02:16.948 --> 00:02:18.243
+683.75.
+
+00:02:18.593 --> 00:02:20.733
+Any other base works the same way.
+
+00:02:20.733 --> 00:02:23.753
+Change the base, and the weights change with it.
+
+00:02:24.533 --> 00:02:26.610
+Python can check these.
+
+00:02:26.610 --> 00:02:34.557
+For whole numbers, the `int` function reads a string of digits in any base from 2 to 36.
+
+00:02:34.557 --> 00:02:36.453
+1101 in base 2 is 13.
+
+00:02:36.803 --> 00:02:39.147
+But `int` doesn't accept a point.
+
+00:02:39.147 --> 00:02:43.196
+So the notes write a small function, called `to_decimal`.
+
+00:02:43.196 --> 00:02:45.397
+Don't worry about the code yet.
+
+00:02:45.397 --> 00:02:47.883
+Lectures 2 to 4 explain every line.
+
+00:02:48.233 --> 00:02:54.070
+It walks through the digits from left to right, and multiplies each one by its weight.
+
+00:02:54.070 --> 00:03:00.993
+The power starts at the number of digits before the point, minus 1, and goes down by 1 for each digit.
+
+00:03:01.343 --> 00:03:04.503
+And all 6 examples from the slides check out.
+
+00:03:05.300 --> 00:03:08.301
+Now the other way: from decimal to binary.
+
+00:03:08.301 --> 00:03:13.660
+This takes two methods, one for the integer part, and one for the fraction.
+
+00:03:14.010 --> 00:03:18.998
+For the integer part, divide by 2, and write down the remainder.
+
+00:03:18.998 --> 00:03:21.803
+Then divide the quotient by 2 again.
+
+00:03:21.803 --> 00:03:24.530
+Keep going until the quotient is 0.
+
+00:03:24.880 --> 00:03:26.426
+Here's 57.
+
+00:03:26.426 --> 00:03:30.290
+57 is 2 times 28, plus 1.
+
+00:03:30.290 --> 00:03:34.154
+28 is 2 times 14, plus 0.
+
+00:03:34.154 --> 00:03:37.400
+Then 14, 7, 3, and 1.
+
+00:03:37.750 --> 00:03:46.210
+Now read the remainders from the bottom up.
+
+00:03:46.210 --> 00:03:49.555
+1, 1, 1, 0, 0, 1.
+
+00:03:49.555 --> 00:03:54.670
+So 57 is 111001 in binary.
+
+00:03:55.270 --> 00:04:01.310
+Check it: 32, plus 16, plus 8, plus 1, is 57.
+
+00:04:01.660 --> 00:04:06.039
+Why is the first remainder the lowest digit?
+
+00:04:06.039 --> 00:04:13.900
+57 equals 2 times 28 plus 1 says that 57 is odd, so its last binary digit is 1.
+
+00:04:14.250 --> 00:04:17.432
+All the other digits together make 2 times 28.
+
+00:04:17.432 --> 00:04:20.544
+So the next division finds the next digit up.
+
+00:04:20.544 --> 00:04:24.210
+Each division peels off the lowest digit that's left.
+
+00:04:25.000 --> 00:04:31.228
+The most common mistake is reading the remainders from the top down.
+
+00:04:31.228 --> 00:04:34.800
+That gives 100111, which is 39, not 57.
+
+00:04:35.150 --> 00:04:38.417
+The first remainder is the lowest digit.
+
+00:04:38.417 --> 00:04:42.990
+And you can always catch the mistake by converting back.
+
+00:04:43.590 --> 00:04:47.421
+The same method works for any base.
+
+00:04:47.421 --> 00:04:51.799
+Divide by 8 for octal, or by 16 for hex.
+
+00:04:51.799 --> 00:04:55.630
+215 is 327 in octal, and D7 in hex.
+
+00:04:56.400 --> 00:04:59.277
+For a fraction, multiply by 2 instead.
+
+00:04:59.277 --> 00:05:04.272
+The integer part of the product, 0 or 1, is the next binary digit.
+
+00:05:04.272 --> 00:05:08.662
+Keep only the fractional part, and multiply it by 2 again.
+
+00:05:08.662 --> 00:05:11.160
+Stop when the fraction reaches 0.
+
+00:05:11.510 --> 00:05:16.410
+0.875 times 2 is 1.75: digit 1.
+
+00:05:16.410 --> 00:05:20.994
+0.75 times 2 is 1.5: digit 1.
+
+00:05:20.994 --> 00:05:25.419
+0.5 times 2 is 1.0: digit 1.
+
+00:05:25.419 --> 00:05:27.790
+And we're done.
+
+00:05:28.140 --> 00:05:37.000
+This time the digits come out highest first, so read them from the top down.
+
+00:05:37.000 --> 00:05:39.914
+0.875 is 0.111 in binary.
+
+00:05:39.914 --> 00:05:44.460
+A half, plus a quarter, plus an eighth.
+
+00:05:45.060 --> 00:05:48.244
+0.6875 takes 4 steps.
+
+00:05:48.244 --> 00:05:52.186
+The digits are 1, 0, 1, 1.
+
+00:05:52.186 --> 00:05:54.460
+So it's 0.1011.
+
+00:05:54.810 --> 00:05:56.680
+Why does multiplying work?
+
+00:05:56.680 --> 00:06:02.001
+Multiplying a binary fraction by 2 shifts every digit 1 place to the left.
+
+00:06:02.001 --> 00:06:07.610
+So the first digit after the point jumps in front of it, where we can read it.
+
+00:06:08.400 --> 00:06:13.320
+For a number with both parts, convert them separately, and join them with the point.
+
+00:06:13.670 --> 00:06:15.850
+Take 215.6875.
+
+00:06:15.850 --> 00:06:20.988
+Division turns 215 into 11010111.
+
+00:06:20.988 --> 00:06:28.150
+Multiplication turns the fraction into 0.1011.
+
+00:06:28.500 --> 00:06:30.493
+Put them together.
+
+00:06:30.493 --> 00:06:35.584
+Then convert back with our function, to check.
+
+00:06:35.584 --> 00:06:36.580
+215.6875.
+
+00:06:37.367 --> 00:06:40.590
+But some fractions never stop.
+
+00:06:40.590 --> 00:06:41.449
+Try 0.1.
+
+00:06:41.449 --> 00:06:54.767
+Multiply by 2, again and again, and the digits 0, 0, 1, 1 repeat forever, just like one third is 0.333, forever, in decimal.
+
+00:06:55.117 --> 00:06:58.411
+A computer has to cut it off somewhere.
+
+00:06:58.411 --> 00:07:03.477
+So it stores a number very close to 0.1, but not 0.1 itself.
+
+00:07:03.827 --> 00:07:05.669
+That's our puzzle.
+
+00:07:05.669 --> 00:07:11.502
+The tiny errors in 0.1 and 0.2 show up when you add them.
+
+00:07:11.502 --> 00:07:17.027
+And so, asking whether the sum equals 0.3 gives False.
+
+00:07:17.627 --> 00:07:19.648
+This isn't a bug in Python.
+
+00:07:19.648 --> 00:07:24.812
+Every language that uses binary floating-point numbers does the same.
+
+00:07:24.812 --> 00:07:32.147
+Fractions whose denominator is a power of 2, like a half, a quarter, or 0.875, are stored exactly.
+
+00:07:32.934 --> 00:07:34.094
+Let's sum up.
+
+00:07:34.444 --> 00:07:38.884
+To convert to decimal: digit times weight, then add.
+
+00:07:39.234 --> 00:07:44.839
+From decimal: divide for the integer part, and read the remainders from the bottom up.
+
+00:07:44.839 --> 00:07:49.074
+Multiply for the fraction, and read the digits from the top down.
+
+00:07:49.424 --> 00:07:54.599
+Do the two parts separately, then check by converting back.
+
+00:07:54.599 --> 00:07:58.984
+And some fractions, like 0.1, never end in binary.
+
+00:07:59.334 --> 00:08:01.147
+Here's one to try.
+
+00:08:01.147 --> 00:08:03.765
+Convert 100.375 to binary.
+
+00:08:03.765 --> 00:08:08.094
+Then convert your answer back, to check it.
+
+00:08:08.644 --> 00:08:17.764
+In part 4, we'll see a shortcut between binary, octal and hex, and then the units of data: bits, bytes, and memory addresses.
+

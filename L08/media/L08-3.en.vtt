@@ -1,0 +1,341 @@
+WEBVTT
+
+00:00:00.300 --> 00:00:03.518
+Here's a function with just one line in its body.
+
+00:00:03.518 --> 00:00:05.620
+It takes a shape, and prints it.
+
+00:00:05.970 --> 00:00:10.370
+We call it twice: once with a circle, and once with a rectangle.
+
+00:00:10.720 --> 00:00:13.304
+The same line of code runs both times.
+
+00:00:13.304 --> 00:00:18.880
+So why does it print a radius the first time, and a width and a height the second?
+
+00:00:19.667 --> 00:00:24.347
+This is Lecture 8, part 3: polymorphism and method lookup.
+
+00:00:24.697 --> 00:00:28.124
+We'll write functions that work for every kind of shape,
+
+00:00:28.124 --> 00:00:32.163
+and then learn the 1 rule Python uses to decide which method runs.
+
+00:00:32.163 --> 00:00:36.937
+With that rule, you can answer any question of the form: what does this print?
+
+00:00:37.734 --> 00:00:42.227
+Every circle is a geometric object, and so is every rectangle.
+
+00:00:42.227 --> 00:00:47.734
+So a function written for a GeometricObject parameter works for any of them.
+
+00:00:48.084 --> 00:00:50.836
+Display object prints its argument.
+
+00:00:50.836 --> 00:00:53.196
+Is same area compares 2 areas.
+
+00:00:53.196 --> 00:00:59.644
+Main makes a circle of radius 4 and a rectangle that's 1 by 3, and passes them in.
+
+00:00:59.994 --> 00:01:02.118
+The 1st line shows the radius.
+
+00:01:02.118 --> 00:01:04.879
+The 2nd shows the width and the height.
+
+00:01:04.879 --> 00:01:07.074
+And the areas are not the same.
+
+00:01:07.424 --> 00:01:11.562
+This is polymorphism, which is Greek for many forms.
+
+00:01:11.562 --> 00:01:17.292
+An object of a subclass can be used wherever its superclass is expected,
+
+00:01:17.292 --> 00:01:22.704
+and the code that uses it doesn't need to know which subclass it is.
+
+00:01:23.304 --> 00:01:28.786
+And which dunder str runs isn't decided when you write the function.
+
+00:01:28.786 --> 00:01:31.769
+It's decided each time the line runs,
+
+00:01:31.769 --> 00:01:36.525
+by the class of the object that g refers to at that moment.
+
+00:01:36.525 --> 00:01:39.024
+This is called dynamic binding.
+
+00:01:39.801 --> 00:01:42.055
+Here's the pattern behind it.
+
+00:01:42.055 --> 00:01:43.921
+Call it: ask the object.
+
+00:01:44.271 --> 00:01:49.955
+Write a function in terms of methods that every object of the superclass has,
+
+00:01:49.955 --> 00:01:50.989
+like get area.
+
+00:01:50.989 --> 00:01:53.351
+Let each subclass override them.
+
+00:01:53.701 --> 00:01:57.842
+Total area adds up the area of every shape in a list.
+
+00:01:57.842 --> 00:02:01.123
+It never checks what kind of shape it has.
+
+00:02:01.123 --> 00:02:03.701
+Each shape uses its own get area.
+
+00:02:04.051 --> 00:02:06.451
+3 rectangles give 36.
+
+00:02:06.451 --> 00:02:11.251
+A circle and a rectangle give about 11.14.
+
+00:02:11.601 --> 00:02:17.290
+And if someone writes a triangle class next year, total area will work for it too,
+
+00:02:17.290 --> 00:02:19.441
+without changing a single line.
+
+00:02:20.234 --> 00:02:23.832
+So how does Python find the right method?
+
+00:02:23.832 --> 00:02:28.834
+Here's the rule, for any attribute: a method, or a field.
+
+00:02:29.184 --> 00:02:34.904
+Step 1: look among the object's own attributes, the ones dunder init put on it.
+
+00:02:35.254 --> 00:02:39.134
+Step 2: otherwise, look in the object's class.
+
+00:02:39.484 --> 00:02:43.178
+Step 3: otherwise, look in that class's superclass,
+
+00:02:43.178 --> 00:02:46.364
+then its superclass, and so on up the chain.
+
+00:02:46.714 --> 00:02:49.610
+Step 4: the chain always ends at object.
+
+00:02:49.610 --> 00:02:54.314
+If the name isn't there either, Python raises an attribute error.
+
+00:02:54.664 --> 00:02:57.488
+The 1st match wins, and the search stops.
+
+00:02:57.488 --> 00:03:01.344
+This search order is called the method resolution order.
+
+00:03:02.134 --> 00:03:03.851
+Let's use the rule.
+
+00:03:03.851 --> 00:03:06.380
+Here's a chain of 4 classes.
+
+00:03:06.380 --> 00:03:11.348
+C1 sets f to 1, and has an output method that prints f.
+
+00:03:11.348 --> 00:03:15.774
+C2 extends C1, sets f to 2, and overrides output.
+
+00:03:16.124 --> 00:03:20.020
+C3 extends C2, and C4 extends C3.
+
+00:03:20.020 --> 00:03:23.797
+Each of them sets f, to 3 and 4.
+
+00:03:23.797 --> 00:03:28.164
+But neither one has an output method.
+
+00:03:28.514 --> 00:03:31.589
+We make a C4 object, called a.
+
+00:03:31.589 --> 00:03:34.459
+Pause the video and predict.
+
+00:03:34.459 --> 00:03:37.022
+What does print a.f show?
+
+00:03:37.022 --> 00:03:39.994
+And what does a.output print?
+
+00:03:40.544 --> 00:03:46.518
+Making a C4 looks for dunder init, and finds it in C4 straight away.
+
+00:03:46.518 --> 00:03:49.504
+So only that one runs, and f is 4.
+
+00:03:49.854 --> 00:03:51.305
+Now a.output.
+
+00:03:51.305 --> 00:03:55.100
+Look in the object: it only has f.
+
+00:03:55.100 --> 00:03:57.556
+Look in C4: no output.
+
+00:03:57.556 --> 00:03:59.454
+In C3: no output.
+
+00:03:59.454 --> 00:04:01.574
+In C2: found. Stop.
+
+00:04:01.924 --> 00:04:06.039
+So C2's output runs, with self being a.
+
+00:04:06.039 --> 00:04:09.099
+It prints: in C2, the f is 4.
+
+00:04:09.099 --> 00:04:15.324
+The method came from C2, but the data came from the object.
+
+00:04:15.924 --> 00:04:21.173
+And you can ask Python for the order it searched.
+
+00:04:21.173 --> 00:04:25.564
+For C4, it's C4, C3, C2, C1, then object.
+
+00:04:26.334 --> 00:04:30.214
+Now the most common wrong idea about method lookup.
+
+00:04:30.564 --> 00:04:37.262
+Many students think the method that runs is the one in the class where the call is written.
+
+00:04:37.262 --> 00:04:37.924
+It isn't.
+
+00:04:38.524 --> 00:04:39.682
+Look at this.
+
+00:04:39.682 --> 00:04:43.778
+Student has a dunder str that returns student,
+
+00:04:43.778 --> 00:04:48.675
+and a print student method that prints self.dunder str.
+
+00:04:48.675 --> 00:04:54.284
+GraduateStudent extends Student, and overrides only dunder str.
+
+00:04:54.634 --> 00:04:58.261
+For a plain Student, print student prints: student.
+
+00:04:58.261 --> 00:04:59.114
+No surprise.
+
+00:04:59.464 --> 00:05:02.994
+Now call print student on b, a GraduateStudent.
+
+00:05:02.994 --> 00:05:06.975
+Python doesn't find print student in GraduateStudent,
+
+00:05:06.975 --> 00:05:09.904
+so it goes up, and finds it in Student.
+
+00:05:10.254 --> 00:05:12.866
+Inside it, self is still b.
+
+00:05:12.866 --> 00:05:18.865
+So self.dunder str starts the search again, at the class of b,
+
+00:05:18.865 --> 00:05:21.283
+which is GraduateStudent.
+
+00:05:21.283 --> 00:05:26.894
+It finds the override there, and prints: graduate student.
+
+00:05:27.494 --> 00:05:31.788
+A method written in the superclass called a method of the subclass.
+
+00:05:31.788 --> 00:05:33.774
+That's dynamic binding at work.
+
+00:05:34.568 --> 00:05:35.253
+1 twist.
+
+00:05:35.253 --> 00:05:38.768
+These 2 programs differ in a single name.
+
+00:05:39.118 --> 00:05:42.101
+On the left, the method is called get info.
+
+00:05:42.101 --> 00:05:45.918
+On the right, it's private, with 2 leading underscores.
+
+00:05:46.268 --> 00:05:48.994
+The left one prints person, then student.
+
+00:05:48.994 --> 00:05:51.588
+That's dynamic binding, just as before.
+
+00:05:51.938 --> 00:05:56.738
+But the right one prints person, twice. Why?
+
+00:05:57.288 --> 00:06:02.267
+Name mangling happens when the code is written, not when it runs.
+
+00:06:02.267 --> 00:06:06.404
+Inside Person, the call is renamed with Person's name.
+
+00:06:06.404 --> 00:06:10.848
+Inside Student, the method is renamed with Student's name.
+
+00:06:11.198 --> 00:06:16.663
+The 2 names are different, so Student's method doesn't override Person's.
+
+00:06:16.663 --> 00:06:19.358
+Private methods can't be overridden.
+
+00:06:20.135 --> 00:06:21.655
+Let's sum up.
+
+00:06:22.005 --> 00:06:25.814
+Polymorphism: 1 function works for every subclass.
+
+00:06:25.814 --> 00:06:30.005
+Ask the object, and let each class override the method.
+
+00:06:30.355 --> 00:06:36.496
+Method lookup: start at the object, then its class, then up the chain to object.
+
+00:06:36.496 --> 00:06:37.955
+The 1st match wins.
+
+00:06:38.305 --> 00:06:43.954
+Inside a method, a call on self starts again at the object's own class.
+
+00:06:43.954 --> 00:06:45.785
+That's dynamic binding.
+
+00:06:46.135 --> 00:06:47.570
+Here's 1 to try.
+
+00:06:47.570 --> 00:06:50.351
+Animal has speak and introduce.
+
+00:06:50.351 --> 00:06:52.145
+Dog overrides speak.
+
+00:06:52.145 --> 00:06:56.003
+Puppy overrides introduce, and calls super.
+
+00:06:56.003 --> 00:07:01.655
+Trace what each one's introduce returns, using the lookup rule.
+
+00:07:02.205 --> 00:07:05.965
+In part 4, we'll meet the is instance function,
+
+00:07:05.965 --> 00:07:09.165
+and classes with more than 1 superclass.
+
