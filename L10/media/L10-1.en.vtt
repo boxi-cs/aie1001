@@ -1,0 +1,413 @@
+WEBVTT
+
+00:00:00.300 --> 00:00:07.860
+You open a web browser and visit three pages: a search page, then a news site, then an article.
+
+00:00:08.210 --> 00:00:10.518
+Now you press the Back button.
+
+00:00:10.518 --> 00:00:12.210
+Which page do you get?
+
+00:00:12.760 --> 00:00:14.500
+You're back on the news site.
+
+00:00:14.500 --> 00:00:17.260
+Press Back again, and you get the search page.
+
+00:00:17.260 --> 00:00:21.640
+The pages come back in the opposite order to the one you visited them in.
+
+00:00:21.990 --> 00:00:24.625
+Undo in a text editor works the same way.
+
+00:00:24.625 --> 00:00:27.710
+It always cancels your most recent change first.
+
+00:00:28.060 --> 00:00:32.962
+Both keep a pile of things, and only ever touch the one on top.
+
+00:00:32.962 --> 00:00:35.140
+That pile is called a stack.
+
+00:00:35.933 --> 00:00:43.573
+Welcome to Lecture 10 of Introduction to AI Programming: stacks, queues, linked lists and trees.
+
+00:00:43.923 --> 00:00:48.442
+In this first part, we'll define the stack, build one as a Python class,
+
+00:00:48.442 --> 00:00:55.283
+and use it to solve three problems: reversing a list, matching brackets, and checking the tags of a web page.
+
+00:00:56.067 --> 00:00:58.987
+First, two words we'll use all lecture.
+
+00:00:59.337 --> 00:01:04.690
+A data structure is a systematic way of organising and accessing data.
+
+00:01:04.690 --> 00:01:11.497
+An algorithm is a step-by-step procedure that performs a task in a finite amount of time.
+
+00:01:11.847 --> 00:01:16.135
+Lecture 9 was mostly about algorithms: searching and sorting.
+
+00:01:16.135 --> 00:01:18.807
+This lecture is about data structures.
+
+00:01:19.157 --> 00:01:23.843
+You already know Python's built-in ones: list, tuple, dict and set.
+
+00:01:23.843 --> 00:01:27.480
+Today we build four more on top of them, as classes,
+
+00:01:27.480 --> 00:01:30.837
+each fast at some operations and slow at others.
+
+00:01:31.634 --> 00:01:40.767
+A stack is a collection of objects that are inserted and removed by one rule: last in, first out.
+
+00:01:40.767 --> 00:01:42.274
+For short, LIFO.
+
+00:01:42.624 --> 00:01:44.528
+Think of a stack of plates.
+
+00:01:44.528 --> 00:01:47.984
+You put a new plate on top. That's called a push.
+
+00:01:48.334 --> 00:01:51.236
+And you take a plate from the top. That's called a pop.
+
+00:01:51.236 --> 00:01:53.294
+You never pull one out from the middle.
+
+00:01:53.644 --> 00:01:58.764
+The plate you can see, the most recent one still there, is the top of the stack.
+
+00:01:59.114 --> 00:02:01.009
+You've met a stack before.
+
+00:02:01.009 --> 00:02:05.895
+In Lecture 6, every function call pushed a frame on the call stack,
+
+00:02:05.895 --> 00:02:07.936
+and every return popped one.
+
+00:02:07.936 --> 00:02:11.874
+That's why the last call made was the first to return.
+
+00:02:12.667 --> 00:02:15.467
+A stack supports five operations.
+
+00:02:15.817 --> 00:02:18.089
+Push adds an element on top.
+
+00:02:18.089 --> 00:02:21.577
+Pop removes the top element and returns it.
+
+00:02:21.927 --> 00:02:25.440
+Top returns the top element without removing it.
+
+00:02:25.440 --> 00:02:28.807
+Both pop and top are errors on an empty stack.
+
+00:02:29.157 --> 00:02:32.018
+Is empty tells you whether there's anything there.
+
+00:02:32.018 --> 00:02:34.136
+And len gives the number of elements,
+
+00:02:34.136 --> 00:02:36.997
+which in a class we write as the method `__len__`.
+
+00:02:37.347 --> 00:02:44.305
+Notice that this list says what each operation does, but not how the elements are stored.
+
+00:02:44.305 --> 00:02:49.309
+A description like that is called an abstract data type, or ADT.
+
+00:02:49.309 --> 00:02:52.827
+Any class with these five methods is a stack.
+
+00:02:53.600 --> 00:02:55.246
+So how do we store them?
+
+00:02:55.246 --> 00:02:59.223
+A Python list already adds and removes at its end quickly.
+
+00:02:59.223 --> 00:03:02.720
+So let the end of the list be the top of the stack.
+
+00:03:03.070 --> 00:03:06.563
+The constructor makes an empty list called `_data`.
+
+00:03:06.563 --> 00:03:11.150
+The underscore says: this is internal, don't touch it from outside.
+
+00:03:11.500 --> 00:03:13.666
+Push is just `append`.
+
+00:03:13.666 --> 00:03:18.980
+Watch the list: 100, then 200, then 300 go on the end.
+
+00:03:19.330 --> 00:03:22.634
+Top returns the last element, at index -1.
+
+00:03:22.634 --> 00:03:28.770
+Pop calls the list's own `pop`, which removes the last element and returns it.
+
+00:03:29.120 --> 00:03:34.319
+And if the stack is empty, top and pop raise an `IndexError`,
+
+00:03:34.319 --> 00:03:36.960
+instead of quietly carrying on.
+
+00:03:37.560 --> 00:03:39.637
+Two small changes from the slides.
+
+00:03:39.637 --> 00:03:44.951
+The slides write two underscores, and they print a message instead of raising an error.
+
+00:03:44.951 --> 00:03:47.760
+We'll see in a minute why the error is better.
+
+00:03:48.534 --> 00:03:52.194
+Here's the slides' program that uses the class.
+
+00:03:52.194 --> 00:03:55.621
+It makes a stack, prints whether it's empty,
+
+00:03:55.621 --> 00:03:57.490
+pushes 100, 200 and 300,
+
+00:03:57.490 --> 00:04:00.294
+then prints top, pop, and top again.
+
+00:04:00.644 --> 00:04:04.080
+Pause the video and predict the four lines it prints.
+
+00:04:04.080 --> 00:04:06.804
+And how many elements are left at the end?
+
+00:04:07.354 --> 00:04:10.035
+First, the stack is empty: True.
+
+00:04:10.035 --> 00:04:13.554
+Then top looks at 300 without removing it.
+
+00:04:13.904 --> 00:04:18.830
+So pop returns the same 300, and this time it's gone.
+
+00:04:18.830 --> 00:04:20.504
+Now 200 is on top.
+
+00:04:20.854 --> 00:04:25.054
+Two elements are left: 100 and 200.
+
+00:04:25.834 --> 00:04:28.147
+What if you pop an empty stack?
+
+00:04:28.147 --> 00:04:33.594
+With our class, you find out at once: `IndexError`, pop from empty stack.
+
+00:04:33.944 --> 00:04:39.235
+With the slide version, the method prints a message, and then returns `None`.
+
+00:04:39.235 --> 00:04:43.565
+The program carries on, with a `None` where a number should be,
+
+00:04:43.565 --> 00:04:46.864
+and the bug shows up much later, somewhere else.
+
+00:04:47.214 --> 00:04:51.254
+So always check `is_empty` before you pop.
+
+00:04:52.034 --> 00:04:53.509
+Now let's use the stack.
+
+00:04:53.509 --> 00:04:58.794
+A stack is the right tool whenever the last thing you saw is the first thing you need.
+
+00:04:59.144 --> 00:05:01.289
+Problem 1: reverse a list.
+
+00:05:01.289 --> 00:05:04.424
+Push every element, then pop them all.
+
+00:05:04.774 --> 00:05:07.824
+1, 2, 3, 4, 5 go in.
+
+00:05:07.824 --> 00:05:09.654
+5 is on top.
+
+00:05:10.004 --> 00:05:14.810
+So 5 comes out first, then 4, 3, 2, 1.
+
+00:05:14.810 --> 00:05:18.604
+The new list is 5, 4, 3, 2, 1.
+
+00:05:19.401 --> 00:05:21.532
+Problem 2: matching brackets.
+
+00:05:21.532 --> 00:05:28.513
+In a correct expression, every opening bracket is closed by a closing bracket of the same kind,
+
+00:05:28.513 --> 00:05:32.041
+and they close in the reverse order they opened.
+
+00:05:32.391 --> 00:05:39.096
+The bracket that must close next is always the most recent one that's still open.
+
+00:05:39.096 --> 00:05:41.911
+Most recent first: that's a stack.
+
+00:05:42.511 --> 00:05:43.796
+So here's the rule.
+
+00:05:43.796 --> 00:05:45.689
+An opening bracket, push it.
+
+00:05:45.689 --> 00:05:51.371
+A closing bracket, pop the stack and check that the popped bracket is the same kind.
+
+00:05:51.371 --> 00:05:56.511
+And if the stack is empty, there's nothing to match, so the answer is False.
+
+00:05:56.861 --> 00:06:02.141
+At the very end, the expression is correct only if the stack is empty.
+
+00:06:02.491 --> 00:06:05.251
+Let's trace it on this one, which should fail.
+
+00:06:05.601 --> 00:06:09.641
+Three opening round brackets: push, push, push.
+
+00:06:09.991 --> 00:06:12.810
+A closing round bracket pops a round one.
+
+00:06:12.810 --> 00:06:13.911
+Same kind, good.
+
+00:06:14.261 --> 00:06:16.402
+Then a closing curly brace.
+
+00:06:16.402 --> 00:06:18.305
+It pops a round bracket.
+
+00:06:18.305 --> 00:06:23.461
+That's the wrong kind, so the function returns False right there.
+
+00:06:23.811 --> 00:06:26.728
+The line that checks the kind compares positions.
+
+00:06:26.728 --> 00:06:30.122
+The index of the closing bracket in the string of closers
+
+00:06:30.122 --> 00:06:34.171
+must equal the index of the popped bracket in the string of openers.
+
+00:06:34.967 --> 00:06:38.603
+Here's a tempting shortcut: just count the brackets.
+
+00:06:38.603 --> 00:06:43.287
+If there are as many opening ones as closing ones, it must be fine?
+
+00:06:43.637 --> 00:06:43.950
+No.
+
+00:06:43.950 --> 00:06:49.475
+These two both have equal counts, and both are wrong.
+
+00:06:49.475 --> 00:06:52.498
+Counting can't see the order.
+
+00:06:52.498 --> 00:06:53.957
+The stack can.
+
+00:06:54.734 --> 00:06:58.392
+Problem 3: HTML, the language of web pages.
+
+00:06:58.392 --> 00:07:00.689
+It marks up text with tags.
+
+00:07:00.689 --> 00:07:04.347
+An opening tag is a name in angle brackets.
+
+00:07:04.347 --> 00:07:06.814
+The closing tag adds a slash.
+
+00:07:07.164 --> 00:07:09.939
+Tags must nest exactly like brackets,
+
+00:07:09.939 --> 00:07:12.564
+so the same stack idea checks them.
+
+00:07:12.914 --> 00:07:18.291
+The function finds each opening angle bracket, then the closing one after it,
+
+00:07:18.291 --> 00:07:21.154
+and takes the text in between as the tag.
+
+00:07:21.504 --> 00:07:23.808
+A tag without a slash is pushed.
+
+00:07:23.808 --> 00:07:27.984
+A tag with a slash must match the tag on top of the stack.
+
+00:07:28.334 --> 00:07:29.546
+Try this one.
+
+00:07:29.546 --> 00:07:30.385
+Push 'p'.
+
+00:07:30.385 --> 00:07:31.224
+Push 'b'.
+
+00:07:31.224 --> 00:07:36.910
+Now the closing 'p' arrives, but the top of the stack is 'b'.
+
+00:07:36.910 --> 00:07:38.774
+Wrong tag, so False.
+
+00:07:39.124 --> 00:07:44.560
+The slides' sample page, with its heading, paragraph and list, is correctly nested,
+
+00:07:44.560 --> 00:07:46.524
+and the function returns True.
+
+00:07:47.301 --> 00:07:48.501
+Let's sum up.
+
+00:07:48.851 --> 00:07:51.681
+A stack is last in, first out.
+
+00:07:51.681 --> 00:07:53.851
+You only touch the top.
+
+00:07:54.201 --> 00:07:59.099
+Its operations are push, pop, top, is empty and len,
+
+00:07:59.099 --> 00:08:04.561
+and a Python list stores it well, with the top at the end.
+
+00:08:04.911 --> 00:08:10.034
+Use a stack whenever the most recent item must be dealt with first:
+
+00:08:10.034 --> 00:08:13.551
+reversing, brackets, tags, and the call stack.
+
+00:08:13.901 --> 00:08:15.536
+Here's one to try.
+
+00:08:15.536 --> 00:08:20.258
+Write `is_palindrome`, using a stack and no slicing.
+
+00:08:20.258 --> 00:08:27.341
+Push every character, then pop them and compare with the string read forwards.
+
+00:08:27.891 --> 00:08:31.654
+In part two, we'll meet the stack's opposite, the queue,
+
+00:08:31.654 --> 00:08:34.611
+where the first one in is the first one out.
+

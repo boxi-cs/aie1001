@@ -1,0 +1,317 @@
+WEBVTT
+
+00:00:00.300 --> 00:00:03.389
+So far, all our data has lived in variables.
+
+00:00:03.389 --> 00:00:06.900
+And when the program ends, the variables are gone.
+
+00:00:07.250 --> 00:00:14.970
+A file keeps data on the disk, after the program has finished, and for the next program to read.
+
+00:00:15.570 --> 00:00:17.321
+Here's part of a hosts file.
+
+00:00:17.321 --> 00:00:22.010
+It's a text file, and a text file can be thought of as a sequence of lines.
+
+00:00:22.800 --> 00:00:27.320
+This is Lecture 4, part 4: reading and writing files.
+
+00:00:27.670 --> 00:00:31.751
+We'll open a file, see what really separates its lines,
+
+00:00:31.751 --> 00:00:35.312
+read it line by line and all at once, search it,
+
+00:00:35.312 --> 00:00:37.390
+and write a file of our own.
+
+00:00:38.167 --> 00:00:41.153
+To have a file to read, our first program writes one.
+
+00:00:41.153 --> 00:00:43.744
+We'll explain writing at the end of this part.
+
+00:00:43.744 --> 00:00:44.927
+For now, just run it.
+
+00:00:45.277 --> 00:00:50.491
+It writes the 6 lines of the hosts file into a new file called myhost.txt,
+
+00:00:50.491 --> 00:00:52.957
+in the folder where you run Python.
+
+00:00:53.734 --> 00:00:59.404
+Before reading a file, we must tell Python which file, and what we'll do with it.
+
+00:00:59.404 --> 00:01:02.134
+The built-in function `open` does this.
+
+00:01:02.484 --> 00:01:07.001
+`open` takes a file name, which is a string, and a mode.
+
+00:01:07.001 --> 00:01:12.084
+The mode is 'r' to read, which is the default, or 'w' to write.
+
+00:01:12.434 --> 00:01:14.886
+`open` returns a file handle.
+
+00:01:14.886 --> 00:01:23.682
+Not the file's contents, but an object we use to work with the file: to read it, write it, and close it.
+
+00:01:23.682 --> 00:01:27.234
+It's like File > Open in a word processor.
+
+00:01:27.834 --> 00:01:31.967
+In fact, if you print the handle, you don't see any of the text.
+
+00:01:31.967 --> 00:01:35.714
+You see what kind of object it is, its name, and its mode.
+
+00:01:36.064 --> 00:01:41.464
+And if the file doesn't exist, `open` raises a `FileNotFoundError`.
+
+00:01:42.234 --> 00:01:45.305
+Now, what separates the lines of a file?
+
+00:01:45.305 --> 00:01:48.300
+A special character called the newline.
+
+00:01:48.300 --> 00:01:50.834
+In a string, we write it as `\n`.
+
+00:01:51.184 --> 00:01:55.024
+Type the string "Hello,\nWorld" at the prompt,
+
+00:01:55.024 --> 00:01:59.784
+and Python shows it back with the `\n` inside the quotes.
+
+00:02:00.134 --> 00:02:03.826
+But when we print it, the newline starts a new line.
+
+00:02:03.826 --> 00:02:06.454
+Hello on one line, World on the next.
+
+00:02:06.804 --> 00:02:11.517
+And `\n` is one character, not two.
+
+00:02:11.517 --> 00:02:14.884
+`X\nY` has a length of 3.
+
+00:02:15.484 --> 00:02:21.604
+So a text file is really one long string, with a newline at the end of each line.
+
+00:02:22.401 --> 00:02:28.202
+A file handle opened for reading behaves like a sequence of strings, one per line.
+
+00:02:28.202 --> 00:02:31.881
+So a `for` loop goes through the file, line by line.
+
+00:02:32.231 --> 00:02:36.831
+This loop opens `myhost.txt`, and prints each line.
+
+00:02:37.181 --> 00:02:42.624
+Remember: each line of the file ends with a newline, and `print` adds its own.
+
+00:02:42.624 --> 00:02:44.577
+Pause the video and predict.
+
+00:02:44.577 --> 00:02:46.741
+What does the output look like?
+
+00:02:47.291 --> 00:02:50.211
+Every line is followed by a blank line.
+
+00:02:51.001 --> 00:02:55.073
+Each line arrives with its newline still on the end.
+
+00:02:55.073 --> 00:02:58.283
+`print` shows it, and then adds one more.
+
+00:02:58.283 --> 00:03:02.121
+Two newlines, so there's a blank line in between.
+
+00:03:02.721 --> 00:03:06.373
+The fix is the string method from part 3: `rstrip`.
+
+00:03:06.373 --> 00:03:11.601
+It removes whitespace, newlines included, from the right end of the line.
+
+00:03:11.951 --> 00:03:16.631
+Strip each line, then print it, and the output looks just like the file.
+
+00:03:16.981 --> 00:03:20.337
+Remember this when you compare lines as well.
+
+00:03:20.337 --> 00:03:25.261
+A line still ending in `\n` is never equal to the text without it.
+
+00:03:26.034 --> 00:03:29.373
+The slides' practice problem is to count the lines of a file.
+
+00:03:29.373 --> 00:03:31.234
+That's the counting pattern again.
+
+00:03:31.584 --> 00:03:34.193
+Set `count` to 0 before the loop.
+
+00:03:34.193 --> 00:03:35.775
+Add 1 for each line.
+
+00:03:35.775 --> 00:03:38.384
+Print the `count` after the loop.
+
+00:03:38.734 --> 00:03:40.854
+Our file has 6 lines.
+
+00:03:41.634 --> 00:03:44.316
+You can also read the whole file at once.
+
+00:03:44.316 --> 00:03:49.354
+The `read` method gives the whole file as a single string, newlines included.
+
+00:03:49.704 --> 00:03:53.504
+Our file is 155 characters long.
+
+00:03:53.854 --> 00:03:57.492
+And its first 20 characters print over two lines.
+
+00:03:57.492 --> 00:03:57.789
+Why?
+
+00:03:57.789 --> 00:04:05.214
+They are the 17 characters of the first line, then the newline, then 21, the start of the next line.
+
+00:04:05.564 --> 00:04:08.905
+Reading everything at once is handy for small files.
+
+00:04:08.905 --> 00:04:14.044
+For large ones, loop line by line, so the whole file never has to sit in memory.
+
+00:04:14.834 --> 00:04:20.194
+To search a file, put an `if` inside the loop, and keep only the lines you want.
+
+00:04:20.544 --> 00:04:25.708
+This loop strips each line, and prints it only if it starts with a hash sign.
+
+00:04:25.708 --> 00:04:30.000
+Those are the comment lines: Gmail web start, and Gmail web end.
+
+00:04:30.000 --> 00:04:31.744
+Then it prints 'finished'.
+
+00:04:32.094 --> 00:04:36.161
+The slide writes `if line.startswith('#') == True`.
+
+00:04:36.161 --> 00:04:38.474
+You don't need the `== True`.
+
+00:04:38.474 --> 00:04:44.774
+`startswith` already gives `True` or `False`, which is exactly what `if` needs.
+
+00:04:45.124 --> 00:04:52.610
+This is the pattern most file programs in this course start with: read, strip, filter.
+
+00:04:52.610 --> 00:04:58.964
+Loop over the lines, strip each one, test it, and use the ones that pass.
+
+00:04:59.734 --> 00:05:01.020
+Finally, writing.
+
+00:05:01.020 --> 00:05:06.014
+Open the file with mode 'w', and call the handle's `write` method.
+
+00:05:06.364 --> 00:05:10.973
+The `write` method does not add a newline for you.
+
+00:05:10.973 --> 00:05:14.844
+Put `\n` at the end of each line yourself.
+
+00:05:15.444 --> 00:05:19.204
+Then close the file when you're done, so everything is saved.
+
+00:05:19.554 --> 00:05:21.266
+Careful with mode 'w'.
+
+00:05:21.266 --> 00:05:26.714
+It creates the file, or, if the file already exists, empties it first.
+
+00:05:27.064 --> 00:05:30.784
+Read it back to check, and there are our 3 lines.
+
+00:05:31.134 --> 00:05:34.675
+You'll also see a `with` statement in many programs.
+
+00:05:34.675 --> 00:05:39.237
+It closes the file for you, even if an error happens in the middle.
+
+00:05:39.237 --> 00:05:43.254
+In this course we use `open` and `close`, as the slides do.
+
+00:05:44.034 --> 00:05:48.492
+An AI assistant can write code that reads and writes files in seconds.
+
+00:05:48.492 --> 00:05:51.994
+Check what it gives you, with the tools from this part.
+
+00:05:52.344 --> 00:05:53.579
+Newlines first.
+
+00:05:53.579 --> 00:05:57.941
+Does the code `rstrip` each line before comparing it?
+
+00:05:57.941 --> 00:06:00.904
+And does it add `\n` when it writes?
+
+00:06:01.254 --> 00:06:06.003
+Then try the edge cases: an empty file, and a file that doesn't exist.
+
+00:06:06.003 --> 00:06:08.174
+What does the code do with each?
+
+00:06:08.524 --> 00:06:15.004
+And if it writes with mode 'w', make sure it isn't about to empty a file you wanted to keep.
+
+00:06:15.801 --> 00:06:17.281
+Let's sum up.
+
+00:06:17.631 --> 00:06:19.701
+`open` gives you a file handle.
+
+00:06:19.701 --> 00:06:22.973
+A `for` loop over it reads the file line by line,
+
+00:06:22.973 --> 00:06:25.511
+and `read` gives it all as one string.
+
+00:06:25.861 --> 00:06:29.399
+Every line that comes from a file still ends with a newline.
+
+00:06:29.399 --> 00:06:31.581
+Strip it before you print or compare.
+
+00:06:31.931 --> 00:06:35.090
+Mode 'w' creates or empties a file,
+
+00:06:35.090 --> 00:06:38.611
+and `write` adds no newline of its own.
+
+00:06:38.961 --> 00:06:40.320
+Here's one to try.
+
+00:06:40.320 --> 00:06:45.757
+Write a function, `count_lines_with`, that takes a file name and a word,
+
+00:06:45.757 --> 00:06:51.194
+and returns how many lines of the file contain that word, ignoring case.
+
+00:06:51.194 --> 00:06:53.761
+Test it on a file you write first.
+
+00:06:54.311 --> 00:06:56.381
+That's the end of Lecture 4.
+
+00:06:56.381 --> 00:07:02.591
+In Lecture 5, we meet lists, dictionaries and tuples: many values, kept in one name.
+

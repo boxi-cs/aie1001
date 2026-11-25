@@ -1,0 +1,401 @@
+WEBVTT
+
+00:00:00.300 --> 00:00:02.406
+Look at these two lines.
+
+00:00:02.406 --> 00:00:06.180
+The first adds 100 and 200, and prints 300.
+
+00:00:06.530 --> 00:00:11.379
+The second does the same thing to '100' and '200'.
+
+00:00:11.379 --> 00:00:13.610
+And it prints '100200'.
+
+00:00:13.960 --> 00:00:17.927
+Same plus sign, very different results.
+
+00:00:17.927 --> 00:00:21.080
+So who decides what plus means?
+
+00:00:21.630 --> 00:00:22.924
+The objects do.
+
+00:00:22.924 --> 00:00:28.790
+Every object has a type, and the type decides what an operator does.
+
+00:00:29.567 --> 00:00:34.407
+This is part two of Lecture Two: types and expressions.
+
+00:00:34.757 --> 00:00:38.635
+We'll meet Python's three basic types, convert between them,
+
+00:00:38.635 --> 00:00:42.837
+and then watch Python evaluate an expression, one step at a time.
+
+00:00:43.634 --> 00:00:49.981
+Fixed values written straight into the code, like 10, 3.14, or 'hello',
+
+00:00:49.981 --> 00:00:55.434
+are called constants, or literals. Their value never changes.
+
+00:00:55.784 --> 00:00:58.563
+A string can use single quotes or double quotes.
+
+00:00:58.563 --> 00:01:00.184
+The two mean the same thing.
+
+00:01:00.534 --> 00:01:02.857
+Plus on two numbers adds them.
+
+00:01:02.857 --> 00:01:07.814
+Plus on two strings joins them, and that's called concatenation.
+
+00:01:08.164 --> 00:01:11.457
+And some operations aren't allowed at all.
+
+00:01:11.457 --> 00:01:16.084
+You can't add 1 to a string. Python stops with a TypeError.
+
+00:01:16.434 --> 00:01:22.535
+To find out the type of any value, call the type function.
+
+00:01:22.535 --> 00:01:25.165
+42 is an int, an integer.
+
+00:01:25.165 --> 00:01:26.848
+3.14 is a float.
+
+00:01:26.848 --> 00:01:29.794
+And '42' is a str, a string.
+
+00:01:30.567 --> 00:01:33.207
+Python has two main kinds of number.
+
+00:01:33.557 --> 00:01:35.834
+Integers are whole numbers.
+
+00:01:35.834 --> 00:01:38.955
+Python's integers have no size limit.
+
+00:01:38.955 --> 00:01:43.677
+2 to the power 100 is a 31-digit number, and it's exact.
+
+00:01:44.027 --> 00:01:48.328
+Floating point numbers, or floats, have a decimal point.
+
+00:01:48.328 --> 00:01:52.859
+They're stored in binary, with about 16 significant digits,
+
+00:01:52.859 --> 00:01:55.547
+so they're often very slightly off.
+
+00:01:55.897 --> 00:02:00.282
+0.1 plus 0.2 isn't exactly 0.3.
+
+00:02:00.282 --> 00:02:05.657
+0.1 can't be stored exactly in binary.
+
+00:02:06.257 --> 00:02:11.903
+So use integers for things you count, like people, cents or seconds.
+
+00:02:11.903 --> 00:02:15.057
+And use floats for things you measure.
+
+00:02:15.834 --> 00:02:17.623
+Here's the key idea.
+
+00:02:17.623 --> 00:02:21.914
+The type belongs to the object, not to the name.
+
+00:02:22.514 --> 00:02:28.363
+The name x is bound to 7 times 3 times 2, an int object, 42.
+
+00:02:28.363 --> 00:02:30.994
+And y is bound to a string.
+
+00:02:31.344 --> 00:02:34.525
+Now x becomes x plus 3.14159.
+
+00:02:34.525 --> 00:02:41.984
+The result is a new object, a float, and the arrow of x moves to it.
+
+00:02:42.334 --> 00:02:45.263
+And y becomes a very large integer.
+
+00:02:45.263 --> 00:02:48.694
+Its old string object is no longer named.
+
+00:02:49.044 --> 00:02:51.539
+A name has no type of its own.
+
+00:02:51.539 --> 00:02:57.444
+The type of a variable is just the type of the object it refers to now.
+
+00:02:58.044 --> 00:02:59.250
+One more detail.
+
+00:02:59.250 --> 00:03:02.039
+Print shows each value as plain text.
+
+00:03:02.039 --> 00:03:06.712
+But type x, y in the shell, and you see a pair in parentheses,
+
+00:03:06.712 --> 00:03:11.084
+with the string in quotes, the way you'd write it in code.
+
+00:03:11.868 --> 00:03:19.873
+When an expression mixes an int and a float, Python converts the int to a float first.
+
+00:03:19.873 --> 00:03:21.828
+So 1 plus 2.0 is 3.0.
+
+00:03:22.178 --> 00:03:28.406
+Division with a single slash always gives a float, even when the answer is whole.
+
+00:03:28.406 --> 00:03:30.098
+6 divided by 3 is 2.0.
+
+00:03:30.448 --> 00:03:35.888
+You can also convert on purpose, with the functions int, float and str.
+
+00:03:36.238 --> 00:03:39.558
+Float of 42 is 42.0.
+
+00:03:39.908 --> 00:03:42.458
+Int of 9.99 is 9.
+
+00:03:42.458 --> 00:03:45.908
+And int of -9.99 is -9.
+
+00:03:45.908 --> 00:03:51.908
+Int cuts towards zero. It doesn't round.
+
+00:03:52.508 --> 00:03:56.212
+Int and float also turn strings into numbers,
+
+00:03:56.212 --> 00:04:00.740
+as long as the string looks like a number of that kind.
+
+00:04:00.740 --> 00:04:03.868
+Int of the string '42', plus 1, is 43.
+
+00:04:04.218 --> 00:04:08.418
+But int of the string '3.14' is a ValueError.
+
+00:04:08.418 --> 00:04:11.498
+That string isn't a whole number.
+
+00:04:11.498 --> 00:04:15.138
+And float of 'abc' is a ValueError too.
+
+00:04:15.488 --> 00:04:20.746
+Going the other way, str turns any value into its text.
+
+00:04:20.746 --> 00:04:23.328
+Str of 5 is the string '5'.
+
+00:04:24.101 --> 00:04:25.503
+Now, expressions.
+
+00:04:25.503 --> 00:04:30.781
+An expression describes a computation, and evaluates to a value.
+
+00:04:31.131 --> 00:04:39.891
+Mathematics has lots of notations: fractions, square roots, absolute values, powers, sums, logarithms.
+
+00:04:40.241 --> 00:04:43.780
+Python writes all of them in only two forms.
+
+00:04:43.780 --> 00:04:47.401
+Operators between values, and function calls.
+
+00:04:48.001 --> 00:04:50.693
+18 plus 45 is 63.
+
+00:04:50.693 --> 00:04:56.394
+The absolute value of -1253 is 1253.
+
+00:04:56.394 --> 00:04:59.402
+2 to the power 100.
+
+00:04:59.402 --> 00:05:01.461
+7 mod 2 is 1.
+
+00:05:01.461 --> 00:05:06.212
+The sum from 1 to 100 is 5050.
+
+00:05:06.212 --> 00:05:11.121
+And log base 2 of 1024 is 10.0.
+
+00:05:11.901 --> 00:05:14.827
+Now let's take a call expression apart.
+
+00:05:14.827 --> 00:05:20.304
+The operator module has two functions: add, and mull, short for multiply.
+
+00:05:20.304 --> 00:05:24.581
+They do exactly what plus and times do, written as calls.
+
+00:05:24.931 --> 00:05:31.269
+In add(2, 3), the part before the parentheses, add, is the operator.
+
+00:05:31.269 --> 00:05:35.371
+The parts inside, 2 and 3, are the operands.
+
+00:05:35.721 --> 00:05:39.294
+Operators and operands are themselves expressions.
+
+00:05:39.294 --> 00:05:41.081
+So they can be calls too.
+
+00:05:41.431 --> 00:05:46.551
+To evaluate a call expression, Python always does the same three things.
+
+00:05:46.901 --> 00:05:51.149
+One, evaluate the operator, to get the function.
+
+00:05:51.149 --> 00:05:57.255
+Two, evaluate each operand, from left to right, to get the arguments.
+
+00:05:57.255 --> 00:06:01.061
+Three, apply the function to the arguments.
+
+00:06:01.661 --> 00:06:04.094
+Step two is where nesting happens.
+
+00:06:04.094 --> 00:06:11.181
+If an operand is itself a call, Python evaluates it with the same three steps, before it can go on.
+
+00:06:11.968 --> 00:06:14.892
+Here's a nested call. Its value is 45.
+
+00:06:14.892 --> 00:06:21.047
+Pause the video and predict: in what order does Python apply the four functions?
+
+00:06:21.047 --> 00:06:23.048
+Which call finishes first?
+
+00:06:23.598 --> 00:06:25.974
+Python works strictly left to right,
+
+00:06:25.974 --> 00:06:29.078
+and finishes the innermost call it meets first.
+
+00:06:29.428 --> 00:06:34.178
+So the first call to finish is mull(4, 6).
+
+00:06:34.178 --> 00:06:42.548
+The order is: mull(4, 6), add(6, 24), mull(3, 5), and last, the outer add.
+
+00:06:43.335 --> 00:06:45.987
+We can draw this as an expression tree.
+
+00:06:45.987 --> 00:06:50.135
+Each call is a node, with its operator and operands below it.
+
+00:06:50.485 --> 00:06:51.973
+Start at the top.
+
+00:06:51.973 --> 00:06:54.337
+Evaluate the operator, add.
+
+00:06:54.337 --> 00:06:58.365
+Then the first operand, which is another call.
+
+00:06:58.715 --> 00:07:03.853
+Inside it: add, then 6, then the call mull(4, 6).
+
+00:07:03.853 --> 00:07:07.839
+Evaluate mull, 4 and 6, and apply. 24.
+
+00:07:07.839 --> 00:07:11.195
+That's the first call to finish.
+
+00:07:11.545 --> 00:07:16.427
+Now the inner add can apply, to 6 and 24.
+
+00:07:16.427 --> 00:07:16.785
+30.
+
+00:07:17.135 --> 00:07:22.797
+Then the second operand of the outer add, which multiplies 3 by 5.
+
+00:07:22.797 --> 00:07:23.055
+15.
+
+00:07:23.405 --> 00:07:28.407
+Finally, apply the outer add to 30 and 15.
+
+00:07:28.407 --> 00:07:28.765
+45.
+
+00:07:29.115 --> 00:07:35.065
+Evaluating an expression means evaluating its tree from the leaves up,
+
+00:07:35.065 --> 00:07:37.955
+left subtree before right subtree.
+
+00:07:38.735 --> 00:07:41.293
+Here's the punch line.
+
+00:07:41.293 --> 00:07:45.595
+2 plus 3 means the same as add(2, 3).
+
+00:07:45.595 --> 00:07:48.735
+4 times 6 means mull(4, 6).
+
+00:07:49.085 --> 00:07:55.332
+So our whole tree is just 6 plus 4 times 6, plus 3 times 5.
+
+00:07:55.332 --> 00:07:56.285
+45 again.
+
+00:07:56.635 --> 00:08:01.435
+The call form spells out exactly which operation gets which operands.
+
+00:08:01.435 --> 00:08:07.835
+The operator form is shorter, but then Python needs rules to know which operator goes first.
+
+00:08:08.185 --> 00:08:10.993
+Those rules are called operator precedence,
+
+00:08:10.993 --> 00:08:13.345
+and they're the start of part three.
+
+00:08:14.135 --> 00:08:15.455
+Let's sum up.
+
+00:08:15.805 --> 00:08:19.557
+Every object has a type: int, float or str.
+
+00:08:19.557 --> 00:08:27.325
+The type decides what an operator does, and the type belongs to the object, not the name.
+
+00:08:27.675 --> 00:08:31.803
+Convert on purpose with int, float and str.
+
+00:08:31.803 --> 00:08:33.915
+Int cuts towards zero.
+
+00:08:34.265 --> 00:08:37.224
+A call expression evaluates the operator,
+
+00:08:37.224 --> 00:08:40.905
+then the operands from left to right, then applies.
+
+00:08:41.255 --> 00:08:42.610
+Here's one to try.
+
+00:08:42.610 --> 00:08:45.471
+Draw the expression tree of this call.
+
+00:08:45.471 --> 00:08:50.215
+In what order are the four calls applied, and what's the value?
+
+00:08:50.765 --> 00:08:54.522
+In part three, we'll put expressions to work in assignments,
+
+00:08:54.522 --> 00:09:00.285
+and learn the rules of arithmetic: precedence, the remainder, and division that rounds down.
+

@@ -1,0 +1,434 @@
+WEBVTT
+
+00:00:00.300 --> 00:00:07.423
+In September 2025, an AI system from OpenAI solved all 12 problems of the ICPC World Finals,
+
+00:00:07.423 --> 00:00:11.449
+the top programming contest for university students.
+
+00:00:11.449 --> 00:00:13.540
+That's a gold-medal result.
+
+00:00:13.890 --> 00:00:20.250
+Today, AI systems can also generate voices, videos, and a lot of everyday code.
+
+00:00:20.600 --> 00:00:24.680
+So why should you spend a semester learning to program?
+
+00:00:25.230 --> 00:00:27.248
+There are 3 good reasons.
+
+00:00:27.248 --> 00:00:32.332
+And they all lead to the same place: what a computer really is,
+
+00:00:32.332 --> 00:00:34.430
+and how it runs a program.
+
+00:00:35.200 --> 00:00:39.440
+Welcome to Lecture 1 of Introduction to AI Programming.
+
+00:00:39.790 --> 00:00:43.464
+In this first part, we'll see why programming still matters,
+
+00:00:43.464 --> 00:00:48.118
+what a program is, and how the parts of a computer work together to run one,
+
+00:00:48.118 --> 00:00:49.710
+one instruction at a time.
+
+00:00:50.500 --> 00:00:54.762
+Reason 1. AI doesn't yet handle the hardest tasks reliably.
+
+00:00:54.762 --> 00:00:59.818
+Benchmarks built from competitive programming, like LiveCodeBench Pro,
+
+00:00:59.818 --> 00:01:05.380
+which is judged by olympiad medallists, still find problems that models fail.
+
+00:01:05.730 --> 00:01:11.580
+And building large, complex software is much harder than solving one contest problem.
+
+00:01:11.580 --> 00:01:15.090
+This is changing fast, so check the latest results.
+
+00:01:15.440 --> 00:01:19.878
+Reason 2. You must understand code written by AI before you use it.
+
+00:01:19.878 --> 00:01:25.840
+Code that looks right can be wrong, insecure, or subtly different from what you asked for.
+
+00:01:26.190 --> 00:01:31.601
+Researchers even found that fine-tuning a model on one narrow task,
+
+00:01:31.601 --> 00:01:36.770
+writing insecure code, made it misbehave on unrelated questions.
+
+00:01:36.770 --> 00:01:39.920
+They called this emergent misalignment.
+
+00:01:39.920 --> 00:01:43.150
+Somebody has to read and check the code.
+
+00:01:43.500 --> 00:01:47.371
+Reason 3. Computers don't understand what we say.
+
+00:01:47.371 --> 00:01:53.297
+They only follow instructions written precisely, in a programming language,
+
+00:01:53.297 --> 00:01:56.220
+such as assembly, C, Java, or Python.
+
+00:01:56.570 --> 00:01:58.314
+Think of a calculator.
+
+00:01:58.314 --> 00:02:05.369
+It can multiply, but you still learn arithmetic, so you can tell when an answer is wrong.
+
+00:02:05.369 --> 00:02:09.570
+In this course, you'll do both: use AI, and check it.
+
+00:02:10.367 --> 00:02:12.078
+Where does programming fit?
+
+00:02:12.078 --> 00:02:15.247
+Here's the big picture of computer science and AI.
+
+00:02:15.597 --> 00:02:20.202
+At the bottom is mathematics: probability and statistics,
+
+00:02:20.202 --> 00:02:23.757
+linear algebra, calculus, and discrete math.
+
+00:02:24.107 --> 00:02:27.303
+On top of it, computer science has 2 broad halves.
+
+00:02:27.303 --> 00:02:30.500
+One half makes computers better and easier to use:
+
+00:02:30.500 --> 00:02:34.463
+computer architecture, operating systems, databases, networks,
+
+00:02:34.463 --> 00:02:38.427
+programming languages and compilers, and software engineering.
+
+00:02:38.777 --> 00:02:42.801
+The other half uses computers to solve real-world problems:
+
+00:02:42.801 --> 00:02:48.257
+natural language processing, computer vision, robotics, security, and many more.
+
+00:02:48.607 --> 00:02:51.295
+Machine learning sits between the 2.
+
+00:02:51.295 --> 00:02:55.327
+And AI now runs through all of it, in both directions.
+
+00:02:55.677 --> 00:02:59.144
+AI for robotics, or AI for software engineering,
+
+00:02:59.144 --> 00:03:02.177
+uses AI to do another field's work better.
+
+00:03:02.177 --> 00:03:06.077
+And new hardware and systems for training large models
+
+00:03:06.077 --> 00:03:08.677
+use other fields to build better AI.
+
+00:03:09.467 --> 00:03:11.057
+So, what is a program?
+
+00:03:11.057 --> 00:03:16.190
+A program, also called code or software, is a sequence of instructions.
+
+00:03:16.190 --> 00:03:21.467
+The computer takes the instructions and executes them, one after another.
+
+00:03:21.817 --> 00:03:27.325
+A program is a little piece of our intelligence, put into the computer.
+
+00:03:27.325 --> 00:03:32.057
+And like a recipe, it can be reused as many times as we like.
+
+00:03:32.407 --> 00:03:34.371
+Humans follow programs too.
+
+00:03:34.371 --> 00:03:36.043
+Here's one for a dance.
+
+00:03:36.043 --> 00:03:38.080
+Right hand around your head.
+
+00:03:38.080 --> 00:03:40.116
+Left hand around your belly.
+
+00:03:40.116 --> 00:03:42.371
+Straighten out your right hand.
+
+00:03:42.371 --> 00:03:44.407
+Left hand rests on your hip.
+
+00:03:44.757 --> 00:03:50.221
+Follow a long list like this, and sooner or later you'll make a mistake.
+
+00:03:50.221 --> 00:03:55.837
+Computers almost never do, whether they get 10 instructions or 10 billion.
+
+00:03:56.187 --> 00:03:59.438
+But a computer can't guess what you meant.
+
+00:03:59.438 --> 00:04:05.707
+If an instruction is wrong, the computer follows the wrong instruction perfectly.
+
+00:04:06.307 --> 00:04:11.339
+So when a program misbehaves, don't ask why the computer did that.
+
+00:04:11.339 --> 00:04:13.856
+Ask which instruction told it to.
+
+00:04:13.856 --> 00:04:18.507
+Learning to program is learning to say exactly what you mean.
+
+00:04:19.300 --> 00:04:24.980
+A computer is hardware, the physical machine, running software, the programs.
+
+00:04:25.330 --> 00:04:30.275
+Almost every computer today, your laptop, your phone, a server,
+
+00:04:30.275 --> 00:04:34.592
+follows a design described by John von Neumann in 1945.
+
+00:04:34.592 --> 00:04:37.810
+It's called the von Neumann architecture.
+
+00:04:38.160 --> 00:04:40.706
+Its key idea is the stored program.
+
+00:04:40.706 --> 00:04:44.707
+The program's instructions are kept in memory, as data,
+
+00:04:44.707 --> 00:04:47.326
+right next to the data they work on.
+
+00:04:47.326 --> 00:04:51.691
+To run a different program, you load different instructions.
+
+00:04:51.691 --> 00:04:53.800
+You don't rewire the machine.
+
+00:04:54.400 --> 00:04:57.620
+The theory came even earlier, from Alan Turing,
+
+00:04:57.620 --> 00:05:02.484
+the father of theoretical computer science and artificial intelligence.
+
+00:05:02.484 --> 00:05:05.018
+He asked what can be computed at all.
+
+00:05:05.018 --> 00:05:11.320
+And he proposed the Turing test: can you tell a machine's conversation apart from a human's?
+
+00:05:12.100 --> 00:05:14.180
+Let's look at the key components.
+
+00:05:14.530 --> 00:05:18.768
+The CPU, or central processing unit, executes your program.
+
+00:05:18.768 --> 00:05:21.928
+It's like a brain: very fast, but not smart.
+
+00:05:21.928 --> 00:05:24.010
+It only follows instructions.
+
+00:05:24.360 --> 00:05:28.625
+Main memory, or RAM, holds the running program and its data.
+
+00:05:28.625 --> 00:05:30.402
+It's fast, but temporary.
+
+00:05:30.402 --> 00:05:32.960
+Switch the power off, and it's gone.
+
+00:05:33.310 --> 00:05:36.814
+Secondary storage, like a hard disk or an SSD,
+
+00:05:36.814 --> 00:05:40.319
+is slower but much larger, and it's permanent.
+
+00:05:40.319 --> 00:05:43.670
+Your files and installed programs live here.
+
+00:05:44.020 --> 00:05:50.425
+Input devices, like the keyboard, mouse, touch screen and microphone, bring information in.
+
+00:05:50.425 --> 00:05:55.140
+Output devices, like the screen, speakers and printer, send it out.
+
+00:05:55.490 --> 00:05:57.766
+Inside the CPU there are 2 units.
+
+00:05:57.766 --> 00:06:01.766
+The control unit fetches the next instruction from memory,
+
+00:06:01.766 --> 00:06:03.903
+and works out what it asks for.
+
+00:06:03.903 --> 00:06:08.730
+The arithmetic logic unit, or ALU, has the circuits that carry it out:
+
+00:06:08.730 --> 00:06:10.730
+adding, comparing, and so on.
+
+00:06:11.080 --> 00:06:16.460
+Memory comes in layers, from small and very fast to large and slow:
+
+00:06:16.460 --> 00:06:22.000
+the CPU's cache, then main memory, then flash storage and hard disks.
+
+00:06:22.350 --> 00:06:27.798
+A hard disk reads spinning magnetic platters with a head on a moving arm.
+
+00:06:27.798 --> 00:06:33.470
+An SSD uses flash chips with no moving parts, which is why it's much faster.
+
+00:06:34.267 --> 00:06:39.471
+So how does the CPU actually run a program stored in memory?
+
+00:06:39.471 --> 00:06:43.200
+Here's a tiny program for an imaginary CPU.
+
+00:06:43.200 --> 00:06:44.587
+It adds 2 and 3.
+
+00:06:44.937 --> 00:06:48.427
+Memory cells 0 to 3 hold the instructions.
+
+00:06:48.427 --> 00:06:52.084
+Cells 100 to 102 hold the data: 2, 3, and 0.
+
+00:06:52.084 --> 00:06:56.737
+And the CPU has one working register, called register A.
+
+00:06:57.087 --> 00:07:00.213
+The CPU repeats one cycle, over and over.
+
+00:07:00.213 --> 00:07:06.616
+Fetch: the control unit reads the instruction at the address in the program counter,
+
+00:07:06.616 --> 00:07:09.207
+and adds 1 to the program counter.
+
+00:07:09.557 --> 00:07:13.617
+Decode: it works out what the instruction asks for.
+
+00:07:13.617 --> 00:07:17.437
+Execute: the ALU, or the memory, carries it out.
+
+00:07:18.234 --> 00:07:21.380
+Pause the video and run the cycle by hand.
+
+00:07:21.380 --> 00:07:26.024
+What's in register A, and in cell 102, after each instruction?
+
+00:07:26.024 --> 00:07:29.994
+And how many fetches happen before the machine stops?
+
+00:07:30.768 --> 00:07:32.324
+Now, let's run it.
+
+00:07:32.324 --> 00:07:35.090
+The program counter starts at 0.
+
+00:07:35.090 --> 00:07:37.424
+Fetch the load instruction.
+
+00:07:37.424 --> 00:07:38.288
+Decode it.
+
+00:07:38.288 --> 00:07:41.659
+Execute: copy cell 100 into register A.
+
+00:07:41.659 --> 00:07:43.648
+Now register A holds 2.
+
+00:07:43.998 --> 00:07:46.566
+The program counter is now 1.
+
+00:07:46.566 --> 00:07:51.349
+Fetch the add instruction: add cell 101 to register A.
+
+00:07:51.349 --> 00:07:52.678
+Now it holds 5.
+
+00:07:53.028 --> 00:07:54.861
+Address 2: store.
+
+00:07:54.861 --> 00:07:58.095
+Copy register A into cell 102.
+
+00:07:58.095 --> 00:08:00.468
+Now that cell holds 5.
+
+00:08:00.818 --> 00:08:02.307
+Address 3: halt.
+
+00:08:02.307 --> 00:08:03.983
+The machine stops.
+
+00:08:03.983 --> 00:08:06.218
+That's 4 fetches in all.
+
+00:08:06.568 --> 00:08:11.784
+In Python, all of that is one line: result = 2 + 3.
+
+00:08:11.784 --> 00:08:14.648
+Print result, and you see 5.
+
+00:08:14.998 --> 00:08:21.926
+This fetch, decode, execute cycle is what it means for a computer to run your program.
+
+00:08:21.926 --> 00:08:26.438
+A modern CPU runs billions of these cycles every second.
+
+00:08:27.235 --> 00:08:28.555
+Let's sum up.
+
+00:08:28.905 --> 00:08:31.853
+A program is a sequence of instructions.
+
+00:08:31.853 --> 00:08:36.865
+The computer follows them exactly, and never guesses what you meant.
+
+00:08:37.215 --> 00:08:41.864
+A computer has a CPU, with a control unit and an ALU,
+
+00:08:41.864 --> 00:08:47.655
+plus main memory, secondary storage, and input and output devices.
+
+00:08:48.005 --> 00:08:50.380
+The program is stored in memory,
+
+00:08:50.380 --> 00:08:54.685
+and the CPU runs it with the fetch, decode, execute cycle.
+
+00:08:55.035 --> 00:08:56.725
+Here's one to try.
+
+00:08:56.725 --> 00:09:01.516
+Change the little program so it computes 2 + 3 + 4,
+
+00:09:01.516 --> 00:09:06.307
+with the 4 in cell 103, and the result in cell 104.
+
+00:09:06.307 --> 00:09:07.622
+Then trace it.
+
+00:09:07.622 --> 00:09:11.755
+What's in register A after each instruction?
+
+00:09:12.305 --> 00:09:16.042
+In part 2, we'll climb from machine code up to Python,
+
+00:09:16.042 --> 00:09:20.265
+and see why everything inside a computer is stored in binary.
+

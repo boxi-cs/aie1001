@@ -1,0 +1,332 @@
+WEBVTT
+
+00:00:00.300 --> 00:00:02.841
+Binary search needs sorted data.
+
+00:00:02.841 --> 00:00:05.620
+So how does a computer sort a list?
+
+00:00:06.170 --> 00:00:10.171
+Sorting puts the elements of a list in order, smallest first.
+
+00:00:10.171 --> 00:00:17.254
+We'll look at two algorithms: bubble sort, one of the simplest, and quick sort, one of the most widely used.
+
+00:00:17.254 --> 00:00:19.090
+Then we'll count their work.
+
+00:00:19.867 --> 00:00:24.227
+This is Lecture 9, part 4: bubble sort and quick sort.
+
+00:00:24.577 --> 00:00:31.857
+For each one, we'll see the idea, the code, a trace, and how many comparisons it makes.
+
+00:00:32.634 --> 00:00:38.520
+Bubble sort goes through the list from left to right, comparing each element with the next one.
+
+00:00:38.520 --> 00:00:40.874
+If the first is larger, it swaps them.
+
+00:00:41.224 --> 00:00:46.024
+At the end of this pass, the largest element has bubbled up to the last position.
+
+00:00:46.374 --> 00:00:52.969
+Then it does another pass, stopping one element earlier, because the last one is already in place.
+
+00:00:52.969 --> 00:00:56.334
+And it keeps going, one element earlier each time.
+
+00:00:57.101 --> 00:01:01.904
+Here's our list: 3, 4, 1, 2, 5, 8, 0, 100, 17.
+
+00:01:01.904 --> 00:01:04.828
+Pause the video and predict.
+
+00:01:04.828 --> 00:01:09.422
+What does it look like after the first pass?
+
+00:01:09.422 --> 00:01:15.061
+And which element is certain to be in its final place?
+
+00:01:15.611 --> 00:01:19.340
+Let's go through the pass.
+
+00:01:19.340 --> 00:01:21.922
+3 and 4: in order.
+
+00:01:21.922 --> 00:01:23.930
+4 and 1: swap.
+
+00:01:23.930 --> 00:01:25.938
+4 and 2: swap.
+
+00:01:25.938 --> 00:01:29.811
+4 and 5, 5 and 8: in order.
+
+00:01:30.161 --> 00:01:32.060
+8 and 0: swap.
+
+00:01:32.060 --> 00:01:34.774
+8 and 100: in order.
+
+00:01:34.774 --> 00:01:37.081
+100 and 17: swap.
+
+00:01:37.431 --> 00:01:38.605
+100 is last.
+
+00:01:38.605 --> 00:01:47.711
+Once a pass reaches the largest element, it wins every comparison, and is carried to the end.
+
+00:01:48.501 --> 00:01:49.730
+Here's the code.
+
+00:01:49.730 --> 00:01:52.802
+Length starts as the length of the list.
+
+00:01:52.802 --> 00:01:59.101
+Each pass compares the pairs up to length minus 1, and then length goes down by 1.
+
+00:01:59.451 --> 00:02:00.904
+The swap is one line.
+
+00:02:00.904 --> 00:02:06.511
+On the right, Python builds the pair first, then assigns it to the two positions.
+
+00:02:06.511 --> 00:02:11.011
+The slide uses a helper variable instead; both do the same thing.
+
+00:02:11.361 --> 00:02:15.841
+Printing the list after each pass shows the whole story.
+
+00:02:15.841 --> 00:02:18.721
+Big numbers move to the end quickly.
+
+00:02:18.721 --> 00:02:26.401
+But small ones move only one place per pass: 0 needs 6 passes to travel from index 6 to index 0.
+
+00:02:27.167 --> 00:02:30.141
+How many comparisons does bubble sort make?
+
+00:02:30.141 --> 00:02:33.047
+This version counts comparisons and swaps.
+
+00:02:33.397 --> 00:02:37.699
+On our list: 36 comparisons, 11 swaps.
+
+00:02:37.699 --> 00:02:42.567
+On a sorted list: 36 comparisons, no swaps.
+
+00:02:42.567 --> 00:02:46.077
+On a reversed list: 36, and 36.
+
+00:02:46.427 --> 00:02:51.546
+The comparisons don't depend on the order at all.
+
+00:02:51.546 --> 00:02:59.069
+The passes compare n minus 1 pairs, then n minus 2, and so on down to 0.
+
+00:02:59.069 --> 00:03:03.667
+That adds up to n(n-1)/2: 36 for 9 elements.
+
+00:03:04.267 --> 00:03:07.295
+So bubble sort is big-O of n squared.
+
+00:03:07.295 --> 00:03:11.307
+Double the list, and it does four times the work.
+
+00:03:11.657 --> 00:03:14.358
+One more thing: bubble sort sorts in place.
+
+00:03:14.358 --> 00:03:20.577
+It changes the list you give it, because the parameter and your variable name the same list object.
+
+00:03:21.367 --> 00:03:24.209
+Quick sort is usually much faster.
+
+00:03:24.209 --> 00:03:27.887
+It's recursive, and it works in three steps.
+
+00:03:28.237 --> 00:03:30.720
+First, pick an element called the pivot.
+
+00:03:30.720 --> 00:03:32.397
+Here we pick the first one.
+
+00:03:32.747 --> 00:03:40.709
+Second, partition: rearrange the list so that smaller elements come before the pivot, and larger ones after it.
+
+00:03:40.709 --> 00:03:43.507
+Now the pivot is in its final position.
+
+00:03:43.857 --> 00:03:48.994
+Third, sort the part before the pivot, and the part after it, recursively.
+
+00:03:48.994 --> 00:03:53.577
+The base case is a part with 0 or 1 elements: it's already sorted.
+
+00:03:54.367 --> 00:04:00.843
+The slide partitions in place, with two indices: i from the left, and j from the right.
+
+00:04:00.843 --> 00:04:03.820
+It copies the pivot, 3, out of the list.
+
+00:04:03.820 --> 00:04:05.607
+That leaves a hole at i.
+
+00:04:05.957 --> 00:04:12.477
+Index j moves left past elements at least as big as the pivot: 17, 100.
+
+00:04:12.477 --> 00:04:17.988
+It stops at 0, which is smaller, and moves it into the hole.
+
+00:04:17.988 --> 00:04:19.917
+Now the hole is at j.
+
+00:04:20.267 --> 00:04:24.856
+Then index i moves right past elements no bigger than the pivot.
+
+00:04:24.856 --> 00:04:28.227
+It stops at 4, and moves it into the hole at j.
+
+00:04:28.577 --> 00:04:33.009
+Index j moves left again, past 4, 8 and 5.
+
+00:04:33.009 --> 00:04:37.442
+It stops at 2, and moves it into the hole.
+
+00:04:37.442 --> 00:04:42.297
+Then i moves right, past 2 and 1, and meets j.
+
+00:04:42.647 --> 00:04:46.278
+Where they meet, the pivot goes into the hole.
+
+00:04:46.278 --> 00:04:51.171
+0, 2 and 1 are on its left; everything on its right is bigger.
+
+00:04:51.171 --> 00:04:54.487
+3 is at index 3, exactly where it belongs.
+
+00:04:55.267 --> 00:04:56.459
+Here's the code.
+
+00:04:56.459 --> 00:05:02.347
+If low is at least high, the part has 0 or 1 elements, and it's already sorted.
+
+00:05:02.697 --> 00:05:08.257
+Otherwise, save the pivot, and run the two inner loops until i and j meet.
+
+00:05:08.607 --> 00:05:14.967
+Put the pivot into the hole, then sort the left part and the right part, with two recursive calls.
+
+00:05:15.317 --> 00:05:23.747
+This traced version prints each part after it's partitioned, indented by depth, with the pivot in square brackets.
+
+00:05:23.747 --> 00:05:25.374
+Each line is one call.
+
+00:05:25.374 --> 00:05:28.037
+Together they form a recursion tree.
+
+00:05:28.833 --> 00:05:30.470
+How fast is quick sort?
+
+00:05:30.470 --> 00:05:40.722
+Each level of the recursion tree partitions parts that together hold at most n elements, and each element is compared with its pivot about once.
+
+00:05:40.722 --> 00:05:44.353
+So the work is about n, times the number of levels.
+
+00:05:44.703 --> 00:05:49.860
+If every pivot lands near the middle, each level halves the parts.
+
+00:05:49.860 --> 00:05:54.783
+There are about log n levels, and the work is big-O of n log n.
+
+00:05:55.133 --> 00:05:59.978
+But if every pivot is the smallest element, one side is always empty.
+
+00:05:59.978 --> 00:06:03.841
+There are n levels, and the work is big-O of n squared.
+
+00:06:03.841 --> 00:06:07.493
+That's what happens on a list that's already sorted.
+
+00:06:07.843 --> 00:06:16.523
+Let's count: bubble sort, quick sort on a scrambled list, quick sort on a sorted list, and n log n.
+
+00:06:16.873 --> 00:06:20.786
+For scrambled lists, quick sort stays close to n log n.
+
+00:06:20.786 --> 00:06:27.474
+Doubling n only a little more than doubles its work, while bubble sort's work grows four-fold.
+
+00:06:27.474 --> 00:06:32.953
+On sorted lists, quick sort makes exactly as many comparisons as bubble sort.
+
+00:06:33.303 --> 00:06:41.387
+Worse: on a sorted list of 2000, the recursion is 2000 calls deep, and Python stops with a recursion error.
+
+00:06:41.387 --> 00:06:46.223
+Real implementations pick the pivot at random, or in the middle.
+
+00:06:47.000 --> 00:06:50.079
+In practice, you won't write your own sort.
+
+00:06:50.079 --> 00:06:56.811
+Python's sorted function returns a new sorted list, and the sort method sorts a list in place.
+
+00:06:56.811 --> 00:07:00.320
+Both run in n log n time, even in the worst case.
+
+00:07:00.670 --> 00:07:04.099
+Here's the whole lecture in one table.
+
+00:07:04.099 --> 00:07:08.071
+Sequential search: linear in the worst case.
+
+00:07:08.071 --> 00:07:09.966
+Binary search: log n.
+
+00:07:09.966 --> 00:07:12.764
+Bubble sort: n squared, always.
+
+00:07:12.764 --> 00:07:18.270
+Quick sort: usually n log n, but n squared in the worst case.
+
+00:07:19.067 --> 00:07:20.267
+Let's sum it up.
+
+00:07:20.617 --> 00:07:24.850
+Bubble sort swaps neighbours, pass after pass.
+
+00:07:24.850 --> 00:07:30.097
+It always makes n(n-1)/2 comparisons: big-O of n squared.
+
+00:07:30.447 --> 00:07:34.951
+Quick sort partitions around a pivot, then sorts each side.
+
+00:07:34.951 --> 00:07:42.127
+It's usually big-O of n log n, but n squared on sorted input, with the first element as pivot.
+
+00:07:42.477 --> 00:07:46.597
+And counting comparisons lets you compare algorithms on any machine.
+
+00:07:46.947 --> 00:07:48.829
+Here's one to try.
+
+00:07:48.829 --> 00:07:52.176
+Trace bubble sort on 5, 1, 4, 2.
+
+00:07:52.176 --> 00:07:55.418
+Write the list after each pass.
+
+00:07:55.418 --> 00:07:58.347
+How many swaps does it make?
+
+00:07:58.897 --> 00:08:00.964
+That's the end of Lecture 9.
+
+00:08:00.964 --> 00:08:07.017
+Next time, we'll meet new data structures: stacks, queues, linked lists and trees.
+

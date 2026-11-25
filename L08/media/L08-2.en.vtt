@@ -1,0 +1,353 @@
+WEBVTT
+
+00:00:00.300 --> 00:00:05.286
+At the end of part one, we printed a circle with radius 1.5.
+
+00:00:05.286 --> 00:00:08.860
+Python said: colour green, and filled true.
+
+00:00:09.210 --> 00:00:12.290
+That's true, but where's the radius?
+
+00:00:12.840 --> 00:00:19.440
+Circle has no `__str__` of its own, so it uses the one it inherited from GeometricObject.
+
+00:00:19.440 --> 00:00:22.480
+And that one knows nothing about circles.
+
+00:00:23.267 --> 00:00:28.067
+This is Lecture 8, part two: overriding, and the object class.
+
+00:00:28.417 --> 00:00:33.620
+We'll replace an inherited method, reuse the old version from inside the new one,
+
+00:00:33.620 --> 00:00:37.217
+and then meet the class at the top of every family tree.
+
+00:00:38.000 --> 00:00:42.613
+A subclass can define a method with the same name as one it inherits.
+
+00:00:42.613 --> 00:00:47.760
+Its own version then replaces the inherited one, for objects of the subclass.
+
+00:00:48.110 --> 00:00:51.030
+This is called method overriding.
+
+00:00:51.630 --> 00:00:54.035
+So Circle gets its own `__str__`.
+
+00:00:54.035 --> 00:00:57.388
+It still wants the colour and the filled flag.
+
+00:00:57.388 --> 00:01:04.093
+But instead of repeating that code, it calls the superclass version, with `super().__str__`,
+
+00:01:04.093 --> 00:01:05.550
+and adds the radius.
+
+00:01:05.900 --> 00:01:08.725
+Note the last part: `self.__radius`.
+
+00:01:08.725 --> 00:01:11.157
+The slide writes just `radius`,
+
+00:01:11.157 --> 00:01:18.060
+and since there's no variable called `radius` inside this method, that line would crash.
+
+00:01:18.410 --> 00:01:22.883
+Now print a circle: colour green, filled true, radius 1.5.
+
+00:01:22.883 --> 00:01:26.970
+And a plain GeometricObject still prints the old way.
+
+00:01:27.320 --> 00:01:30.280
+Both versions now exist side by side.
+
+00:01:30.280 --> 00:01:34.680
+When we print the circle, Python looks in Circle first,
+
+00:01:34.680 --> 00:01:38.440
+finds `__str__` right there, and stops looking.
+
+00:01:39.234 --> 00:01:42.539
+Rectangle overrides `__str__` in the same way.
+
+00:01:42.539 --> 00:01:46.994
+It calls `super().__str__`, and adds the width and the height.
+
+00:01:47.344 --> 00:01:54.624
+So a rectangle that's 2 by 4 prints its colour, its filled flag, width 2, and height 4.
+
+00:01:54.974 --> 00:01:59.329
+This is a pattern worth naming: extend, don't repeat.
+
+00:01:59.329 --> 00:02:04.998
+When a subclass needs to do what the superclass does, and a bit more,
+
+00:02:04.998 --> 00:02:10.092
+override the method, call the superclass version with `super`,
+
+00:02:10.092 --> 00:02:11.654
+then add the extra.
+
+00:02:12.254 --> 00:02:17.614
+And `super().__init__`, from part one, is the most common case of this pattern.
+
+00:02:18.401 --> 00:02:19.817
+Time to predict.
+
+00:02:19.817 --> 00:02:25.218
+Class A has a field `i`, and a method `m1` that adds 1 to it.
+
+00:02:25.218 --> 00:02:26.812
+Class B extends A.
+
+00:02:26.812 --> 00:02:32.301
+Its `__init__` calls `super().__init__` with 3, then sets `j`.
+
+00:02:32.301 --> 00:02:34.161
+And B overrides `m1`.
+
+00:02:34.711 --> 00:02:37.010
+We make an object of class B.
+
+00:02:37.010 --> 00:02:40.261
+Then we call `m1`, and print `i` and `j`.
+
+00:02:40.261 --> 00:02:43.591
+Pause the video and predict the two lines.
+
+00:02:44.141 --> 00:02:47.701
+The answer is 4, then 0.
+
+00:02:48.051 --> 00:02:49.526
+Let's trace it.
+
+00:02:49.526 --> 00:02:52.575
+Making a B runs B's `__init__`.
+
+00:02:52.575 --> 00:02:57.985
+Its first line runs A's `__init__` with 3, so `i` is 3.
+
+00:02:57.985 --> 00:03:00.051
+Then `j` is set to 0.
+
+00:03:00.401 --> 00:03:04.018
+Calling `m1` finds B's version first,
+
+00:03:04.018 --> 00:03:06.072
+and it adds 1 to `i`.
+
+00:03:06.072 --> 00:03:09.201
+So `i` is 4, and `j` is still 0.
+
+00:03:10.001 --> 00:03:12.601
+Here's a trap with overriding.
+
+00:03:12.601 --> 00:03:15.201
+The name has to match exactly.
+
+00:03:15.551 --> 00:03:19.569
+If you forget the two underscores at the end of `__str__`,
+
+00:03:19.569 --> 00:03:23.934
+or write `getArea` with a capital A, you've added a new method.
+
+00:03:23.934 --> 00:03:26.151
+The inherited one is still used.
+
+00:03:26.501 --> 00:03:28.577
+And Python raises no error.
+
+00:03:28.577 --> 00:03:30.730
+It just ignores your method.
+
+00:03:30.730 --> 00:03:37.421
+So when an override seems to have no effect, check the spelling against the superclass.
+
+00:03:38.201 --> 00:03:41.618
+Now, GeometricObject didn't name a superclass.
+
+00:03:41.618 --> 00:03:42.881
+Does it have one?
+
+00:03:43.231 --> 00:03:43.859
+It does.
+
+00:03:43.859 --> 00:03:49.595
+Every class in Python is descended from a built-in class called `object`.
+
+00:03:49.595 --> 00:03:54.231
+If you don't name a superclass, the superclass is `object`.
+
+00:03:54.831 --> 00:03:58.029
+So these two definitions mean the same thing.
+
+00:03:58.029 --> 00:04:02.507
+And you can ask a class for its superclasses, with `__bases__`.
+
+00:04:02.507 --> 00:04:05.351
+For GeometricObject, it's just `object`.
+
+00:04:05.701 --> 00:04:12.141
+So the chain for a circle is Circle, then GeometricObject, then `object`.
+
+00:04:12.491 --> 00:04:17.613
+Everything `object` defines is inherited by every class you write,
+
+00:04:17.613 --> 00:04:22.037
+including `__init__`, `__str__`, `__eq__`, and `__new__`.
+
+00:04:22.037 --> 00:04:24.211
+Let's look at three of them.
+
+00:04:25.001 --> 00:04:26.502
+First, `__str__`.
+
+00:04:26.502 --> 00:04:29.241
+`print` and `str` both call it.
+
+00:04:29.591 --> 00:04:32.531
+Here's a class with no `__str__` of its own.
+
+00:04:32.531 --> 00:04:36.809
+Print one of its objects, and you get the version from `object`:
+
+00:04:36.809 --> 00:04:39.281
+the class name, and a memory address.
+
+00:04:39.281 --> 00:04:40.351
+Not very useful.
+
+00:04:40.701 --> 00:04:44.770
+So you should almost always override `__str__`,
+
+00:04:44.770 --> 00:04:48.061
+and return an informative description.
+
+00:04:48.661 --> 00:04:54.101
+With an override, printing the object gives: the content of this object is 8.
+
+00:04:54.868 --> 00:04:57.524
+Second: the `__new__` method.
+
+00:04:57.524 --> 00:05:00.548
+Making an object takes two steps.
+
+00:05:00.898 --> 00:05:04.882
+First, `__new__` makes a new, empty object.
+
+00:05:04.882 --> 00:05:08.218
+Then `__init__` fills in its fields.
+
+00:05:08.818 --> 00:05:12.601
+This class overrides both, and each one prints a line.
+
+00:05:12.601 --> 00:05:16.383
+`__new__` takes the class, by convention called `cls`.
+
+00:05:16.383 --> 00:05:21.778
+It must return the new object, which it gets from the superclass's `__new__`.
+
+00:05:22.128 --> 00:05:27.328
+So making one prints two lines: first `new`, then `init`.
+
+00:05:27.678 --> 00:05:31.450
+The slides show a version where `__new__` prints a line,
+
+00:05:31.450 --> 00:05:32.798
+and returns nothing.
+
+00:05:33.148 --> 00:05:36.340
+Then no object is made, `__init__` never runs,
+
+00:05:36.340 --> 00:05:38.422
+and the variable holds `None`.
+
+00:05:38.422 --> 00:05:42.308
+Unless you have a special reason, leave `__new__` alone.
+
+00:05:43.101 --> 00:05:45.115
+Third, `__eq__`.
+
+00:05:45.115 --> 00:05:50.781
+Writing `p == q` calls `p`'s `__eq__` method.
+
+00:05:51.131 --> 00:05:56.940
+The version from `object` returns `True` only when both names refer to the same object.
+
+00:05:56.940 --> 00:05:59.611
+It's the same test as the `is` operator.
+
+00:05:59.961 --> 00:06:04.332
+So take two points, both at 1, 2.
+
+00:06:04.332 --> 00:06:05.921
+Is `p == q`?
+
+00:06:06.471 --> 00:06:07.091
+`False`.
+
+00:06:07.091 --> 00:06:11.892
+They hold the same numbers, but they're two different objects.
+
+00:06:11.892 --> 00:06:13.751
+Only `p == p` is `True`.
+
+00:06:14.101 --> 00:06:18.812
+If equal fields should mean equal objects, override `__eq__`.
+
+00:06:18.812 --> 00:06:21.901
+Check that the other value is a `Point`,
+
+00:06:21.901 --> 00:06:24.141
+then compare the coordinates.
+
+00:06:24.491 --> 00:06:27.087
+Now two points at 1, 2 are equal,
+
+00:06:27.087 --> 00:06:31.336
+and the `in` operator on a list works as you'd expect,
+
+00:06:31.336 --> 00:06:34.011
+because it uses double equals too.
+
+00:06:34.801 --> 00:06:36.161
+Let's sum up.
+
+00:06:36.511 --> 00:06:41.231
+A method with the same name in a subclass overrides the inherited one.
+
+00:06:41.581 --> 00:06:45.872
+Inside the override, `super` calls the superclass version,
+
+00:06:45.872 --> 00:06:48.461
+so you extend instead of repeating.
+
+00:06:48.811 --> 00:06:51.898
+Every class descends from `object`.
+
+00:06:51.898 --> 00:06:55.338
+Override `__str__` for useful printing.
+
+00:06:55.338 --> 00:06:59.131
+And override `__eq__`, to compare by value.
+
+00:06:59.481 --> 00:07:00.894
+Here's one to try.
+
+00:07:00.894 --> 00:07:04.661
+Make a `ComparableCircle` that extends `Circle`,
+
+00:07:04.661 --> 00:07:08.978
+where two circles are equal when their radii are equal.
+
+00:07:08.978 --> 00:07:14.001
+Why must it use `getRadius`, and not the private `radius` field?
+
+00:07:14.551 --> 00:07:19.882
+In part three, we'll write one function that works for every kind of shape,
+
+00:07:19.882 --> 00:07:23.791
+and see exactly how Python decides which method to run.
+

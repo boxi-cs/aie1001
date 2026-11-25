@@ -1,0 +1,365 @@
+WEBVTT
+
+00:00:00.300 --> 00:00:02.196
+This is Lecture 10, part 4.
+
+00:00:02.196 --> 00:00:05.074
+We'll finish linked lists by sorting one,
+
+00:00:05.074 --> 00:00:10.340
+and then meet our last data structure, which isn't a line at all: the tree.
+
+00:00:10.690 --> 00:00:15.077
+We'll learn the words for the parts of a tree, store one in Python,
+
+00:00:15.077 --> 00:00:19.530
+and walk it in 3 different orders, each a 3 line recursive function.
+
+00:00:20.300 --> 00:00:23.148
+Bubble sort is a simple sorting algorithm.
+
+00:00:23.148 --> 00:00:29.860
+Go through the list, compare every element with the next one, and swap them if the first is larger.
+
+00:00:30.210 --> 00:00:33.661
+Here is one pass on 5, 1, 4, 2.
+
+00:00:33.661 --> 00:00:36.444
+5 is bigger than 1: swap.
+
+00:00:36.444 --> 00:00:39.227
+5 is bigger than 4: swap.
+
+00:00:39.227 --> 00:00:42.010
+5 is bigger than 2: swap.
+
+00:00:42.360 --> 00:00:47.320
+After the pass, the largest element has bubbled up to the end.
+
+00:00:47.320 --> 00:00:49.480
+3 swaps, and 5 is in place.
+
+00:00:50.080 --> 00:00:53.694
+So the next pass can stop one element earlier.
+
+00:00:53.694 --> 00:00:58.880
+Keep going, one shorter each time, until only one element is left.
+
+00:00:59.230 --> 00:01:03.498
+In the code, the variable n counts the elements that aren't sorted yet.
+
+00:01:03.498 --> 00:01:07.706
+Each pass compares neighbours with a for loop, swaps them in one line,
+
+00:01:07.706 --> 00:01:09.870
+and then the count goes down by one.
+
+00:01:10.667 --> 00:01:14.973
+Bubble sort only ever compares an element with the next one.
+
+00:01:14.973 --> 00:01:17.987
+So it works on a linked list just as well.
+
+00:01:18.587 --> 00:01:24.405
+Instead of an index, keep a reference called node, and hop to node.next.
+
+00:01:24.405 --> 00:01:30.547
+Instead of moving nodes, swap the elements stored in two neighbouring nodes.
+
+00:01:30.897 --> 00:01:32.631
+The arrows never change.
+
+00:01:32.631 --> 00:01:35.377
+Only the values inside the boxes move.
+
+00:01:35.727 --> 00:01:44.116
+The list from the slides, 9, 8, 6, 10, 45, 67, 21, 1, comes out sorted,
+
+00:01:44.116 --> 00:01:46.007
+from 1 up to 67.
+
+00:01:46.800 --> 00:01:49.727
+Lists, stacks and queues are linear.
+
+00:01:49.727 --> 00:01:54.360
+Every element has at most one before it and one after it.
+
+00:01:54.710 --> 00:01:57.520
+A tree stores elements hierarchically.
+
+00:01:57.520 --> 00:02:02.844
+Every element except the top one has one parent, and 0 or more children.
+
+00:02:02.844 --> 00:02:06.910
+The top element is the root, and it's drawn at the top.
+
+00:02:07.260 --> 00:02:09.735
+The structure of a company is a tree.
+
+00:02:09.735 --> 00:02:11.674
+Electronics R Us is the root.
+
+00:02:11.674 --> 00:02:15.820
+Its children are R and D, Sales, Purchasing and Manufacturing.
+
+00:02:16.170 --> 00:02:19.009
+Nodes with the same parent are siblings.
+
+00:02:19.009 --> 00:02:21.421
+A node with no children is a leaf.
+
+00:02:21.421 --> 00:02:24.330
+A node with children is an internal node.
+
+00:02:24.680 --> 00:02:30.542
+The depth of a node is the number of steps down from the root.
+
+00:02:30.542 --> 00:02:32.244
+Sales has depth 1.
+
+00:02:32.244 --> 00:02:34.040
+Canada has depth 3.
+
+00:02:34.390 --> 00:02:39.107
+A node together with everything below it is a subtree,
+
+00:02:39.107 --> 00:02:42.077
+and that subtree is itself a tree.
+
+00:02:42.077 --> 00:02:46.794
+So a tree is a root, together with some smaller trees.
+
+00:02:46.794 --> 00:02:51.510
+That's a recursive definition, just like in Lecture 6.
+
+00:02:52.110 --> 00:02:58.910
+A tree is ordered if the children have a meaningful order, left to right, like the chapters of a book.
+
+00:02:58.910 --> 00:03:05.910
+A binary tree is an ordered tree where every node has at most 2 children: a left child and a right child.
+
+00:03:06.700 --> 00:03:11.820
+In Python, a general tree node stores its element and a list of children.
+
+00:03:12.170 --> 00:03:16.926
+Printing a tree as an indented outline is our first tree algorithm.
+
+00:03:16.926 --> 00:03:21.610
+Print the node, then print each child's subtree, one level deeper.
+
+00:03:21.960 --> 00:03:26.840
+The indentation is the depth, just like the traced factorial in Lecture 6.
+
+00:03:27.190 --> 00:03:30.819
+But outline makes one recursive call for each child.
+
+00:03:30.819 --> 00:03:36.470
+That's multiple recursion, and its recursion tree is the very tree being printed.
+
+00:03:37.267 --> 00:03:41.236
+An arithmetic expression can be stored as a binary tree.
+
+00:03:41.236 --> 00:03:45.560
+The leaves are numbers, and the internal nodes are operators.
+
+00:03:45.560 --> 00:03:49.387
+Each operator applies to the values of its 2 subtrees.
+
+00:03:49.737 --> 00:03:52.188
+This is the slides' expression tree.
+
+00:03:52.188 --> 00:03:53.413
+The root is minus.
+
+00:03:53.413 --> 00:03:55.047
+On the left, a division.
+
+00:03:55.047 --> 00:03:56.817
+On the right, an addition.
+
+00:03:57.167 --> 00:04:03.572
+In Python, a binary node has an element, a left subtree and a right subtree.
+
+00:04:03.572 --> 00:04:05.173
+Either can be None.
+
+00:04:05.173 --> 00:04:08.207
+A node is a leaf when both are None.
+
+00:04:09.001 --> 00:04:12.525
+A traversal visits every node of a tree once.
+
+00:04:12.525 --> 00:04:16.128
+For a binary tree, there are 3 natural orders.
+
+00:04:16.128 --> 00:04:20.201
+They differ only in when the node itself is visited.
+
+00:04:20.551 --> 00:04:25.631
+Preorder visits the node first, then its left subtree, then its right.
+
+00:04:25.981 --> 00:04:30.581
+Inorder visits the left subtree, then the node, then the right.
+
+00:04:30.931 --> 00:04:36.891
+Postorder visits the left subtree, then the right, then the node last.
+
+00:04:37.241 --> 00:04:38.504
+Each is 3 lines.
+
+00:04:38.504 --> 00:04:43.322
+The base case is the empty tree, None, which has no elements.
+
+00:04:43.322 --> 00:04:47.349
+And the leap of faith from Lecture 6 does the rest:
+
+00:04:47.349 --> 00:04:52.641
+trust each recursive call to return its subtree in the right order.
+
+00:04:53.434 --> 00:04:55.422
+Pause the video and predict.
+
+00:04:55.422 --> 00:05:00.464
+What are the first 4 elements of each traversal of our expression tree?
+
+00:05:00.464 --> 00:05:03.234
+And which traversal ends with the root?
+
+00:05:03.784 --> 00:05:11.504
+Preorder starts at the root, and goes left: minus, divide, times, plus.
+
+00:05:11.854 --> 00:05:16.968
+Inorder starts at the leftmost leaf: 3, plus, 1, times.
+
+00:05:16.968 --> 00:05:22.734
+It reads like the expression we'd write, but without brackets.
+
+00:05:23.084 --> 00:05:29.004
+Postorder also starts with the leftmost leaf: 3, 1, plus, 3.
+
+00:05:29.354 --> 00:05:33.899
+And postorder is the one that ends with the root, minus,
+
+00:05:33.899 --> 00:05:37.794
+because it visits every node after its subtrees.
+
+00:05:38.394 --> 00:05:43.566
+Inorder lost the brackets, so it no longer says which operation comes first.
+
+00:05:43.566 --> 00:05:48.874
+Put a pair of brackets around each subtree, and the expression is exact again.
+
+00:05:49.667 --> 00:05:56.842
+To evaluate the expression, an operator can only be applied after both of its subtrees have been evaluated.
+
+00:05:56.842 --> 00:05:58.787
+That's a postorder traversal.
+
+00:05:59.137 --> 00:06:01.092
+A leaf returns its number.
+
+00:06:01.092 --> 00:06:06.657
+Otherwise, evaluate the left, evaluate the right, then apply the operator.
+
+00:06:07.007 --> 00:06:12.842
+On the left: 3 plus 1 is 4, times 3 is 12.
+
+00:06:12.842 --> 00:06:16.732
+9 minus 5 is 4, plus 2 is 6.
+
+00:06:16.732 --> 00:06:19.927
+12 divided by 6 is 2.0.
+
+00:06:20.277 --> 00:06:24.017
+On the right: 7 minus 4 is 3.
+
+00:06:24.017 --> 00:06:27.757
+3 times 3 is 9, plus 6 is 15.
+
+00:06:28.107 --> 00:06:32.436
+At the root: 2.0 minus 15 is minus 13.0.
+
+00:06:32.436 --> 00:06:39.147
+It's a float, because division always gives a float in Python.
+
+00:06:39.934 --> 00:06:40.583
+One trap.
+
+00:06:40.583 --> 00:06:42.962
+A leaf's left and right are None.
+
+00:06:42.962 --> 00:06:51.614
+A traversal that reaches for node.left.element without checking crashes at the very first leaf, with an attribute error.
+
+00:06:51.964 --> 00:06:55.865
+Write the base case first, as in Lecture 6:
+
+00:06:55.865 --> 00:06:59.404
+if node is None, return the empty list.
+
+00:07:00.201 --> 00:07:02.551
+The slides end with 2 more trees.
+
+00:07:02.551 --> 00:07:05.186
+The paths through a maze form a tree.
+
+00:07:05.186 --> 00:07:10.384
+The start is the root, and every fork has one child for each way forward.
+
+00:07:10.384 --> 00:07:13.161
+The leaves are dead ends, and the exit.
+
+00:07:13.511 --> 00:07:16.377
+The positions of a game form a tree too.
+
+00:07:16.377 --> 00:07:23.111
+The current position is the root, and its children are the positions after each possible move.
+
+00:07:23.461 --> 00:07:27.781
+Finding the way out, or the best move, means searching the tree.
+
+00:07:27.781 --> 00:07:30.953
+You'll meet these searches again in AI courses,
+
+00:07:30.953 --> 00:07:34.261
+where they're the start of game playing programs.
+
+00:07:35.034 --> 00:07:36.314
+Let's sum up.
+
+00:07:36.664 --> 00:07:39.730
+Bubble sort only compares neighbours,
+
+00:07:39.730 --> 00:07:43.624
+so on a linked list it hops and swaps elements.
+
+00:07:43.974 --> 00:07:51.734
+A tree is a root plus smaller trees: parent, child, leaf, subtree and depth.
+
+00:07:52.084 --> 00:07:57.651
+Preorder, inorder and postorder differ only in when the node is visited.
+
+00:07:57.651 --> 00:08:01.284
+And evaluating an expression tree is postorder.
+
+00:08:01.634 --> 00:08:02.909
+Here's one to try.
+
+00:08:02.909 --> 00:08:06.735
+The height of a tree is the largest depth of any node.
+
+00:08:06.735 --> 00:08:10.419
+Write a recursive height function for a binary tree.
+
+00:08:10.419 --> 00:08:13.394
+What is the height of our expression tree?
+
+00:08:13.944 --> 00:08:15.763
+That's the end of Lecture 10.
+
+00:08:15.763 --> 00:08:19.212
+In Lecture 11, we'll look inside large language models,
+
+00:08:19.212 --> 00:08:21.344
+the programs behind AI assistants.
+

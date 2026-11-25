@@ -1,0 +1,341 @@
+WEBVTT
+
+00:00:00.300 --> 00:00:01.799
+Pick up a TV remote.
+
+00:00:01.799 --> 00:00:04.872
+You press channel up, volume down, power.
+
+00:00:04.872 --> 00:00:08.020
+You never open the TV to see how it works.
+
+00:00:08.370 --> 00:00:13.770
+And if the TV is switched off, pressing channel up does nothing at all.
+
+00:00:14.120 --> 00:00:16.360
+How would you write that as a class?
+
+00:00:17.133 --> 00:00:19.794
+Welcome to Lecture 7, part three.
+
+00:00:19.794 --> 00:00:23.905
+We'll build a TV class, use two TV objects at once,
+
+00:00:23.905 --> 00:00:32.693
+and then answer a question that trips up almost everyone: what happens when you pass an object to a function?
+
+00:00:33.466 --> 00:00:38.386
+Before writing a class, designers often draw it as a UML class diagram.
+
+00:00:38.736 --> 00:00:40.904
+The top box is the class name.
+
+00:00:40.904 --> 00:00:44.733
+The next box lists the data fields, with their types.
+
+00:00:44.733 --> 00:00:52.536
+A TV has a channel, from 1 to 120, a volume level, from 1 to 7, and on, which says whether it's switched on.
+
+00:00:52.886 --> 00:00:58.079
+The bottom box lists the methods, with their parameters and return types.
+
+00:00:58.079 --> 00:01:04.766
+Turn on, turn off, get and set the channel and the volume, and channel and volume up and down.
+
+00:01:05.116 --> 00:01:07.300
+This diagram is a contract.
+
+00:01:07.300 --> 00:01:12.556
+It tells you what the class offers, without showing you any code.
+
+00:01:13.333 --> 00:01:14.707
+Here's the class.
+
+00:01:14.707 --> 00:01:21.173
+The `init` method sets up a new TV: channel 1, volume level 1, and switched off.
+
+00:01:21.523 --> 00:01:27.003
+`Turn on` and `turn off` just set `self.on` to `True`, or to `False`.
+
+00:01:27.353 --> 00:01:32.296
+`Set channel` changes the channel, but only if the TV is on,
+
+00:01:32.296 --> 00:01:35.673
+and the new channel is between 1 and 120.
+
+00:01:36.023 --> 00:01:42.052
+`Channel up` adds 1, but only if the TV is on, and the channel is below 120.
+
+00:01:42.052 --> 00:01:45.463
+The volume methods follow the same pattern.
+
+00:01:45.813 --> 00:01:51.219
+So every method that changes the TV first checks `self.on`.
+
+00:01:51.219 --> 00:01:56.533
+A TV that's off ignores the buttons, just like a real one.
+
+00:01:57.333 --> 00:02:01.509
+Now let's use it, and watch memory as we go.
+
+00:02:01.509 --> 00:02:07.013
+`TV1 = TV()` makes a TV object, with its own three fields.
+
+00:02:07.363 --> 00:02:12.502
+We turn it on, set the channel to 30, and set the volume to 3.
+
+00:02:12.502 --> 00:02:17.723
+Every call changes this object, because `self` is TV1's object.
+
+00:02:18.073 --> 00:02:22.425
+`TV2 = TV()` makes a second, separate object.
+
+00:02:22.425 --> 00:02:28.033
+We turn it on, press channel up twice, and volume up once.
+
+00:02:28.383 --> 00:02:32.543
+So TV2 is on channel 3, with volume 2.
+
+00:02:32.893 --> 00:02:35.100
+Two objects of one class.
+
+00:02:35.100 --> 00:02:39.248
+Each has its own channel, volume level, and on.
+
+00:02:39.248 --> 00:02:43.573
+Pressing a button on one never changes the other.
+
+00:02:44.367 --> 00:02:46.613
+Let's trace one more.
+
+00:02:46.613 --> 00:02:51.854
+A new TV3. Set channel 50. Turn on. Channel down.
+
+00:02:51.854 --> 00:02:53.887
+What's the channel?
+
+00:02:54.237 --> 00:02:58.983
+`Set channel 50` is ignored, because the TV is still off.
+
+00:02:58.983 --> 00:03:01.814
+After `turn on`, the channel is 1.
+
+00:03:01.814 --> 00:03:04.895
+And `channel down` does nothing at 1.
+
+00:03:04.895 --> 00:03:06.477
+So the answer is 1.
+
+00:03:07.267 --> 00:03:10.122
+Here's a bug from the slides themselves.
+
+00:03:10.122 --> 00:03:14.547
+Their `set channel` tests `self.channel`, not the new channel.
+
+00:03:14.897 --> 00:03:20.440
+`self.channel` is the channel the TV is already on, and that's always valid.
+
+00:03:20.440 --> 00:03:22.337
+So the test always passes.
+
+00:03:22.687 --> 00:03:28.007
+`Set channel` of 500 gets straight through, and the channel is now 500.
+
+00:03:28.357 --> 00:03:32.400
+A setter must check its argument, the new value.
+
+00:03:32.400 --> 00:03:35.517
+The same fix applies to `set volume`.
+
+00:03:36.300 --> 00:03:38.084
+Now, objects as arguments.
+
+00:03:38.084 --> 00:03:45.700
+When you pass an argument to a function, the parameter is bound to the same object that the argument refers to.
+
+00:03:46.050 --> 00:03:51.743
+This function, `print_areas`, takes a circle `c`, and a number, `times`.
+
+00:03:51.743 --> 00:03:59.810
+It prints a table of areas, and after each row it adds 1 to `c.radius`, and takes 1 away from `times`.
+
+00:04:00.160 --> 00:04:04.431
+Main makes a circle of radius 1, and sets `n` to 5.
+
+00:04:04.431 --> 00:04:08.200
+Then it passes both of them to `print_areas`.
+
+00:04:08.550 --> 00:04:13.636
+Inside the call, `c` points at the same Circle object as `my_circle`.
+
+00:04:13.636 --> 00:04:17.470
+And `times` points at the same 5 that `n` points at.
+
+00:04:17.820 --> 00:04:26.820
+Each time round the loop, `c.radius = c.radius + 1` goes through the arrow, and changes the object itself.
+
+00:04:27.170 --> 00:04:30.142
+But `times = times - 1` is different.
+
+00:04:30.142 --> 00:04:34.079
+It moves the local name `times` to a new integer.
+
+00:04:34.079 --> 00:04:36.490
+The caller's `n` doesn't move.
+
+00:04:36.840 --> 00:04:43.017
+So when the function returns, `my_circle`'s radius really is 6.
+
+00:04:43.017 --> 00:04:44.880
+But `n` is still 5.
+
+00:04:45.666 --> 00:04:48.514
+Here's the practice question from the slides.
+
+00:04:48.514 --> 00:04:52.626
+A `Count` class has one data field, `count`, with a default of 0.
+
+00:04:52.976 --> 00:04:58.250
+Main makes `c`, a `Count` object, and sets `n` to 1.
+
+00:04:58.250 --> 00:05:01.800
+Then it calls `m` with `c` and `n`.
+
+00:05:01.800 --> 00:05:05.856
+Inside `m`, `c = Count(5)`, and `n = 3`.
+
+00:05:06.206 --> 00:05:10.686
+Now pause the video, and draw the names and the objects.
+
+00:05:10.686 --> 00:05:12.926
+What does the program print?
+
+00:05:12.926 --> 00:05:15.086
+Many people say count is 5.
+
+00:05:15.636 --> 00:05:19.716
+The answer is: `count` is 0, and `n` is 1.
+
+00:05:20.500 --> 00:05:22.540
+Let's see why, in memory.
+
+00:05:22.890 --> 00:05:29.330
+In main, `c` points at a `Count` object whose `count` is 0, and `n` points at 1.
+
+00:05:29.680 --> 00:05:32.750
+When `m` starts, it gets its own frame.
+
+00:05:32.750 --> 00:05:39.600
+Its parameters, `c` and `n`, point at the very same objects as the `c` and `n` in main.
+
+00:05:39.950 --> 00:05:45.169
+Now `c = Count(5)` makes a brand new `Count` object,
+
+00:05:45.169 --> 00:05:48.380
+and moves `m`'s arrow `c` to it.
+
+00:05:48.380 --> 00:05:50.990
+Main's arrow doesn't move.
+
+00:05:51.590 --> 00:05:56.405
+And `n = 3` moves the function's own `n` to point at 3.
+
+00:05:56.405 --> 00:05:59.470
+The `n` in main stays where it was.
+
+00:05:59.820 --> 00:06:02.977
+When `m` returns, its frame is thrown away,
+
+00:06:02.977 --> 00:06:05.621
+and the new `Count(5)` goes with it.
+
+00:06:05.621 --> 00:06:09.660
+In main, `c` still points at the object with `count` 0.
+
+00:06:10.433 --> 00:06:14.723
+Now compare a different function, `m2`.
+
+00:06:14.723 --> 00:06:20.113
+It says `c.count = 5`, instead of `c = Count(5)`.
+
+00:06:20.463 --> 00:06:27.198
+This time, the assignment goes through the arrow, and changes the object itself.
+
+00:06:27.198 --> 00:06:30.902
+And that object is also the caller's object.
+
+00:06:30.902 --> 00:06:33.343
+So the caller sees `count` 5.
+
+00:06:33.343 --> 00:06:34.943
+But `n` is still 1.
+
+00:06:35.543 --> 00:06:37.447
+So here's the pattern.
+
+00:06:37.447 --> 00:06:46.880
+Inside a function, `parameter.field = value` changes the object the caller passed in, and the caller sees it.
+
+00:06:46.880 --> 00:06:51.986
+`Parameter = something` only moves the function's own name.
+
+00:06:51.986 --> 00:06:54.063
+The caller sees nothing.
+
+00:06:54.663 --> 00:06:58.260
+And integers, floats, and strings can't be changed at all.
+
+00:06:58.260 --> 00:07:01.423
+So a function can never change the caller's number.
+
+00:07:02.200 --> 00:07:03.797
+One last question.
+
+00:07:03.797 --> 00:07:12.400
+For our `Circle`, `circle1.set_radius(10)`, and `circle1.radius = 10`, do exactly the same thing.
+
+00:07:12.750 --> 00:07:16.150
+So why have `set_radius` at all?
+
+00:07:16.700 --> 00:07:20.907
+Because anyone can also write `circle1.radius = -5`,
+
+00:07:20.907 --> 00:07:23.820
+and the class has no way to stop it.
+
+00:07:24.600 --> 00:07:25.840
+Let's sum up.
+
+00:07:26.190 --> 00:07:31.950
+A UML class diagram is the contract: data fields and methods, without code.
+
+00:07:32.300 --> 00:07:36.538
+Each object has its own fields, and its methods guard them,
+
+00:07:36.538 --> 00:07:38.980
+like the TV checking that it's on.
+
+00:07:39.330 --> 00:07:44.183
+A function that gets an object can change it, and the caller sees the change.
+
+00:07:44.183 --> 00:07:47.650
+Rebinding the parameter changes nothing for the caller.
+
+00:07:48.000 --> 00:07:49.531
+Here's one to try.
+
+00:07:49.531 --> 00:07:53.274
+Rewrite `print_areas` as `print_areas_safe`.
+
+00:07:53.274 --> 00:07:59.568
+It takes a starting radius instead of a circle, and makes its own circles,
+
+00:07:59.568 --> 00:08:02.800
+so no caller's object is ever changed.
+
+00:08:03.350 --> 00:08:08.371
+In part four, we'll see how a class protects its data with private fields,
+
+00:08:08.371 --> 00:08:10.950
+and what Python really does with them.
+

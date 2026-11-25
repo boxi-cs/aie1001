@@ -1,0 +1,338 @@
+WEBVTT
+
+00:00:00.300 --> 00:00:02.933
+Imagine a stack at a ticket office.
+
+00:00:02.933 --> 00:00:09.780
+The person who arrived last gets served first, and the person who came early waits forever.
+
+00:00:10.130 --> 00:00:12.210
+Nobody would stand in that line.
+
+00:00:12.210 --> 00:00:13.770
+What do we want instead?
+
+00:00:14.320 --> 00:00:18.362
+The person who has waited longest goes next.
+
+00:00:18.362 --> 00:00:20.200
+First in, first out.
+
+00:00:20.800 --> 00:00:26.728
+Calls waiting at a call centre work this way, and so do documents waiting for a printer.
+
+00:00:26.728 --> 00:00:28.480
+That structure is a queue.
+
+00:00:29.267 --> 00:00:32.147
+This is Lecture 10, part two: queues.
+
+00:00:32.497 --> 00:00:37.062
+We'll define the queue, see why a plain Python list makes a slow one,
+
+00:00:37.062 --> 00:00:42.817
+build a fast one that wraps around like a circle, and use it to simulate a web service.
+
+00:00:43.600 --> 00:00:50.569
+A queue is a collection of objects that are inserted and removed first in, first out.
+
+00:00:50.569 --> 00:00:51.880
+For short, FIFO.
+
+00:00:52.230 --> 00:00:54.373
+New elements join at the back.
+
+00:00:54.373 --> 00:00:56.516
+Elements leave from the front.
+
+00:00:56.516 --> 00:01:00.230
+Only the one that has waited longest can leave next.
+
+00:01:00.580 --> 00:01:02.729
+Its operations mirror the stack's.
+
+00:01:02.729 --> 00:01:05.004
+Enqueue adds an element at the back.
+
+00:01:05.004 --> 00:01:08.100
+Dequeue removes the first element and returns it.
+
+00:01:08.450 --> 00:01:12.221
+First looks at the first element without removing it.
+
+00:01:12.221 --> 00:01:15.067
+And `is_empty` and `len` work as before.
+
+00:01:15.067 --> 00:01:18.410
+Dequeue and first are errors on an empty queue.
+
+00:01:19.200 --> 00:01:22.233
+The first idea is a Python list.
+
+00:01:22.233 --> 00:01:26.307
+Append to enqueue, and `pop(0)` to dequeue.
+
+00:01:26.307 --> 00:01:27.160
+It works.
+
+00:01:27.510 --> 00:01:29.641
+But look at what `pop(0)` does.
+
+00:01:29.641 --> 00:01:36.790
+It removes the first slot, and then every remaining element moves one place to the left to fill the gap.
+
+00:01:37.140 --> 00:01:43.704
+On a queue of a million elements, that's a million moves, just to remove one.
+
+00:01:43.704 --> 00:01:47.540
+Dequeue gets slower as the queue gets longer.
+
+00:01:48.334 --> 00:01:50.255
+The slides avoid the moving.
+
+00:01:50.255 --> 00:01:55.814
+Keep the elements in a list of fixed size, here five slots, and never shift them.
+
+00:01:56.164 --> 00:01:57.961
+Two indices do the work.
+
+00:01:57.961 --> 00:02:00.883
+Front is the slot of the first element.
+
+00:02:00.883 --> 00:02:04.404
+End is the slot where the next element will go.
+
+00:02:04.754 --> 00:02:09.509
+Enqueue writes into the end slot, and moves end forward by one.
+
+00:02:09.509 --> 00:02:14.114
+Dequeue reads the front slot, and moves front forward by one.
+
+00:02:14.464 --> 00:02:20.224
+But what happens when the end index reaches the last slot, slot 4, and moves forward?
+
+00:02:20.774 --> 00:02:23.440
+It wraps around to slot 0.
+
+00:02:23.440 --> 00:02:26.004
+Index plus one, modulo 5.
+
+00:02:26.004 --> 00:02:29.594
+4 plus 1 is 5, and 5 modulo 5 is 0.
+
+00:02:29.594 --> 00:02:32.774
+The list behaves like a circle.
+
+00:02:33.567 --> 00:02:34.972
+Here's the class.
+
+00:02:34.972 --> 00:02:37.121
+Capacity is a constant, 5.
+
+00:02:37.121 --> 00:02:43.567
+The constructor makes 5 empty slots, a size of 0, and front and end both at 0.
+
+00:02:43.917 --> 00:02:46.574
+Enqueue first checks for a full queue.
+
+00:02:46.574 --> 00:02:52.797
+Then it stores the element at end, moves end forward with modulo, and adds 1 to the size.
+
+00:02:53.147 --> 00:02:55.504
+Dequeue checks for an empty queue.
+
+00:02:55.504 --> 00:03:01.812
+It takes the answer from the front slot, sets that slot back to `None` so it can be reused,
+
+00:03:01.812 --> 00:03:05.347
+moves front forward, and subtracts 1 from the size.
+
+00:03:05.697 --> 00:03:07.353
+Nothing ever moves.
+
+00:03:07.353 --> 00:03:12.497
+Each operation touches one slot, however long the queue is.
+
+00:03:13.267 --> 00:03:16.022
+Pause the video and predict.
+
+00:03:16.022 --> 00:03:18.581
+Start with an empty queue.
+
+00:03:18.581 --> 00:03:21.140
+Enqueue 10, 20, 30 and 40.
+
+00:03:21.140 --> 00:03:22.517
+Dequeue twice.
+
+00:03:22.517 --> 00:03:24.781
+Then enqueue 50 and 60.
+
+00:03:24.781 --> 00:03:30.587
+What's in each of the 5 slots? And where are front and end?
+
+00:03:31.137 --> 00:03:35.579
+10, 20, 30 and 40 fill slots 0 to 3.
+
+00:03:35.579 --> 00:03:38.417
+The end index is now 4.
+
+00:03:38.767 --> 00:03:41.123
+Two dequeues return 10 and 20.
+
+00:03:41.123 --> 00:03:45.207
+Their slots go back to `None`, and front moves to 2.
+
+00:03:45.557 --> 00:03:47.269
+50 goes into slot 4.
+
+00:03:47.269 --> 00:03:50.437
+Then the end index wraps around to 0.
+
+00:03:50.787 --> 00:03:55.326
+So 60 goes into slot 0, which the first dequeue freed.
+
+00:03:55.326 --> 00:03:57.427
+The end index moves to 1.
+
+00:03:57.777 --> 00:04:03.177
+The slots read 60, `None`, 30, 40, 50.
+
+00:04:03.177 --> 00:04:09.857
+Front is 2, end is 1, and there are 4 elements.
+
+00:04:10.457 --> 00:04:15.265
+Dequeue all 4 and you get 30, 40, 50, 60.
+
+00:04:15.265 --> 00:04:19.017
+Start at front, and wrap around.
+
+00:04:19.800 --> 00:04:21.187
+And that's the trap.
+
+00:04:21.187 --> 00:04:27.840
+Once the queue has wrapped around, the first element can sit in a higher slot than the last one.
+
+00:04:28.190 --> 00:04:33.584
+So never read the slots left to right as if they were the queue.
+
+00:04:33.584 --> 00:04:39.230
+Always start at front, count `size` elements, and wrap with modulo.
+
+00:04:40.000 --> 00:04:43.037
+Now a practice problem from the slides.
+
+00:04:43.037 --> 00:04:48.176
+A video website keeps its unprocessed requests in a service queue.
+
+00:04:48.176 --> 00:04:51.680
+Requests are served first come, first served.
+
+00:04:52.030 --> 00:04:54.647
+The queue holds at most 5 requests.
+
+00:04:54.647 --> 00:04:58.310
+A request that arrives when it's full is dropped.
+
+00:04:58.660 --> 00:05:03.976
+Each request is a pair: the name of the video, and the seconds it takes to process.
+
+00:05:03.976 --> 00:05:08.458
+`Task.arrive` enqueues the pair if there's room, and prints a message.
+
+00:05:08.458 --> 00:05:11.340
+Otherwise it prints that the task is dropped.
+
+00:05:11.690 --> 00:05:16.995
+`Task.process` dequeues the first pair, unpacks it into name and seconds,
+
+00:05:16.995 --> 00:05:19.610
+and prints that it's been processed.
+
+00:05:19.960 --> 00:05:23.207
+The slides drive this with random numbers.
+
+00:05:23.207 --> 00:05:28.772
+Here's a fixed list of 10 events instead, so we all get the same output.
+
+00:05:28.772 --> 00:05:31.400
+`None` means: process one request.
+
+00:05:32.200 --> 00:05:39.041
+5 requests arrive: Matrix, Inception, Kungfu, X-man and Casino Royale.
+
+00:05:39.041 --> 00:05:40.800
+The queue is full.
+
+00:05:41.150 --> 00:05:43.670
+So Dark Knight is dropped.
+
+00:05:44.020 --> 00:05:46.729
+Then the server processes 2 requests.
+
+00:05:46.729 --> 00:05:48.852
+Matrix first, then Inception.
+
+00:05:48.852 --> 00:05:51.780
+They arrived first, so they leave first.
+
+00:05:52.130 --> 00:05:54.270
+Shaolin Soccer arrives.
+
+00:05:54.270 --> 00:05:56.781
+Look where it goes: slot 0.
+
+00:05:56.781 --> 00:05:59.850
+The end index has wrapped around.
+
+00:06:00.200 --> 00:06:02.960
+One more process: Kungfu.
+
+00:06:03.310 --> 00:06:08.033
+So which requests are still waiting, front to back?
+
+00:06:08.033 --> 00:06:11.830
+X-man, Casino Royale, and Shaolin Soccer.
+
+00:06:12.380 --> 00:06:18.798
+For real programs, Python has a ready made queue in the `collections` module, called `deque`.
+
+00:06:18.798 --> 00:06:23.284
+It adds and removes at both ends quickly, with no capacity limit.
+
+00:06:23.284 --> 00:06:27.700
+`append` adds at the back, and `popleft` removes from the front.
+
+00:06:28.500 --> 00:06:29.780
+Let's sum up.
+
+00:06:30.130 --> 00:06:32.271
+A queue is first in, first out.
+
+00:06:32.271 --> 00:06:35.170
+Enqueue at the back, dequeue at the front.
+
+00:06:35.520 --> 00:06:40.960
+`pop(0)` on a Python list is slow, because every element moves.
+
+00:06:41.310 --> 00:06:47.870
+A fixed list used as a circle, with front, end, and modulo, never moves anything.
+
+00:06:48.220 --> 00:06:49.637
+Here's one to try.
+
+00:06:49.637 --> 00:06:53.493
+Build a queue out of two stacks and nothing else.
+
+00:06:53.493 --> 00:06:57.900
+Hint: pouring one stack into another reverses the order.
+
+00:06:58.450 --> 00:07:03.788
+In part three, we'll store a sequence a completely different way:
+
+00:07:03.788 --> 00:07:06.663
+as small objects, linked by arrows.
+
+00:07:06.663 --> 00:07:07.730
+Linked lists.
+

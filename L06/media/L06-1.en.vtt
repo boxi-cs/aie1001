@@ -1,0 +1,374 @@
+WEBVTT
+
+00:00:00.300 --> 00:00:03.494
+Imagine you're waiting in a long line for a concert.
+
+00:00:03.494 --> 00:00:08.100
+The first 100 people get a free T-shirt, so you want to know your position.
+
+00:00:08.450 --> 00:00:10.726
+But you can't see the front of the line.
+
+00:00:10.726 --> 00:00:13.570
+And if you step out to count, you lose your place.
+
+00:00:13.920 --> 00:00:15.680
+So what can you do?
+
+00:00:16.230 --> 00:00:17.402
+Here's one way.
+
+00:00:17.402 --> 00:00:21.310
+Everyone in the line follows the same simple rule.
+
+00:00:21.660 --> 00:00:26.335
+If you're at the front, you know your position: you're number one.
+
+00:00:26.335 --> 00:00:31.860
+Otherwise, ask the person in front of you for their number, and add one to it.
+
+00:00:32.460 --> 00:00:39.438
+The question travels forward, person by person, until it reaches the front.
+
+00:00:39.438 --> 00:00:42.137
+Then the answers travel back.
+
+00:00:42.137 --> 00:00:45.300
+1, 2, 3, 4, 5, 6. You're number 6.
+
+00:00:46.100 --> 00:00:48.302
+This idea is called recursion.
+
+00:00:48.302 --> 00:00:52.340
+Welcome to Lecture 6 of Introduction to AI Programming.
+
+00:00:52.690 --> 00:00:56.529
+In this first part, we'll see what a recursive function is,
+
+00:00:56.529 --> 00:00:59.977
+what Python really does when a function calls itself,
+
+00:00:59.977 --> 00:01:02.970
+and the three bugs that catch almost everyone.
+
+00:01:03.767 --> 00:01:07.807
+Recursion is when a function calls itself while it's running.
+
+00:01:08.157 --> 00:01:10.801
+Look again at the rule from the concert line.
+
+00:01:10.801 --> 00:01:14.797
+It has three parts, and every recursive function has the same three.
+
+00:01:15.147 --> 00:01:20.680
+First, a base case: the smallest problem, which you can answer directly.
+
+00:01:20.680 --> 00:01:23.907
+If you're at the front, you're number one.
+
+00:01:24.507 --> 00:01:30.438
+Second, a smaller problem of the same kind, solved by a recursive call.
+
+00:01:30.438 --> 00:01:33.027
+Ask the person in front of you.
+
+00:01:33.627 --> 00:01:41.208
+Third, a combine step, which turns the smaller answer into the answer for the whole problem.
+
+00:01:41.208 --> 00:01:41.867
+Add one.
+
+00:01:42.467 --> 00:01:44.291
+Keep these three parts in mind.
+
+00:01:44.291 --> 00:01:46.467
+We'll look for them in every example.
+
+00:01:47.267 --> 00:01:50.646
+Our first example is the factorial.
+
+00:01:50.646 --> 00:01:56.728
+5 factorial is 5 times 4 times 3 times 2 times 1, which is 120.
+
+00:01:56.728 --> 00:02:00.107
+And 0 factorial is defined to be 1.
+
+00:02:00.457 --> 00:02:02.350
+Now look closely.
+
+00:02:02.350 --> 00:02:06.137
+What is 4 times 3 times 2 times 1?
+
+00:02:06.687 --> 00:02:08.320
+It's 4 factorial.
+
+00:02:08.320 --> 00:02:11.971
+So 5 factorial is 5 times 4 factorial.
+
+00:02:11.971 --> 00:02:16.487
+The factorial of 5 contains the factorial of 4.
+
+00:02:16.837 --> 00:02:22.126
+In general, n factorial is n times the factorial of n minus 1,
+
+00:02:22.126 --> 00:02:23.918
+and 0 factorial is 1.
+
+00:02:23.918 --> 00:02:26.477
+That's a recursive definition.
+
+00:02:26.827 --> 00:02:30.227
+And it turns into Python almost word for word.
+
+00:02:30.577 --> 00:02:32.671
+If n is 0, return 1.
+
+00:02:32.671 --> 00:02:34.869
+That's the base case.
+
+00:02:34.869 --> 00:02:39.475
+Otherwise, return n times fact of n minus 1.
+
+00:02:39.475 --> 00:02:44.605
+Calling fact on n minus 1 is the smaller problem,
+
+00:02:44.605 --> 00:02:48.897
+and multiplying by n is the combine step.
+
+00:02:49.667 --> 00:02:53.157
+Before we go on, pause the video and predict.
+
+00:02:53.157 --> 00:02:55.252
+What does fact of 3 return?
+
+00:02:55.252 --> 00:02:58.587
+And how many times is fact called in total?
+
+00:02:59.137 --> 00:03:01.266
+Fact of 3 returns 6.
+
+00:03:01.266 --> 00:03:06.377
+And fact is called 4 times: with 3, 2, 1, and 0.
+
+00:03:07.167 --> 00:03:10.987
+So what does Python actually do when fact calls fact?
+
+00:03:10.987 --> 00:03:14.807
+This is the picture you need to understand recursion.
+
+00:03:15.157 --> 00:03:19.095
+Every time a function is called, Python creates a new frame.
+
+00:03:19.095 --> 00:03:22.837
+A frame holds that call's parameters and local variables.
+
+00:03:23.187 --> 00:03:24.841
+We call fact of 3.
+
+00:03:24.841 --> 00:03:27.964
+Python makes a frame where n is 3.
+
+00:03:27.964 --> 00:03:31.914
+Since n isn't 0, this call needs fact of 2.
+
+00:03:31.914 --> 00:03:34.027
+So it stops, and waits.
+
+00:03:34.377 --> 00:03:40.357
+Fact of 2 gets its own frame, with its own n, equal to 2.
+
+00:03:40.357 --> 00:03:42.770
+It waits for fact of 1.
+
+00:03:42.770 --> 00:03:46.337
+And fact of 1 waits for fact of 0.
+
+00:03:46.687 --> 00:03:51.593
+Look at the stack now: 4 frames, 4 different values of n,
+
+00:03:51.593 --> 00:03:53.917
+all alive at the same time.
+
+00:03:53.917 --> 00:03:56.327
+Only the top one is running.
+
+00:03:56.927 --> 00:04:00.259
+Fact of 0 hits the base case and returns 1.
+
+00:04:00.259 --> 00:04:01.887
+Its frame is removed.
+
+00:04:02.237 --> 00:04:06.775
+Now fact of 1 can finish: 1 times 1 is 1.
+
+00:04:06.775 --> 00:04:10.206
+Then fact of 2: 2 times 1 is 2.
+
+00:04:10.206 --> 00:04:13.637
+Then fact of 3: 3 times 2 is 6.
+
+00:04:13.987 --> 00:04:18.972
+The frames of unfinished calls form the call stack.
+
+00:04:18.972 --> 00:04:22.197
+A new call pushes a frame on top.
+
+00:04:22.197 --> 00:04:24.250
+A return pops it off.
+
+00:04:24.250 --> 00:04:26.107
+Last in, first out.
+
+00:04:26.900 --> 00:04:30.700
+Here's the most common misunderstanding about recursion.
+
+00:04:31.050 --> 00:04:36.676
+Many students picture a recursive call as jumping back to the top of the function, like a loop,
+
+00:04:36.676 --> 00:04:38.570
+with n changed to the new value.
+
+00:04:38.920 --> 00:04:40.693
+That's not what happens.
+
+00:04:40.693 --> 00:04:45.197
+A recursive call creates a fresh frame, with fresh variables.
+
+00:04:45.197 --> 00:04:48.077
+The caller's variable n doesn't change.
+
+00:04:48.077 --> 00:04:55.240
+When the call returns, the caller carries on from the middle of its own line, where n is still 3.
+
+00:04:56.034 --> 00:04:58.292
+You can watch the stack yourself.
+
+00:04:58.292 --> 00:05:03.015
+This version prints a line when each call starts and when it returns,
+
+00:05:03.015 --> 00:05:05.274
+indented by how deep the call is.
+
+00:05:05.624 --> 00:05:12.864
+First the calls go down: 3, then 2, then 1, then 0.
+
+00:05:13.214 --> 00:05:16.570
+Then the returns come back up, in the opposite order.
+
+00:05:16.570 --> 00:05:20.054
+The first call to return is the last one that was made.
+
+00:05:20.404 --> 00:05:25.644
+You can also step through it in Python Tutor, and watch the frames appear and disappear.
+
+00:05:26.434 --> 00:05:29.834
+Tracing is the right way to check a recursive function.
+
+00:05:29.834 --> 00:05:31.874
+But it's a poor way to write one.
+
+00:05:32.224 --> 00:05:37.907
+When you write the recursive line, don't follow the call all the way down.
+
+00:05:37.907 --> 00:05:39.289
+Instead, trust it.
+
+00:05:39.289 --> 00:05:43.744
+Assume fact of n minus 1 already returns the right answer.
+
+00:05:44.344 --> 00:05:46.808
+Then ask just one question.
+
+00:05:46.808 --> 00:05:51.464
+If it does, is n times that the right answer for n?
+
+00:05:52.014 --> 00:05:52.421
+It is.
+
+00:05:52.421 --> 00:05:59.012
+So as long as the base case is right, and every call moves closer to it, the function is correct.
+
+00:05:59.012 --> 00:06:01.934
+This is called the recursive leap of faith.
+
+00:06:02.701 --> 00:06:06.661
+Finally, the three bugs that catch almost everyone.
+
+00:06:07.011 --> 00:06:13.918
+The first bug: no base case, or a base case that some inputs never reach.
+
+00:06:13.918 --> 00:06:15.431
+Call fact of -1.
+
+00:06:15.431 --> 00:06:18.175
+It calls fact of -2, then -3.
+
+00:06:18.175 --> 00:06:21.771
+The numbers move away from 0, forever.
+
+00:06:22.121 --> 00:06:25.392
+Python limits the stack to about 1,000 frames.
+
+00:06:25.392 --> 00:06:28.521
+Go past that, and you get a recursion error.
+
+00:06:28.871 --> 00:06:31.056
+The second bug: no progress.
+
+00:06:31.056 --> 00:06:38.315
+If the recursive call isn't on a smaller problem, say fact of n instead of fact of n minus 1,
+
+00:06:38.315 --> 00:06:40.111
+the same thing happens.
+
+00:06:40.461 --> 00:06:43.401
+The third bug: forgetting to return.
+
+00:06:43.401 --> 00:06:49.772
+This line computes n times fact of n minus 1, and then throws the result away.
+
+00:06:49.772 --> 00:06:52.141
+So the function returns None.
+
+00:06:52.491 --> 00:06:55.301
+And the error shows up one level up,
+
+00:06:55.301 --> 00:06:58.971
+because Python can't multiply a number by None.
+
+00:06:59.767 --> 00:07:01.007
+Let's sum up.
+
+00:07:01.357 --> 00:07:06.797
+A recursive function has a base case, a smaller problem, and a combine step.
+
+00:07:07.147 --> 00:07:09.321
+Every call gets its own frame,
+
+00:07:09.321 --> 00:07:13.307
+and the frames of unfinished calls form the call stack.
+
+00:07:13.657 --> 00:07:16.032
+Design with the leap of faith.
+
+00:07:16.032 --> 00:07:17.377
+Check by tracing.
+
+00:07:17.727 --> 00:07:19.220
+Here's one to try.
+
+00:07:19.220 --> 00:07:24.528
+Write a function that returns the sum of the digits of a number,
+
+00:07:24.528 --> 00:07:27.183
+so that sum digits of 472 is 13.
+
+00:07:27.183 --> 00:07:29.007
+What's your base case?
+
+00:07:29.557 --> 00:07:32.501
+In part two, we'll use recursion on lists,
+
+00:07:32.501 --> 00:07:37.477
+and meet one of the most useful algorithms in computing: binary search.
+

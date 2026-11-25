@@ -1,0 +1,314 @@
+WEBVTT
+
+00:00:00.300 --> 00:00:07.180
+In part 3, display object worked for every shape, because it only used methods that every shape has.
+
+00:00:07.530 --> 00:00:08.784
+Now we want more.
+
+00:00:08.784 --> 00:00:12.177
+Print the area and the perimeter of any shape.
+
+00:00:12.177 --> 00:00:17.930
+And also the diameter of a circle, or the width and the height of a rectangle.
+
+00:00:18.280 --> 00:00:19.940
+Here's a first attempt.
+
+00:00:19.940 --> 00:00:21.960
+It just calls all 5 methods.
+
+00:00:22.310 --> 00:00:23.910
+Will that work?
+
+00:00:24.460 --> 00:00:24.741
+No.
+
+00:00:24.741 --> 00:00:27.079
+It fails for every shape.
+
+00:00:27.079 --> 00:00:32.972
+A rectangle has no get diameter, and a circle has no get width.
+
+00:00:32.972 --> 00:00:36.340
+So Python raises an attribute error.
+
+00:00:37.133 --> 00:00:42.013
+This is Lecture 8, part 4: is instance, and multiple inheritance.
+
+00:00:42.363 --> 00:00:47.921
+We'll see how a function can check what kind of object it has, when it really must,
+
+00:00:47.921 --> 00:00:51.603
+and then how a class can have more than one superclass.
+
+00:00:52.400 --> 00:00:56.226
+The is instance function takes an object and a class.
+
+00:00:56.226 --> 00:01:02.360
+It returns true if the object is an instance of that class, or of any subclass of it.
+
+00:01:02.710 --> 00:01:04.061
+Take a circle.
+
+00:01:04.061 --> 00:01:07.340
+Is it an instance of Circle? True.
+
+00:01:07.340 --> 00:01:12.838
+Of GeometricObject? Also true, because Circle extends it.
+
+00:01:12.838 --> 00:01:16.310
+Of object? True, as every object is.
+
+00:01:16.660 --> 00:01:18.167
+Of Rectangle? False.
+
+00:01:18.167 --> 00:01:21.180
+That's a different branch of the family.
+
+00:01:21.530 --> 00:01:23.584
+Now compare the last line.
+
+00:01:23.584 --> 00:01:30.770
+The type of the circle is exactly Circle, so comparing it with GeometricObject gives false.
+
+00:01:31.120 --> 00:01:34.300
+The type test matches just one class.
+
+00:01:34.300 --> 00:01:42.120
+The is instance function asks the is-a question, and that's almost always the one you mean.
+
+00:01:42.900 --> 00:01:48.140
+With the is instance function, display object can check before it calls.
+
+00:01:48.490 --> 00:01:51.077
+Every shape gets its area and perimeter.
+
+00:01:51.077 --> 00:01:53.857
+Then, if it's a circle, print the diameter.
+
+00:01:53.857 --> 00:01:57.930
+Otherwise, if it's a rectangle, print the width and the height.
+
+00:01:58.280 --> 00:02:03.960
+For a circle of radius 4, we get the area, the perimeter, and a diameter of 8.
+
+00:02:04.310 --> 00:02:11.830
+For the rectangle, the area is 3, the perimeter is 8, the width is 1, and the height is 3.
+
+00:02:12.180 --> 00:02:16.345
+By the way, is instance also takes a tuple of classes.
+
+00:02:16.345 --> 00:02:21.820
+Checking a value against int and float together is true for any number.
+
+00:02:22.600 --> 00:02:26.120
+Here's a trap, when you write a chain of these checks.
+
+00:02:26.470 --> 00:02:31.425
+Suppose you later add a Square class that extends Rectangle.
+
+00:02:31.425 --> 00:02:34.150
+Every square is also a rectangle.
+
+00:02:34.500 --> 00:02:39.437
+So if the chain asks about Rectangle first, a square stops right there,
+
+00:02:39.437 --> 00:02:41.940
+and the Square branch can never run.
+
+00:02:42.290 --> 00:02:45.417
+Check the most specific class first.
+
+00:02:45.417 --> 00:02:48.890
+Subclasses go before their superclasses.
+
+00:02:49.490 --> 00:02:55.376
+Better still, ask whether the branch could be a method that each class overrides.
+
+00:02:55.376 --> 00:02:58.936
+Remember the pattern from part 3: ask the object.
+
+00:02:58.936 --> 00:03:01.770
+Then you don't need is instance at all.
+
+00:03:02.567 --> 00:03:05.978
+Here's a family of classes from the slides.
+
+00:03:05.978 --> 00:03:08.357
+Apple and Orange extend Fruit.
+
+00:03:08.357 --> 00:03:11.767
+Golden Delicious and McIntosh extend Apple.
+
+00:03:12.117 --> 00:03:18.210
+Apple has a method to make apple cider, and Orange has one to make orange juice.
+
+00:03:18.210 --> 00:03:21.637
+We make one golden delicious, and one orange.
+
+00:03:21.987 --> 00:03:24.227
+Pause the video and predict.
+
+00:03:24.227 --> 00:03:30.547
+Is the golden delicious an instance of Fruit? Of Orange? Of Apple? Of McIntosh?
+
+00:03:30.547 --> 00:03:34.707
+And can each object make cider? Can each make juice?
+
+00:03:35.257 --> 00:03:36.685
+Here's the trick.
+
+00:03:36.685 --> 00:03:41.305
+Start at the object's own class, and walk up to object.
+
+00:03:41.305 --> 00:03:50.377
+The golden delicious is an instance of every class on that path: Golden Delicious, Apple, Fruit, and object.
+
+00:03:50.727 --> 00:03:54.362
+It's not an instance of Orange, or of McIntosh.
+
+00:03:54.362 --> 00:03:56.527
+Those are on other branches.
+
+00:03:56.877 --> 00:04:00.768
+The same path tells you which methods it can call.
+
+00:04:00.768 --> 00:04:07.225
+For the golden delicious, make apple cider is found in Apple, so it can make cider.
+
+00:04:07.225 --> 00:04:09.637
+But it can't make orange juice.
+
+00:04:09.987 --> 00:04:12.324
+The orange is the other way round.
+
+00:04:12.324 --> 00:04:17.067
+It can make juice, and asking it for cider raises an attribute error.
+
+00:04:17.867 --> 00:04:24.027
+The next practice in the slides is a class that uses other objects, instead of extending a class.
+
+00:04:24.377 --> 00:04:28.063
+A course has a name, and a list of students.
+
+00:04:28.063 --> 00:04:33.257
+That's a has-a relationship, so the students are a data field.
+
+00:04:33.607 --> 00:04:38.847
+Add student appends to the list, and get number of students returns its length.
+
+00:04:39.197 --> 00:04:43.100
+The first course gets 3 students, and the second gets 2.
+
+00:04:43.100 --> 00:04:48.397
+Join puts a comma and a space between the names, and not after the last one.
+
+00:04:49.167 --> 00:04:50.068
+Last topic.
+
+00:04:50.068 --> 00:04:53.260
+A class can extend more than one class.
+
+00:04:53.260 --> 00:04:56.207
+This is called multiple inheritance.
+
+00:04:56.557 --> 00:05:00.538
+List the superclasses in the brackets, separated by commas.
+
+00:05:00.538 --> 00:05:03.237
+The new class inherits from all of them.
+
+00:05:03.587 --> 00:05:09.797
+Here, class A sets a field named a, and class B sets a field named b.
+
+00:05:09.797 --> 00:05:14.027
+Class C extends both, and adds a field named c.
+
+00:05:14.377 --> 00:05:22.207
+C's `__init__` calls each superclass's `__init__` by name, and passes self explicitly.
+
+00:05:22.207 --> 00:05:26.577
+That's the long form of what super does for you.
+
+00:05:27.177 --> 00:05:34.017
+So C of 1, 2, 3 gets all 3 fields, and output prints 1, 3, 2.
+
+00:05:34.367 --> 00:05:43.567
+The lookup order is the class itself, then its superclasses from left to right, then object.
+
+00:05:43.567 --> 00:05:46.567
+For C, that's C, A, B, object.
+
+00:05:47.367 --> 00:05:52.167
+The slides also show this version, which calls `super.__init__` twice.
+
+00:05:52.517 --> 00:05:55.161
+It looks like it calls both superclasses.
+
+00:05:55.161 --> 00:05:55.677
+Does it?
+
+00:05:56.227 --> 00:05:56.503
+No.
+
+00:05:56.503 --> 00:06:01.550
+Super means the next class after C in the lookup order.
+
+00:06:01.550 --> 00:06:04.027
+That's class A, both times.
+
+00:06:04.627 --> 00:06:11.231
+So A's `__init__` runs twice, and the second call replaces the value 1 with 2.
+
+00:06:11.231 --> 00:06:18.427
+B's `__init__` never runs, so asking for the field named b raises an attribute error.
+
+00:06:18.777 --> 00:06:23.660
+With multiple inheritance, call each superclass's `__init__` by name.
+
+00:06:23.660 --> 00:06:29.180
+And remember: in most code you'll read, single inheritance is far more common.
+
+00:06:29.180 --> 00:06:34.417
+When two classes are related by has-a, a data field is the simpler design.
+
+00:06:35.201 --> 00:06:36.441
+Let's sum up.
+
+00:06:36.791 --> 00:06:41.869
+Is instance is true for an object's own class and every class above it.
+
+00:06:41.869 --> 00:06:47.591
+Check the most specific class first, or better, override a method in each class.
+
+00:06:47.941 --> 00:06:52.381
+A has-a relationship is a data field, not inheritance.
+
+00:06:52.731 --> 00:06:58.476
+With multiple inheritance, Python looks in the superclasses from left to right.
+
+00:06:58.476 --> 00:07:01.531
+Call each superclass's `__init__` by name.
+
+00:07:01.881 --> 00:07:03.334
+Here's one to try.
+
+00:07:03.334 --> 00:07:11.571
+Write an Employee class with a pay method, and a Manager subclass whose pay adds a bonus, using super.
+
+00:07:11.571 --> 00:07:16.982
+Then write a payroll function that adds up the pay of a mixed list.
+
+00:07:16.982 --> 00:07:19.001
+Does it need is instance?
+
+00:07:19.551 --> 00:07:21.292
+That's the end of Lecture 8.
+
+00:07:21.292 --> 00:07:25.708
+Next time, in Lecture 9, we'll start on data structures and algorithms,
+
+00:07:25.708 --> 00:07:28.631
+and learn how to measure how fast a program is.
+

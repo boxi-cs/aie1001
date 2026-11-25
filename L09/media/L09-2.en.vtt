@@ -1,0 +1,308 @@
+WEBVTT
+
+00:00:00.300 --> 00:00:08.283
+In part 1, we saw that how fast a running time grows matters more than its constants.
+
+00:00:08.283 --> 00:00:15.420
+Algorithm B, 2n squared plus 100n, loses to C, 10,000n, from about 5,000 on.
+
+00:00:15.770 --> 00:00:24.648
+To say this precisely, we need a way to compare functions that ignores constants and small inputs, and keeps only the growth.
+
+00:00:24.648 --> 00:00:26.210
+That's big-O notation.
+
+00:00:27.000 --> 00:00:31.200
+This is Lecture 9, part 2: big-O notation.
+
+00:00:31.550 --> 00:00:38.701
+We'll see the definition, the rules for simplifying, where the line between efficient and hopeless lies,
+
+00:00:38.701 --> 00:00:42.070
+and then count every operation of a real program.
+
+00:00:42.867 --> 00:00:50.797
+Asymptotic analysis looks at the growth rate of the running time as n grows large, and ignores the rest.
+
+00:00:50.797 --> 00:00:52.627
+Its vocabulary is big-O.
+
+00:00:52.977 --> 00:00:55.236
+Here's the definition.
+
+00:00:55.236 --> 00:00:58.316
+Let f and g be functions of n.
+
+00:00:58.316 --> 00:01:08.069
+We say f(n) is big-O of g(n) if there is a constant c, greater than 0, and a starting point n0,
+
+00:01:08.069 --> 00:01:14.537
+such that f(n) is at most c times g(n), for every n from n0 on.
+
+00:01:15.137 --> 00:01:21.951
+In words: from some point on, f is never bigger than a constant multiple of g.
+
+00:01:21.951 --> 00:01:27.017
+Big-O means grows no faster than, up to a constant factor.
+
+00:01:27.800 --> 00:01:29.579
+Here's a first example.
+
+00:01:29.579 --> 00:01:34.760
+We'll show that 8n + 5 is big-O of n, straight from the definition.
+
+00:01:35.110 --> 00:01:39.301
+We need a constant and a starting point.
+
+00:01:39.301 --> 00:01:42.864
+For n at least 1, 5 is at most 5n.
+
+00:01:42.864 --> 00:01:47.369
+So 8n + 5 is at most 8n + 5n, which is 13n.
+
+00:01:47.369 --> 00:01:51.350
+Take c equal to 13, and n0 equal to 1.
+
+00:01:51.700 --> 00:01:53.958
+Other choices work too.
+
+00:01:53.958 --> 00:01:55.628
+Try c equal to 9.
+
+00:01:55.628 --> 00:02:01.911
+The line 9n starts below 8n + 5, and crosses it at n equal to 5.
+
+00:02:01.911 --> 00:02:04.857
+From there on, it stays above.
+
+00:02:04.857 --> 00:02:08.980
+So c equal to 9 works, with n0 equal to 5.
+
+00:02:09.330 --> 00:02:13.452
+A computer can't check every n, but it can check a lot of them.
+
+00:02:13.452 --> 00:02:16.330
+That's a good way to catch a wrong constant.
+
+00:02:16.680 --> 00:02:21.208
+The last line shows why 9 needs a starting point of 5:
+
+00:02:21.208 --> 00:02:25.400
+for n from 1 to 4, 8n + 5 is still bigger than 9n.
+
+00:02:26.200 --> 00:02:29.068
+Pause the video and predict.
+
+00:02:29.068 --> 00:02:35.520
+Is 8n + 5 also big-O of n squared? And is n squared big-O of n?
+
+00:02:36.070 --> 00:02:38.603
+8n + 5 is big-O of n squared.
+
+00:02:38.603 --> 00:02:42.794
+It is at most 13n, which is at most 13n squared.
+
+00:02:42.794 --> 00:02:49.430
+That's true, but not useful, like saying the lecture is shorter than a year.
+
+00:02:49.780 --> 00:02:52.236
+But n squared is not big-O of n.
+
+00:02:52.236 --> 00:03:01.980
+Whatever constant you pick, as soon as n is bigger than it, n squared, which is n times n, is bigger than the constant times n.
+
+00:03:02.767 --> 00:03:11.087
+In practice, big-O lets us drop constant factors and lower-order terms, and keep the part that decides the growth.
+
+00:03:11.437 --> 00:03:17.951
+5n to the fourth, plus 3n cubed, plus lower terms, is big-O of n to the fourth.
+
+00:03:17.951 --> 00:03:26.197
+Each term is at most its coefficient times n to the fourth, so the sum is at most 15n to the fourth.
+
+00:03:26.547 --> 00:03:34.187
+2 to the n plus 2 is big-O of 2 to the n, because it's exactly 4 times 2 to the n.
+
+00:03:34.537 --> 00:03:40.857
+And 2n plus 100 log n is big-O of n, because log n is at most n.
+
+00:03:41.207 --> 00:03:44.867
+Describe a function as closely as you can.
+
+00:03:44.867 --> 00:03:50.967
+Say 8n + 5 is big-O of n, not of n squared, even though both are true.
+
+00:03:51.317 --> 00:03:56.055
+And don't read big-O of n as exactly n steps.
+
+00:03:56.055 --> 00:03:58.266
+It allows 1,000n + 7.
+
+00:03:58.266 --> 00:04:04.794
+Big-O tells you how the work grows: double n, double the work.
+
+00:04:04.794 --> 00:04:07.637
+Not how long one run takes.
+
+00:04:08.434 --> 00:04:17.434
+Big-O orders our 7 functions by growth: constant, log n, n, n log n, n squared, n cubed, 2 to the n.
+
+00:04:17.434 --> 00:04:23.914
+Each is big-O of the ones to its right, but not of the ones to its left.
+
+00:04:24.264 --> 00:04:30.733
+So if algorithm A is big-O of n and B is big-O of n squared, A is asymptotically better:
+
+00:04:30.733 --> 00:04:35.144
+for large enough inputs it's faster, whatever the constants.
+
+00:04:35.494 --> 00:04:39.300
+Where is the line between efficient and hopeless?
+
+00:04:39.300 --> 00:04:47.842
+Usually between polynomial running times, like n, n squared or n cubed, and exponential ones, like 2 to the n.
+
+00:04:47.842 --> 00:04:52.734
+Problems with a polynomial-time algorithm are called tractable.
+
+00:04:53.084 --> 00:04:53.992
+Here's why.
+
+00:04:53.992 --> 00:04:59.435
+Say a 2 to the n algorithm can just handle 40 elements in an hour.
+
+00:04:59.435 --> 00:05:02.651
+Buy a computer a thousand times faster.
+
+00:05:02.651 --> 00:05:07.270
+Since 2 to the 10 is about 1,000, you can now handle 50.
+
+00:05:07.270 --> 00:05:09.084
+Only 10 more elements.
+
+00:05:09.434 --> 00:05:16.667
+An n squared algorithm, with the same upgrade, handles inputs about 32 times larger,
+
+00:05:16.667 --> 00:05:19.594
+because 32 squared is about 1,000.
+
+00:05:20.368 --> 00:05:22.502
+Now let's analyze a real program.
+
+00:05:22.502 --> 00:05:29.488
+This one, from the slides, finds the smallest number in a list, and prints its progress after every element.
+
+00:05:29.838 --> 00:05:32.048
+Smallest so far starts as None.
+
+00:05:32.048 --> 00:05:34.117
+The first number replaces it.
+
+00:05:34.117 --> 00:05:37.968
+After that, a number replaces it only if it's smaller.
+
+00:05:37.968 --> 00:05:40.678
+9 stays the smallest, until 4 arrives.
+
+00:05:41.028 --> 00:05:45.076
+How many operations does it perform on a list of n numbers?
+
+00:05:45.076 --> 00:05:51.388
+For simplicity, the slide counts only 3 kinds: assignments, comparisons, and function calls.
+
+00:05:51.738 --> 00:05:56.511
+Before the loop: 2 assignments, and 1 call of print.
+
+00:05:56.511 --> 00:05:57.338
+That's 3.
+
+00:05:57.688 --> 00:06:03.649
+Each round of the loop: the comparison with None, at most 1 more comparison,
+
+00:06:03.649 --> 00:06:06.943
+at most 1 assignment, and 1 call of print.
+
+00:06:06.943 --> 00:06:07.728
+At most 4.
+
+00:06:08.078 --> 00:06:10.857
+After the loop: 1 more print.
+
+00:06:10.857 --> 00:06:15.744
+So the total is at most 3, plus 4n, plus 1: 4n + 4.
+
+00:06:15.744 --> 00:06:17.469
+That's big-O of n.
+
+00:06:17.469 --> 00:06:21.878
+Finding the smallest number takes linear time.
+
+00:06:22.668 --> 00:06:25.526
+We can also let Python do the counting.
+
+00:06:25.526 --> 00:06:32.268
+Count ops runs the same steps on any list, and adds 1 for each operation, by the same rules.
+
+00:06:32.618 --> 00:06:37.383
+Which list of the numbers 1 to 8 makes it do the most work?
+
+00:06:37.383 --> 00:06:41.018
+Increasing order, decreasing order, or mixed?
+
+00:06:41.568 --> 00:06:43.615
+The slide's list gives 29.
+
+00:06:43.615 --> 00:06:46.843
+Increasing order gives 28: the best case.
+
+00:06:46.843 --> 00:06:56.608
+Decreasing order gives 35: the worst case, because every number is a new smallest, so every round does the extra assignment.
+
+00:06:56.958 --> 00:07:05.124
+For longer lists, the best case is 3n + 4, and the worst is 4n + 3, 1 less than the slide's bound.
+
+00:07:05.124 --> 00:07:06.791
+Both are big-O of n.
+
+00:07:06.791 --> 00:07:09.958
+10 times the input, 10 times the work.
+
+00:07:10.308 --> 00:07:13.202
+We left out some operations, like reading num.
+
+00:07:13.202 --> 00:07:17.039
+Counting them would change the constants, but not the answer.
+
+00:07:17.039 --> 00:07:22.828
+That's why big-O is useful: you only need to count carefully enough to get the growth right.
+
+00:07:23.601 --> 00:07:24.921
+Let's sum up.
+
+00:07:25.271 --> 00:07:34.031
+F(n) is big-O of g(n) if f(n) is at most a constant times g(n), from some starting point on.
+
+00:07:34.381 --> 00:07:38.718
+Big-O drops constant factors and lower-order terms.
+
+00:07:38.718 --> 00:07:42.461
+Polynomial is tractable; exponential is not.
+
+00:07:42.811 --> 00:07:46.430
+Count operations line by line, and keep the growth:
+
+00:07:46.430 --> 00:07:49.411
+finding the smallest number is big-O of n.
+
+00:07:49.761 --> 00:07:51.417
+Here's one to try.
+
+00:07:51.417 --> 00:07:55.557
+Is 3n squared plus 1,000n big-O of n squared?
+
+00:07:55.557 --> 00:08:00.801
+If it is, find a constant and a starting point that work.
+
+00:08:01.351 --> 00:08:07.831
+In part 3, we'll analyze recursive functions, and prove that binary search is big-O of log n.
+
